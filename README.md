@@ -54,3 +54,12 @@ Optional:
 - no auto-merge
 - no production branch writes
 - no production authority core included
+
+
+## Contact
+
+Interested in governed AI execution for your engineering team?
+
+Contact:
+- Email: determa.ai@gmail.com
+- GitHub Issues: open an issue with the label `design-partner`

@@ -1,4 +1,4 @@
->>> Looking for design partners using AI coding agents in GitHub workflows.
+ ~~ Looking for design partners using AI coding agents in GitHub workflows. ~~
 
 # DETERMA Public Demo Action
 

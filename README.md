@@ -1,3 +1,5 @@
+>>> Looking for design partners using AI coding agents in GitHub workflows.
+
 # DETERMA Public Demo Action
 
 This is a public demo package. The production DETERMA authority core is not included.

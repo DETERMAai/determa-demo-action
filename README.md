@@ -1,67 +1,151 @@
- ~~ Looking for design partners using AI coding agents in GitHub workflows. ~~
+# DETERMA — Governed AI Execution
 
-# DETERMA Public Demo Action
+**AI can write code.
+But who decides if it is allowed to execute?**
 
-This is a public demo package. The production DETERMA authority core is not included.
+DETERMA is an execution authority layer that prevents AI-generated changes from running unless all required conditions are verified.
 
-## What this package demonstrates
+---
 
-- governed demo execution path
-- draft PR output (mock by default)
-- replay blocked / idempotent behavior
-- adversarial attempts blocked fail-closed
+## 🚨 The Problem
 
-## Zero-setup demo
+AI coding agents can:
+
+* open pull requests automatically
+* repeat actions (replay)
+* mutate code after approval
+* operate outside intended scope
+
+There is no strict enforcement layer between **AI intent** and **actual execution**.
+
+---
+
+## ✅ What this demo proves
+
+* AI changes are **not executed automatically**
+* Every action requires a strict authority chain:
+
+```text
+approval → capability → state witness → execution release
+```
+
+* Replay attacks are blocked (idempotent execution)
+* Adversarial attempts fail closed
+
+---
+
+## ⚡ Quick Demo (30 seconds)
 
 ```bash
-python3 scripts/run_product_demo.py --operator-token demo-token
-python3 scripts/run_adversarial_demo.py
-python3 scripts/fake_agent_loop.py
+make demo
+make demo-attack
 ```
 
-## GitHub Action demo usage
+### Expected result
+
+* Draft PR is created (mock or real)
+* Second run is blocked (no duplicate execution)
+* Attack scenarios → **ALL BLOCKED (FAIL-CLOSED)**
+
+---
+
+## ⚙️ GitHub Action
+
+Run directly in your repo:
 
 ```yaml
-name: DETERMA Demo
-on:
-  workflow_dispatch:
-
-jobs:
-  demo:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-      - uses: ./
-        with:
-          operator-token: demo-token
-          real-github: "false"
+steps:
+  - uses: actions/checkout@v4
+  - uses: DETERMAai/determa-demo-action@v0.1.0
+    with:
+      operator-token: demo-token
 ```
 
-## Real GitHub sandbox mode (explicit opt-in)
+This executes a governed AI change flow inside GitHub.
 
-Required:
+---
 
-- `DETERMA_DEMO_REAL_GITHUB=1`
-- `GITHUB_TOKEN`
-- `DETERMA_DEMO_REPO`
+## 🧪 Demo Modes
 
-Optional:
+### Default (Mock Mode)
 
-- `DETERMA_DEMO_BASE_BRANCH` (default: `main`)
-- `branch` input (`determa-demo/*` only)
+* Zero setup
+* No GitHub writes
+* Safe for evaluation
 
-## Safety notes
+### Real GitHub Sandbox (Optional)
 
-- demo package only
-- no auto-merge
-- no production branch writes
-- no production authority core included
+Creates a **Draft PR** in a controlled repo.
 
+```bash
+export DETERMA_DEMO_REAL_GITHUB=1
+export GITHUB_TOKEN=your_token
+export DETERMA_DEMO_REPO=org/demo-repo
+export DETERMA_DEMO_BASE_BRANCH=main
+```
 
-## Contact
+Then run:
 
-Interested in governed AI execution for your engineering team?
+```bash
+make demo-real
+```
 
-Contact:
-- Email: determa.ai@gmail.com
-- GitHub Issues: open an issue with the label `design-partner`
+---
+
+## 🔐 Safety
+
+* No auto-merge
+* No writes to protected branches
+* Fail-closed by default
+* Real mode requires explicit opt-in
+
+---
+
+## 🧯 Troubleshooting
+
+**Execution blocked**
+→ Missing approval / capability / witness / release
+
+**GitHub 422 error**
+→ Invalid branch or base/head mismatch
+
+**No PR created**
+→ Running in mock mode (expected behavior)
+
+---
+
+## 📌 What this is (and isn’t)
+
+This is:
+
+* A **governed execution layer demo**
+* A proof of deterministic control over AI actions
+
+This is NOT:
+
+* A production system
+* A general AI agent framework
+* A CI/CD replacement
+
+---
+
+## 📊 Status
+
+Demo / design-partner stage
+Not production-ready
+
+---
+
+## 🤝 Contact
+
+Looking for engineering teams using AI coding agents who want execution control.
+
+* Email: determa.ai@gmail.com
+* GitHub: open an issue with label `design-partner`
+
+---
+
+## 🧠 Core Idea
+
+AI can propose.
+**DETERMA decides what is allowed to run.**

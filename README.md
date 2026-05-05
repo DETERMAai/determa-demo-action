@@ -3,7 +3,7 @@
 **AI can write code.
 But who decides if it is allowed to execute?**
 
-## 🎬 60-second demo — how DETERMA blocks unsafe AI execution
+## 🎬 40-second demo — how DETERMA blocks unsafe AI execution
 [![Watch the demo](docs/assets/allow.jpg)](https://youtu.be/ek8jdOmWAvw?si=EAnV1VU1bMnOSZZv)
 
 DETERMA is an execution authority layer that prevents AI-generated changes from running unless all required conditions are verified.

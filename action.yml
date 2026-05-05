@@ -1,0 +1,42 @@
+name: DETERMA Governed AI Execution Demo
+description: Demonstrates fail-closed governed AI code execution with replay protection.
+branding:
+  icon: shield
+  color: blue
+inputs:
+  operator-token:
+    description: Operator token for demo API calls
+    required: false
+    default: demo-token
+  real-github:
+    description: Enable real GitHub sandbox mode (requires explicit env opt-in)
+    required: false
+    default: "false"
+  repo:
+    description: Sandbox repo (org/repo) for real GitHub mode
+    required: false
+    default: ""
+  branch:
+    description: Sandbox branch (must match determa-demo/*)
+    required: false
+    default: determa-demo/github-action-demo
+outputs:
+  demo-result:
+    description: Overall demo result status
+    value: ${{ steps.run_demo.outputs.demo_result }}
+  pr-url:
+    description: Draft PR URL (mock or real)
+    value: ${{ steps.run_demo.outputs.pr_url }}
+runs:
+  using: composite
+  steps:
+    - id: run_demo
+      shell: bash
+      env:
+        OPERATOR_TOKEN: ${{ inputs.operator-token }}
+        REAL_GITHUB: ${{ inputs.real-github }}
+        DEMO_REPO: ${{ inputs.repo }}
+        DEMO_BRANCH: ${{ inputs.branch }}
+      run: |
+        chmod +x ./entrypoint.sh
+        ./entrypoint.sh

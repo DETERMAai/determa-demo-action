@@ -1,0 +1,46 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="420" viewBox="0 0 1200 420" role="img" aria-label="DETERMA architecture flow">
+  <defs>
+    <linearGradient id="bg" x1="0" x2="1" y1="0" y2="1">
+      <stop offset="0%" stop-color="#f5fbff"/>
+      <stop offset="100%" stop-color="#e6f2ff"/>
+    </linearGradient>
+    <style>
+      .title{font:700 36px 'Segoe UI',Arial,sans-serif;fill:#0b2b52}
+      .subtitle{font:400 20px 'Segoe UI',Arial,sans-serif;fill:#2a4d79}
+      .label{font:600 20px 'Segoe UI',Arial,sans-serif;fill:#103a66}
+      .small{font:500 17px 'Segoe UI',Arial,sans-serif;fill:#245585}
+      .box{fill:#ffffff;stroke:#1d5f9f;stroke-width:2.5;rx:18}
+      .boxWarn{fill:#fff6f6;stroke:#a62d2d;stroke-width:2.5;rx:18}
+      .arrow{stroke:#1d5f9f;stroke-width:3;fill:none;marker-end:url(#m)}
+      .blockArrow{stroke:#a62d2d;stroke-width:3;fill:none;marker-end:url(#m2)}
+    </style>
+    <marker id="m" markerWidth="10" markerHeight="10" refX="9" refY="5" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#1d5f9f"/>
+    </marker>
+    <marker id="m2" markerWidth="10" markerHeight="10" refX="9" refY="5" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#a62d2d"/>
+    </marker>
+  </defs>
+
+  <rect x="0" y="0" width="1200" height="420" fill="url(#bg)"/>
+  <text x="54" y="64" class="title">DETERMA — Governed AI Execution Demo</text>
+  <text x="54" y="98" class="subtitle">AI can propose code changes. DETERMA decides whether execution is allowed.</text>
+
+  <rect x="60" y="150" width="250" height="110" class="box"/>
+  <text x="185" y="208" text-anchor="middle" class="label">AI Proposal</text>
+
+  <rect x="470" y="130" width="300" height="150" class="box"/>
+  <text x="620" y="186" text-anchor="middle" class="label">DETERMA Authority Gate</text>
+  <text x="620" y="218" text-anchor="middle" class="small">approval • capability</text>
+  <text x="620" y="244" text-anchor="middle" class="small">state witness • release</text>
+
+  <rect x="930" y="150" width="210" height="110" class="box"/>
+  <text x="1035" y="208" text-anchor="middle" class="label">Draft PR</text>
+
+  <rect x="470" y="305" width="300" height="82" class="boxWarn"/>
+  <text x="620" y="352" text-anchor="middle" class="label" fill="#8f2727">Replay/Attack Blocked</text>
+
+  <path d="M310 205 L468 205" class="arrow"/>
+  <path d="M772 205 L928 205" class="arrow"/>
+  <path d="M620 278 L620 303" class="blockArrow"/>
+</svg>

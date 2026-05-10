@@ -1,7 +1,7 @@
 """Factory runtime coordinator.
 
-Coordinates one bounded task from queue to worker validation, replay gating,
-and optional runtime persistence.
+Coordinates one bounded task from queue to worker validation, replay generation,
+replay gating, and optional runtime persistence.
 No arbitrary command execution. No Git mutation. No merge.
 """
 
@@ -13,6 +13,7 @@ from factory.queue.task_queue import TaskQueue
 from factory.runtime.persistence import RuntimeEvent, RuntimeStore, build_event_id
 from factory.runtime.state import RuntimeState, RuntimeTransition, transition
 from factory.runtime.worker_runner import WorkerRunResult, run_worker_task
+from factory.verification.replay_artifact_builder import build_factory_replay_artifact
 from factory.verification.replay_gate import ReplayGateResult, evaluate_replay_gate
 from factory.verification.scope_validator import ScopeContract
 
@@ -22,6 +23,7 @@ class RuntimeRunResult:
     """Result of one coordinated factory runtime cycle."""
 
     worker_result: WorkerRunResult
+    replay: dict[str, object] | None
     replay_gate_result: ReplayGateResult | None
 
     @property
@@ -51,7 +53,11 @@ class RuntimeCoordinator:
         contract: ScopeContract,
         replay: dict[str, object] | None = None,
     ) -> RuntimeRunResult | None:
-        """Run the next queued task through scope validation and optional replay gate."""
+        """Run the next queued task through scope validation and replay gate.
+
+        If replay is not supplied, the coordinator builds one automatically from
+        changed files.
+        """
         task = self.queue.next_task()
         if task is None:
             self._move(RuntimeState.IDLE, "no pending task")
@@ -68,12 +74,17 @@ class RuntimeCoordinator:
 
         self._move(RuntimeState.VERIFYING, f"verifying {task.task_id}")
 
+        replay_artifact: dict[str, object] | None = replay
         replay_gate_result: ReplayGateResult | None = None
-        if worker_result.status.value != "BLOCKED" and replay is not None:
-            replay_gate_result = evaluate_replay_gate(replay)
+
+        if worker_result.status.value != "BLOCKED":
+            if replay_artifact is None:
+                replay_artifact = build_factory_replay_artifact(changed_files).to_dict()
+            replay_gate_result = evaluate_replay_gate(replay_artifact)
 
         runtime_result = RuntimeRunResult(
             worker_result=worker_result,
+            replay=replay_artifact,
             replay_gate_result=replay_gate_result,
         )
 
@@ -88,7 +99,6 @@ class RuntimeCoordinator:
             task_id=task.task_id,
             runtime_result=runtime_result,
             changed_files=changed_files,
-            replay=replay,
         )
 
         return runtime_result
@@ -102,7 +112,6 @@ class RuntimeCoordinator:
         task_id: str,
         runtime_result: RuntimeRunResult,
         changed_files: tuple[str, ...],
-        replay: dict[str, object] | None,
     ) -> None:
         if self.store is None:
             return
@@ -114,7 +123,7 @@ class RuntimeCoordinator:
             state=self.state.value,
             outcome=runtime_result.outcome(),
             reason=self._reason_for(runtime_result),
-            replay=replay,
+            replay=runtime_result.replay,
             changed_files=changed_files,
         )
         self.store.append(event)

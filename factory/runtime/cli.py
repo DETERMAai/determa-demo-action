@@ -17,6 +17,7 @@ from factory.runtime.approval_queue import ApprovalQueue, ApprovalRequest
 from factory.runtime.approval_store import ApprovalStore
 from factory.runtime.coordinator import RuntimeCoordinator
 from factory.runtime.dashboard_data import build_dashboard_data, render_dashboard_summary
+from factory.runtime.identity import ActorIdentity, GovernanceRole, DecisionAuthority, human_reviewer, security_reviewer, admin_actor
 from factory.runtime.metrics import compute_runtime_metrics, render_runtime_metrics
 from factory.runtime.persistence import RuntimeStore
 from factory.runtime.recovery import recover_runtime_state, render_recovery_summary, summarize_recovery_state
@@ -65,6 +66,12 @@ def main(argv: list[str] | None = None) -> int:
     parser.add_argument("--task-id", default="manual-task", help="Task id for run-once or approval commands")
     parser.add_argument("--task-name", default="manual task", help="Task name for run-once")
     parser.add_argument("--decided-by", default="human-reviewer", help="Approver identity")
+    parser.add_argument(
+        "--actor-role",
+        choices=("HUMAN_REVIEWER", "SECURITY_REVIEWER", "ADMIN"),
+        default="HUMAN_REVIEWER",
+        help="Governance role for approval decisions",
+    )
     parser.add_argument("--reason", default="manual decision", help="Approval decision reason")
     parser.add_argument(
         "--changed-file",
@@ -193,27 +200,36 @@ def _run_once(args: argparse.Namespace, store: RuntimeStore) -> int:
 def _resolve_approval(args: argparse.Namespace, approved: bool) -> int:
     store = ApprovalStore(Path(args.approvals))
     queue = _load_approval_queue(store)
+    actor = _build_actor(args.decided_by, args.actor_role)
 
     try:
         if approved:
             request = queue.approve(
                 task_id=args.task_id,
-                decided_by=args.decided_by,
+                decided_by=actor.actor_id,
                 reason=args.reason,
             )
-            print(f"Approved {request.task_id}: {args.reason}")
+            print(f"Approved {request.task_id} by {actor.actor_id} ({actor.role.value}): {args.reason}")
         else:
             request = queue.reject(
                 task_id=args.task_id,
-                decided_by=args.decided_by,
+                decided_by=actor.actor_id,
                 reason=args.reason,
             )
-            print(f"Rejected {request.task_id}: {args.reason}")
+            print(f"Rejected {request.task_id} by {actor.actor_id} ({actor.role.value}): {args.reason}")
     except ValueError as error:
         print(str(error))
         return 1
 
     return 0
+
+
+def _build_actor(actor_id: str, role: str) -> ActorIdentity:
+    if role == GovernanceRole.SECURITY_REVIEWER.value:
+        return security_reviewer(actor_id)
+    if role == GovernanceRole.ADMIN.value:
+        return admin_actor(actor_id)
+    return human_reviewer(actor_id)
 
 
 def _load_approval_queue(store: ApprovalStore) -> ApprovalQueue:

@@ -1,4 +1,4 @@
-.PHONY: demo demo-real demo-attack demo-all demo-report
+.PHONY: demo demo-real demo-attack demo-all demo-report observe replay lineage explain
 
 demo:
 	python3 scripts/run_product_demo.py --operator-token demo-token
@@ -19,3 +19,15 @@ demo-all:
 
 demo-report:
 	python3 scripts/run_product_demo.py --operator-token "$${OPERATOR_API_TOKEN:-demo-token}" --report-md reports/governed_pr_demo.md --report-json reports/governed_pr_demo.json
+
+observe:
+	python3 scripts/replay_viewer.py observe
+
+replay:
+	python3 scripts/replay_viewer.py replay
+
+lineage:
+	python3 scripts/replay_viewer.py lineage
+
+explain:
+	python3 scripts/replay_viewer.py explain

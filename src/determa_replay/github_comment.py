@@ -24,6 +24,7 @@ from dataclasses import dataclass
 from hashlib import sha256
 from typing import Any
 
+from .confidence_engine import compute_replay_confidence
 from .consequence_engine import generate_consequences
 from .diff_parser import ParsedFileChange, parse_unified_diff
 from .markdown_renderer import render_markdown
@@ -102,7 +103,7 @@ def build_replay_from_diff(diff_text: str, stable_value: str) -> MutationReplay:
 
     replay_id = _replay_id_from_diff(stable_value=stable_value, diff_text=diff_text)
 
-    return MutationReplay(
+    replay_without_confidence = MutationReplay(
         replay_id=replay_id,
         severity=severity,
         trust_state=trust_state,
@@ -119,6 +120,12 @@ def build_replay_from_diff(diff_text: str, stable_value: str) -> MutationReplay:
         replay_integrity=integrity,
         recommended_action=recommended_action_for_trust_state(trust_state),
         metadata={"changed_file_count": len(changes)},
+    )
+
+    confidence = compute_replay_confidence(replay_without_confidence)
+
+    return MutationReplay(
+        **replay_without_confidence.to_dict() | {"confidence": confidence.to_dict()}
     )
 
 

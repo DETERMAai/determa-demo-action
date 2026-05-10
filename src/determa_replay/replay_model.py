@@ -47,6 +47,7 @@ class MutationReplay:
     replay_timeline: list[str]
     replay_integrity: ReplayIntegrity
     recommended_action: str
+    confidence: dict[str, Any] | None = None
     metadata: dict[str, Any] = field(default_factory=dict)
 
     def to_dict(self) -> dict[str, Any]:
@@ -62,6 +63,7 @@ class MutationReplay:
             "replay_timeline": list(self.replay_timeline),
             "replay_integrity": self.replay_integrity.to_dict(),
             "recommended_action": self.recommended_action,
+            "confidence": dict(self.confidence or {}),
             "metadata": dict(self.metadata),
         }
 

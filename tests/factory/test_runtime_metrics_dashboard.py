@@ -79,15 +79,34 @@ def test_dashboard_data_aggregates_sessions_and_events():
     assert dashboard.total_sessions == 2
     assert dashboard.completed_sessions == 1
     assert dashboard.blocked_sessions == 1
+    assert dashboard.pending_approvals == 0
+    assert dashboard.completed_approvals == 0
     assert dashboard.runtime_metrics.blocked_rate == 0.5
     assert len(dashboard.recent_sessions) == 2
     assert len(dashboard.recent_events) == 2
+
+
+def test_dashboard_data_aggregates_approvals():
+    dashboard = build_dashboard_data(
+        sessions=[],
+        events=[],
+        approvals=[
+            {"task_id": "A1", "status": "PENDING", "reason": "approval required severity: HIGH"},
+            {"task_id": "A2", "status": "APPROVED", "decision_reason": "safe after review"},
+            {"task_id": "A3", "status": "REJECTED", "decision_reason": "unsafe after review"},
+        ],
+    )
+
+    assert dashboard.pending_approvals == 1
+    assert dashboard.completed_approvals == 2
+    assert len(dashboard.recent_approvals) == 3
 
 
 def test_render_dashboard_summary_outputs_operational_overview():
     dashboard = build_dashboard_data(
         sessions=[{"task_id": "T1", "outcome": "PASSED", "branch_name": "factory/t1"}],
         events=[{"task_id": "T1", "outcome": "PASSED", "reason": "ok"}],
+        approvals=[{"task_id": "A1", "status": "PENDING", "reason": "approval required severity: HIGH"}],
     )
 
     rendered = render_dashboard_summary(dashboard)
@@ -95,5 +114,8 @@ def test_render_dashboard_summary_outputs_operational_overview():
     assert "# DETERMA Factory Dashboard" in rendered
     assert "Total Sessions: 1" in rendered
     assert "Completed Sessions: 1" in rendered
+    assert "Pending Approvals: 1" in rendered
+    assert "Completed Approvals: 0" in rendered
     assert "Runtime Pass Rate: 100.00%" in rendered
     assert "PASSED — T1 — factory/t1" in rendered
+    assert "PENDING — A1 — approval required severity: HIGH" in rendered

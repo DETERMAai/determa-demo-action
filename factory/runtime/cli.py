@@ -13,6 +13,7 @@ import sys
 from pathlib import Path
 
 from factory.queue.task_queue import Task, TaskQueue
+from factory.runtime.approval_queue import ApprovalQueue, ApprovalRequest
 from factory.runtime.approval_store import ApprovalStore
 from factory.runtime.coordinator import RuntimeCoordinator
 from factory.runtime.dashboard_data import build_dashboard_data, render_dashboard_summary
@@ -31,7 +32,15 @@ def main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser(description="DETERMA Factory Runtime CLI")
     parser.add_argument(
         "command",
-        choices=("timeline", "metrics", "dashboard", "approvals", "run-once"),
+        choices=(
+            "timeline",
+            "metrics",
+            "dashboard",
+            "approvals",
+            "approve",
+            "reject",
+            "run-once",
+        ),
         help="Command to run",
     )
     parser.add_argument(
@@ -49,8 +58,10 @@ def main(argv: list[str] | None = None) -> int:
         default=str(DEFAULT_APPROVALS_PATH),
         help="Path to approval history JSON",
     )
-    parser.add_argument("--task-id", default="manual-task", help="Task id for run-once")
+    parser.add_argument("--task-id", default="manual-task", help="Task id for run-once or approval commands")
     parser.add_argument("--task-name", default="manual task", help="Task name for run-once")
+    parser.add_argument("--decided-by", default="human-reviewer", help="Approver identity")
+    parser.add_argument("--reason", default="manual decision", help="Approval decision reason")
     parser.add_argument(
         "--changed-file",
         action="append",
@@ -104,6 +115,12 @@ def main(argv: list[str] | None = None) -> int:
         print(_render_approvals(approval_store), end="")
         return 0
 
+    if args.command == "approve":
+        return _resolve_approval(args, approved=True)
+
+    if args.command == "reject":
+        return _resolve_approval(args, approved=False)
+
     if args.command == "run-once":
         return _run_once(args, runtime_store)
 
@@ -138,6 +155,46 @@ def _run_once(args: argparse.Namespace, store: RuntimeStore) -> int:
             print(f"- {reason}")
 
     return 0 if result.passed else 1
+
+
+def _resolve_approval(args: argparse.Namespace, approved: bool) -> int:
+    store = ApprovalStore(Path(args.approvals))
+    queue = _load_approval_queue(store)
+
+    try:
+        if approved:
+            request = queue.approve(
+                task_id=args.task_id,
+                decided_by=args.decided_by,
+                reason=args.reason,
+            )
+            print(f"Approved {request.task_id}: {args.reason}")
+        else:
+            request = queue.reject(
+                task_id=args.task_id,
+                decided_by=args.decided_by,
+                reason=args.reason,
+            )
+            print(f"Rejected {request.task_id}: {args.reason}")
+    except ValueError as error:
+        print(str(error))
+        return 1
+
+    return 0
+
+
+def _load_approval_queue(store: ApprovalStore) -> ApprovalQueue:
+    queue = ApprovalQueue(store=store)
+    for record in store.pending():
+        queue.pending.append(
+            ApprovalRequest(
+                task_id=str(record.get("task_id", "unknown-task")),
+                session_id=record.get("session_id"),
+                reason=str(record.get("reason", "no reason recorded")),
+                replay=record.get("replay"),
+            )
+        )
+    return queue
 
 
 def _render_approvals(store: ApprovalStore) -> str:

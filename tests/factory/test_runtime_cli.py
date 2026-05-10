@@ -1,5 +1,7 @@
 from pathlib import Path
 
+from factory.runtime.approval_queue import ApprovalQueue, ApprovalRequest
+from factory.runtime.approval_store import ApprovalStore
 from factory.runtime.cli import main
 
 
@@ -28,6 +30,7 @@ def test_cli_timeline_handles_empty_history(tmp_path: Path, capsys):
 def test_cli_dashboard_handles_empty_history(tmp_path: Path, capsys):
     history = tmp_path / "runtime_events.json"
     sessions = tmp_path / "sessions.json"
+    approvals = tmp_path / "approvals.json"
 
     exit_code = main([
         "dashboard",
@@ -35,12 +38,61 @@ def test_cli_dashboard_handles_empty_history(tmp_path: Path, capsys):
         str(history),
         "--sessions",
         str(sessions),
+        "--approvals",
+        str(approvals),
     ])
 
     captured = capsys.readouterr()
     assert exit_code == 0
     assert "# DETERMA Factory Dashboard" in captured.out
     assert "Total Sessions: 0" in captured.out
+    assert "Pending Approvals: 0" in captured.out
+    assert "Completed Approvals: 0" in captured.out
+
+
+def test_cli_dashboard_renders_approval_state(tmp_path: Path, capsys):
+    history = tmp_path / "runtime_events.json"
+    sessions = tmp_path / "sessions.json"
+    approvals = tmp_path / "approvals.json"
+    store = ApprovalStore(approvals)
+    queue = ApprovalQueue(store=store)
+
+    queue.add_request(
+        ApprovalRequest(
+            task_id="PR-CLI-APPROVAL-PENDING",
+            session_id="session-pending",
+            reason="approval required severity: HIGH",
+        )
+    )
+    queue.add_request(
+        ApprovalRequest(
+            task_id="PR-CLI-APPROVAL-APPROVED",
+            session_id="session-approved",
+            reason="approval required severity: HIGH",
+        )
+    )
+    queue.approve(
+        task_id="PR-CLI-APPROVAL-APPROVED",
+        decided_by="reviewer",
+        reason="safe after review",
+    )
+
+    exit_code = main([
+        "dashboard",
+        "--history",
+        str(history),
+        "--sessions",
+        str(sessions),
+        "--approvals",
+        str(approvals),
+    ])
+
+    captured = capsys.readouterr()
+    assert exit_code == 0
+    assert "Pending Approvals: 1" in captured.out
+    assert "Completed Approvals: 1" in captured.out
+    assert "PENDING — PR-CLI-APPROVAL-PENDING — approval required severity: HIGH" in captured.out
+    assert "APPROVED — PR-CLI-APPROVAL-APPROVED — approval required severity: HIGH" in captured.out
 
 
 def test_cli_run_once_passes_safe_task(tmp_path: Path, capsys):

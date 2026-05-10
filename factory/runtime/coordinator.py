@@ -1,8 +1,8 @@
 """Factory runtime coordinator.
 
 Coordinates one bounded task from queue to worker validation, workspace integrity,
-replay generation, replay gating, optional session lifecycle, and optional runtime
-persistence.
+replay generation, replay gating, optional approval queue, optional session
+lifecycle, and optional runtime persistence.
 No arbitrary command execution. No Git mutation. No merge.
 """
 
@@ -11,6 +11,7 @@ from __future__ import annotations
 from dataclasses import dataclass, field
 
 from factory.queue.task_queue import TaskQueue
+from factory.runtime.approval_queue import ApprovalQueue, ApprovalRequest
 from factory.runtime.branch_workspace import BranchWorkspaceSnapshot
 from factory.runtime.git_workspace import WorkspaceChangeSet
 from factory.runtime.persistence import RuntimeEvent, RuntimeStore, build_event_id
@@ -19,7 +20,7 @@ from factory.runtime.session_lifecycle import SessionLifecycleManager
 from factory.runtime.state import RuntimeState, RuntimeTransition, transition
 from factory.runtime.worker_runner import WorkerRunResult, run_worker_task
 from factory.verification.replay_artifact_builder import build_factory_replay_artifact
-from factory.verification.replay_gate import ReplayGateResult, evaluate_replay_gate
+from factory.verification.replay_gate import ReplayGateResult, ReplayGateStatus, evaluate_replay_gate
 from factory.verification.scope_validator import ScopeContract
 from factory.verification.workspace_integrity import WorkspaceIntegrityResult, verify_workspace_integrity
 
@@ -44,7 +45,16 @@ class RuntimeRunResult:
             return True
         return self.replay_gate_result.passed
 
+    @property
+    def requires_approval(self) -> bool:
+        return (
+            self.replay_gate_result is not None
+            and self.replay_gate_result.status == ReplayGateStatus.REQUIRES_APPROVAL
+        )
+
     def outcome(self) -> str:
+        if self.requires_approval:
+            return "REQUIRES_APPROVAL"
         return "PASSED" if self.passed else "BLOCKED"
 
 
@@ -57,6 +67,7 @@ class RuntimeCoordinator:
     transitions: list[RuntimeTransition] = field(default_factory=list)
     store: RuntimeStore | None = None
     session_lifecycle: SessionLifecycleManager | None = None
+    approval_queue: ApprovalQueue | None = None
 
     def run_next(
         self,
@@ -119,7 +130,10 @@ class RuntimeCoordinator:
             workspace_integrity_result=workspace_integrity_result,
         )
 
-        if not runtime_result.passed:
+        if runtime_result.requires_approval:
+            self._move(RuntimeState.AWAITING_APPROVAL, f"awaiting approval {task.task_id}")
+            self._add_approval_request(task.task_id, session, runtime_result)
+        elif not runtime_result.passed:
             self.queue.mark_blocked(task)
             self._move(RuntimeState.BLOCKED, f"blocked {task.task_id}")
             session = self._block_session(session, replay_artifact)
@@ -147,6 +161,24 @@ class RuntimeCoordinator:
     def reset(self) -> None:
         """Reset runtime to IDLE after complete or blocked state."""
         self._move(RuntimeState.IDLE, "runtime reset")
+
+    def _add_approval_request(
+        self,
+        task_id: str,
+        session: FactorySession | None,
+        runtime_result: RuntimeRunResult,
+    ) -> None:
+        if self.approval_queue is None:
+            return
+        reason = self._reason_for(runtime_result)
+        self.approval_queue.add_request(
+            ApprovalRequest(
+                task_id=task_id,
+                session_id=session.session_id if session else None,
+                reason=reason,
+                replay=runtime_result.replay,
+            )
+        )
 
     def _complete_session(
         self,
@@ -192,6 +224,8 @@ class RuntimeCoordinator:
             return "; ".join(runtime_result.worker_result.notes)
         if runtime_result.workspace_integrity_result is not None and not runtime_result.workspace_integrity_result.passed:
             return "; ".join(runtime_result.workspace_integrity_result.reasons)
+        if runtime_result.replay_gate_result is not None and runtime_result.replay_gate_result.requires_approval:
+            return "; ".join(runtime_result.replay_gate_result.reasons)
         if runtime_result.replay_gate_result is not None and not runtime_result.replay_gate_result.passed:
             return "; ".join(runtime_result.replay_gate_result.reasons)
         if runtime_result.replay_gate_result is not None:

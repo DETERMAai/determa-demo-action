@@ -1,7 +1,7 @@
 """Factory runtime CLI.
 
 Small CLI for reading runtime history, timeline, metrics, dashboard, approvals,
-recovery, and running one bounded factory runtime cycle.
+recovery, resume planning, and running one bounded factory runtime cycle.
 No arbitrary shell execution.
 """
 
@@ -20,6 +20,7 @@ from factory.runtime.dashboard_data import build_dashboard_data, render_dashboar
 from factory.runtime.metrics import compute_runtime_metrics, render_runtime_metrics
 from factory.runtime.persistence import RuntimeStore
 from factory.runtime.recovery import recover_runtime_state, render_recovery_summary, summarize_recovery_state
+from factory.runtime.resume import build_resume_plan, render_resume_plan
 from factory.runtime.session_store import SessionStore
 from factory.runtime.timeline import render_runtime_timeline
 from factory.verification.scope_validator import ScopeContract
@@ -39,6 +40,7 @@ def main(argv: list[str] | None = None) -> int:
             "dashboard",
             "approvals",
             "recovery",
+            "resume-plan",
             "approve",
             "reject",
             "run-once",
@@ -124,6 +126,20 @@ def main(argv: list[str] | None = None) -> int:
             approvals_path=Path(args.approvals),
         )
         print(render_recovery_summary(summarize_recovery_state(state)), end="")
+        return 0
+
+    if args.command == "resume-plan":
+        state = recover_runtime_state(
+            history_path=Path(args.history),
+            sessions_path=Path(args.sessions),
+            approvals_path=Path(args.approvals),
+        )
+        plan = build_resume_plan(
+            sessions=state.sessions,
+            pending_approvals=state.pending_approvals,
+            blocked_events=state.blocked_events,
+        )
+        print(render_resume_plan(plan), end="")
         return 0
 
     if args.command == "approve":

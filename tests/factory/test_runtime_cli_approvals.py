@@ -81,10 +81,44 @@ def test_cli_approve_persists_decision(tmp_path: Path, capsys):
     captured = capsys.readouterr()
     records = store.load()
     assert exit_code == 0
-    assert "Approved PR-APP-CLI-APPROVE: safe after review" in captured.out
+    assert "Approved PR-APP-CLI-APPROVE by reviewer (HUMAN_REVIEWER): safe after review" in captured.out
     assert records[-1]["status"] == "APPROVED"
     assert records[-1]["decided_by"] == "reviewer"
     assert records[-1]["decision_reason"] == "safe after review"
+
+
+def test_cli_approve_supports_security_reviewer_role(tmp_path: Path, capsys):
+    approvals = tmp_path / "approvals.json"
+    store = ApprovalStore(approvals)
+    queue = ApprovalQueue(store=store)
+    queue.add_request(
+        ApprovalRequest(
+            task_id="PR-APP-CLI-SECURITY",
+            session_id="session-security",
+            reason="approval required severity: HIGH",
+        )
+    )
+
+    exit_code = main([
+        "approve",
+        "--approvals",
+        str(approvals),
+        "--task-id",
+        "PR-APP-CLI-SECURITY",
+        "--decided-by",
+        "security-reviewer",
+        "--actor-role",
+        "SECURITY_REVIEWER",
+        "--reason",
+        "security approved",
+    ])
+
+    captured = capsys.readouterr()
+    records = store.load()
+    assert exit_code == 0
+    assert "Approved PR-APP-CLI-SECURITY by security-reviewer (SECURITY_REVIEWER): security approved" in captured.out
+    assert records[-1]["status"] == "APPROVED"
+    assert records[-1]["decided_by"] == "security-reviewer"
 
 
 def test_cli_reject_persists_decision(tmp_path: Path, capsys):
@@ -107,6 +141,8 @@ def test_cli_reject_persists_decision(tmp_path: Path, capsys):
         "PR-APP-CLI-REJECT",
         "--decided-by",
         "reviewer",
+        "--actor-role",
+        "ADMIN",
         "--reason",
         "unsafe after review",
     ])
@@ -114,7 +150,7 @@ def test_cli_reject_persists_decision(tmp_path: Path, capsys):
     captured = capsys.readouterr()
     records = store.load()
     assert exit_code == 0
-    assert "Rejected PR-APP-CLI-REJECT: unsafe after review" in captured.out
+    assert "Rejected PR-APP-CLI-REJECT by reviewer (ADMIN): unsafe after review" in captured.out
     assert records[-1]["status"] == "REJECTED"
     assert records[-1]["decided_by"] == "reviewer"
     assert records[-1]["decision_reason"] == "unsafe after review"

@@ -1,7 +1,7 @@
 """Factory dashboard data layer.
 
-Aggregates runtime events, session records, and metrics into a simple
-serializable dashboard payload.
+Aggregates runtime events, session records, approval records, and metrics into
+a simple serializable dashboard payload.
 """
 
 from __future__ import annotations
@@ -17,37 +17,50 @@ class FactoryDashboardData:
     total_sessions: int
     completed_sessions: int
     blocked_sessions: int
+    pending_approvals: int
+    completed_approvals: int
     runtime_metrics: RuntimeMetrics
     recent_sessions: list[dict[str, Any]]
     recent_events: list[dict[str, Any]]
+    recent_approvals: list[dict[str, Any]]
 
     def to_dict(self) -> dict[str, Any]:
         return {
             "total_sessions": self.total_sessions,
             "completed_sessions": self.completed_sessions,
             "blocked_sessions": self.blocked_sessions,
+            "pending_approvals": self.pending_approvals,
+            "completed_approvals": self.completed_approvals,
             "runtime_metrics": self.runtime_metrics.to_dict(),
             "recent_sessions": self.recent_sessions,
             "recent_events": self.recent_events,
+            "recent_approvals": self.recent_approvals,
         }
 
 
 def build_dashboard_data(
     sessions: list[dict[str, Any]],
     events: list[dict[str, Any]],
+    approvals: list[dict[str, Any]] | None = None,
     recent_limit: int = 10,
 ) -> FactoryDashboardData:
     """Build deterministic dashboard data from persisted runtime records."""
+    approval_records = approvals or []
     completed_sessions = sum(1 for session in sessions if session.get("outcome") == "PASSED")
     blocked_sessions = sum(1 for session in sessions if session.get("outcome") == "BLOCKED")
+    pending_approvals = sum(1 for approval in approval_records if approval.get("status") == "PENDING")
+    completed_approvals = sum(1 for approval in approval_records if approval.get("status") != "PENDING")
 
     return FactoryDashboardData(
         total_sessions=len(sessions),
         completed_sessions=completed_sessions,
         blocked_sessions=blocked_sessions,
+        pending_approvals=pending_approvals,
+        completed_approvals=completed_approvals,
         runtime_metrics=compute_runtime_metrics(events),
         recent_sessions=list(sessions[-recent_limit:]),
         recent_events=list(events[-recent_limit:]),
+        recent_approvals=list(approval_records[-recent_limit:]),
     )
 
 
@@ -60,6 +73,8 @@ def render_dashboard_summary(data: FactoryDashboardData) -> str:
     lines.append(f"Total Sessions: {data.total_sessions}")
     lines.append(f"Completed Sessions: {data.completed_sessions}")
     lines.append(f"Blocked Sessions: {data.blocked_sessions}")
+    lines.append(f"Pending Approvals: {data.pending_approvals}")
+    lines.append(f"Completed Approvals: {data.completed_approvals}")
     lines.append(f"Runtime Pass Rate: {data.runtime_metrics.pass_rate:.2%}")
     lines.append(f"Runtime Blocked Rate: {data.runtime_metrics.blocked_rate:.2%}")
     lines.append("")
@@ -85,6 +100,18 @@ def render_dashboard_summary(data: FactoryDashboardData) -> str:
                 f"- {event.get('outcome', 'UNKNOWN')} — "
                 f"{event.get('task_id', 'unknown-task')} — "
                 f"{event.get('reason', 'no reason recorded')}"
+            )
+    lines.append("")
+
+    lines.append("## Recent Approvals")
+    if not data.recent_approvals:
+        lines.append("- none")
+    else:
+        for approval in data.recent_approvals:
+            lines.append(
+                f"- {approval.get('status', 'UNKNOWN')} — "
+                f"{approval.get('task_id', 'unknown-task')} — "
+                f"{approval.get('reason', 'no reason recorded')}"
             )
     lines.append("")
 

@@ -1,7 +1,7 @@
 """Factory runtime CLI.
 
 Small CLI for reading runtime history, timeline, metrics, dashboard, approvals,
-and running one bounded factory runtime cycle.
+recovery, and running one bounded factory runtime cycle.
 No arbitrary shell execution.
 """
 
@@ -19,6 +19,7 @@ from factory.runtime.coordinator import RuntimeCoordinator
 from factory.runtime.dashboard_data import build_dashboard_data, render_dashboard_summary
 from factory.runtime.metrics import compute_runtime_metrics, render_runtime_metrics
 from factory.runtime.persistence import RuntimeStore
+from factory.runtime.recovery import recover_runtime_state, render_recovery_summary, summarize_recovery_state
 from factory.runtime.session_store import SessionStore
 from factory.runtime.timeline import render_runtime_timeline
 from factory.verification.scope_validator import ScopeContract
@@ -37,6 +38,7 @@ def main(argv: list[str] | None = None) -> int:
             "metrics",
             "dashboard",
             "approvals",
+            "recovery",
             "approve",
             "reject",
             "run-once",
@@ -113,6 +115,15 @@ def main(argv: list[str] | None = None) -> int:
     if args.command == "approvals":
         approval_store = ApprovalStore(Path(args.approvals))
         print(_render_approvals(approval_store), end="")
+        return 0
+
+    if args.command == "recovery":
+        state = recover_runtime_state(
+            history_path=Path(args.history),
+            sessions_path=Path(args.sessions),
+            approvals_path=Path(args.approvals),
+        )
+        print(render_recovery_summary(summarize_recovery_state(state)), end="")
         return 0
 
     if args.command == "approve":

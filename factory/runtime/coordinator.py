@@ -1,6 +1,6 @@
 """Factory runtime coordinator.
 
-Coordinates one bounded task from queue to worker validation.
+Coordinates one bounded task from queue to worker validation and replay gating.
 No arbitrary command execution. No Git mutation. No merge.
 """
 
@@ -11,7 +11,24 @@ from dataclasses import dataclass, field
 from factory.queue.task_queue import TaskQueue
 from factory.runtime.state import RuntimeState, RuntimeTransition, transition
 from factory.runtime.worker_runner import WorkerRunResult, run_worker_task
+from factory.verification.replay_gate import ReplayGateResult, evaluate_replay_gate
 from factory.verification.scope_validator import ScopeContract
+
+
+@dataclass(frozen=True)
+class RuntimeRunResult:
+    """Result of one coordinated factory runtime cycle."""
+
+    worker_result: WorkerRunResult
+    replay_gate_result: ReplayGateResult | None
+
+    @property
+    def passed(self) -> bool:
+        if self.worker_result.status.value == "BLOCKED":
+            return False
+        if self.replay_gate_result is None:
+            return True
+        return self.replay_gate_result.passed
 
 
 @dataclass
@@ -26,8 +43,9 @@ class RuntimeCoordinator:
         self,
         changed_files: tuple[str, ...],
         contract: ScopeContract,
-    ) -> WorkerRunResult | None:
-        """Run the next queued task through bounded validation."""
+        replay: dict[str, object] | None = None,
+    ) -> RuntimeRunResult | None:
+        """Run the next queued task through scope validation and optional replay gate."""
         task = self.queue.next_task()
         if task is None:
             self._move(RuntimeState.IDLE, "no pending task")
@@ -36,7 +54,7 @@ class RuntimeCoordinator:
         self._move(RuntimeState.DISPATCHING, f"dispatching {task.task_id}")
         self._move(RuntimeState.EXECUTING, f"executing {task.task_id}")
 
-        result = run_worker_task(
+        worker_result = run_worker_task(
             task=task,
             changed_files=changed_files,
             contract=contract,
@@ -44,14 +62,23 @@ class RuntimeCoordinator:
 
         self._move(RuntimeState.VERIFYING, f"verifying {task.task_id}")
 
-        if result.status.value == "BLOCKED":
+        replay_gate_result: ReplayGateResult | None = None
+        if worker_result.status.value != "BLOCKED" and replay is not None:
+            replay_gate_result = evaluate_replay_gate(replay)
+
+        runtime_result = RuntimeRunResult(
+            worker_result=worker_result,
+            replay_gate_result=replay_gate_result,
+        )
+
+        if not runtime_result.passed:
             self.queue.mark_blocked(task)
             self._move(RuntimeState.BLOCKED, f"blocked {task.task_id}")
         else:
             self.queue.mark_complete(task)
             self._move(RuntimeState.COMPLETE, f"completed {task.task_id}")
 
-        return result
+        return runtime_result
 
     def reset(self) -> None:
         """Reset runtime to IDLE after complete or blocked state."""

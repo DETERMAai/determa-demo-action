@@ -1,7 +1,7 @@
 """Factory runtime CLI.
 
-Small CLI for reading runtime history, timeline, metrics, and running one
-bounded factory runtime cycle.
+Small CLI for reading runtime history, timeline, metrics, dashboard, and running
+one bounded factory runtime cycle.
 No arbitrary shell execution.
 """
 
@@ -14,25 +14,33 @@ from pathlib import Path
 
 from factory.queue.task_queue import Task, TaskQueue
 from factory.runtime.coordinator import RuntimeCoordinator
+from factory.runtime.dashboard_data import build_dashboard_data, render_dashboard_summary
 from factory.runtime.metrics import compute_runtime_metrics, render_runtime_metrics
 from factory.runtime.persistence import RuntimeStore
+from factory.runtime.session_store import SessionStore
 from factory.runtime.timeline import render_runtime_timeline
 from factory.verification.scope_validator import ScopeContract
 
 DEFAULT_HISTORY_PATH = Path("factory/runtime/history/runtime_events.json")
+DEFAULT_SESSIONS_PATH = Path("factory/runtime/history/sessions.json")
 
 
 def main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser(description="DETERMA Factory Runtime CLI")
     parser.add_argument(
         "command",
-        choices=("timeline", "metrics", "run-once"),
+        choices=("timeline", "metrics", "dashboard", "run-once"),
         help="Command to run",
     )
     parser.add_argument(
         "--history",
         default=str(DEFAULT_HISTORY_PATH),
         help="Path to runtime history JSON",
+    )
+    parser.add_argument(
+        "--sessions",
+        default=str(DEFAULT_SESSIONS_PATH),
+        help="Path to session history JSON",
     )
     parser.add_argument("--task-id", default="manual-task", help="Task id for run-once")
     parser.add_argument("--task-name", default="manual task", help="Task name for run-once")
@@ -61,8 +69,8 @@ def main(argv: list[str] | None = None) -> int:
     )
 
     args = parser.parse_args(argv)
-    store = RuntimeStore(Path(args.history))
-    events = store.load()
+    runtime_store = RuntimeStore(Path(args.history))
+    events = runtime_store.load()
 
     if args.command == "timeline":
         print(render_runtime_timeline(events), end="")
@@ -73,8 +81,14 @@ def main(argv: list[str] | None = None) -> int:
         print(render_runtime_metrics(metrics), end="")
         return 0
 
+    if args.command == "dashboard":
+        session_store = SessionStore(Path(args.sessions))
+        dashboard = build_dashboard_data(session_store.load(), events)
+        print(render_dashboard_summary(dashboard), end="")
+        return 0
+
     if args.command == "run-once":
-        return _run_once(args, store)
+        return _run_once(args, runtime_store)
 
     return 1
 

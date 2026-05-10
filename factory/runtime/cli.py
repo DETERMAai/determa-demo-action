@@ -90,7 +90,12 @@ def main(argv: list[str] | None = None) -> int:
 
     if args.command == "dashboard":
         session_store = SessionStore(Path(args.sessions))
-        dashboard = build_dashboard_data(session_store.load(), events)
+        approval_store = ApprovalStore(Path(args.approvals))
+        dashboard = build_dashboard_data(
+            sessions=session_store.load(),
+            events=events,
+            approvals=approval_store.load(),
+        )
         print(render_dashboard_summary(dashboard), end="")
         return 0
 

@@ -12,16 +12,16 @@ from enum import Enum
 
 class ReplayGateStatus(str, Enum):
     PASS = "PASS"
-    WARN = "WARN"
+    REQUIRES_APPROVAL = "REQUIRES_APPROVAL"
     BLOCK = "BLOCK"
 
 
 @dataclass(frozen=True)
 class ReplayGatePolicy:
     block_trust_states: tuple[str, ...] = ("BLOCKED", "UNEXPLAINABLE")
-    warn_trust_states: tuple[str, ...] = ("REQUIRES_APPROVAL",)
+    approval_trust_states: tuple[str, ...] = ("REQUIRES_APPROVAL",)
     block_severities: tuple[str, ...] = ("CRITICAL",)
-    warn_severities: tuple[str, ...] = ("HIGH",)
+    approval_severities: tuple[str, ...] = ("HIGH",)
 
 
 @dataclass(frozen=True)
@@ -31,7 +31,11 @@ class ReplayGateResult:
 
     @property
     def passed(self) -> bool:
-        return self.status in {ReplayGateStatus.PASS, ReplayGateStatus.WARN}
+        return self.status == ReplayGateStatus.PASS
+
+    @property
+    def requires_approval(self) -> bool:
+        return self.status == ReplayGateStatus.REQUIRES_APPROVAL
 
 
 def evaluate_replay_gate(
@@ -54,13 +58,13 @@ def evaluate_replay_gate(
     if reasons:
         return ReplayGateResult(status=ReplayGateStatus.BLOCK, reasons=tuple(reasons))
 
-    if trust_state in gate_policy.warn_trust_states:
-        reasons.append(f"warning trust state: {trust_state}")
+    if trust_state in gate_policy.approval_trust_states:
+        reasons.append(f"approval required trust state: {trust_state}")
 
-    if severity in gate_policy.warn_severities:
-        reasons.append(f"warning severity: {severity}")
+    if severity in gate_policy.approval_severities:
+        reasons.append(f"approval required severity: {severity}")
 
     if reasons:
-        return ReplayGateResult(status=ReplayGateStatus.WARN, reasons=tuple(reasons))
+        return ReplayGateResult(status=ReplayGateStatus.REQUIRES_APPROVAL, reasons=tuple(reasons))
 
     return ReplayGateResult(status=ReplayGateStatus.PASS, reasons=("replay gate passed",))

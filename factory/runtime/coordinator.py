@@ -1,7 +1,8 @@
 """Factory runtime coordinator.
 
-Coordinates one bounded task from queue to worker validation, replay generation,
-replay gating, optional session lifecycle, and optional runtime persistence.
+Coordinates one bounded task from queue to worker validation, workspace integrity,
+replay generation, replay gating, optional session lifecycle, and optional runtime
+persistence.
 No arbitrary command execution. No Git mutation. No merge.
 """
 
@@ -10,6 +11,7 @@ from __future__ import annotations
 from dataclasses import dataclass, field
 
 from factory.queue.task_queue import TaskQueue
+from factory.runtime.branch_workspace import BranchWorkspaceSnapshot
 from factory.runtime.git_workspace import WorkspaceChangeSet
 from factory.runtime.persistence import RuntimeEvent, RuntimeStore, build_event_id
 from factory.runtime.session import FactorySession
@@ -19,6 +21,7 @@ from factory.runtime.worker_runner import WorkerRunResult, run_worker_task
 from factory.verification.replay_artifact_builder import build_factory_replay_artifact
 from factory.verification.replay_gate import ReplayGateResult, evaluate_replay_gate
 from factory.verification.scope_validator import ScopeContract
+from factory.verification.workspace_integrity import WorkspaceIntegrityResult, verify_workspace_integrity
 
 
 @dataclass(frozen=True)
@@ -29,10 +32,13 @@ class RuntimeRunResult:
     replay: dict[str, object] | None
     replay_gate_result: ReplayGateResult | None
     session: FactorySession | None = None
+    workspace_integrity_result: WorkspaceIntegrityResult | None = None
 
     @property
     def passed(self) -> bool:
         if self.worker_result.status.value == "BLOCKED":
+            return False
+        if self.workspace_integrity_result is not None and not self.workspace_integrity_result.passed:
             return False
         if self.replay_gate_result is None:
             return True
@@ -57,8 +63,10 @@ class RuntimeCoordinator:
         changed_files: tuple[str, ...],
         contract: ScopeContract,
         replay: dict[str, object] | None = None,
+        expected_workspace: BranchWorkspaceSnapshot | None = None,
+        current_workspace: BranchWorkspaceSnapshot | None = None,
     ) -> RuntimeRunResult | None:
-        """Run the next queued task through scope validation and replay gate.
+        """Run the next queued task through scope, workspace, and replay gates.
 
         If replay is not supplied, the coordinator builds one automatically from
         changed files.
@@ -87,10 +95,18 @@ class RuntimeCoordinator:
 
         self._move(RuntimeState.VERIFYING, f"verifying {task.task_id}")
 
+        workspace_integrity_result: WorkspaceIntegrityResult | None = None
+        if expected_workspace is not None and current_workspace is not None:
+            workspace_integrity_result = verify_workspace_integrity(
+                expected=expected_workspace,
+                current=current_workspace,
+            )
+
         replay_artifact: dict[str, object] | None = replay
         replay_gate_result: ReplayGateResult | None = None
 
-        if worker_result.status.value != "BLOCKED":
+        workspace_ok = workspace_integrity_result is None or workspace_integrity_result.passed
+        if worker_result.status.value != "BLOCKED" and workspace_ok:
             if replay_artifact is None:
                 replay_artifact = build_factory_replay_artifact(changed_files).to_dict()
             replay_gate_result = evaluate_replay_gate(replay_artifact)
@@ -100,6 +116,7 @@ class RuntimeCoordinator:
             replay=replay_artifact,
             replay_gate_result=replay_gate_result,
             session=session,
+            workspace_integrity_result=workspace_integrity_result,
         )
 
         if not runtime_result.passed:
@@ -116,6 +133,7 @@ class RuntimeCoordinator:
             replay=replay_artifact,
             replay_gate_result=replay_gate_result,
             session=session,
+            workspace_integrity_result=workspace_integrity_result,
         )
 
         self._persist_result(
@@ -172,6 +190,8 @@ class RuntimeCoordinator:
     def _reason_for(self, runtime_result: RuntimeRunResult) -> str:
         if runtime_result.worker_result.status.value == "BLOCKED":
             return "; ".join(runtime_result.worker_result.notes)
+        if runtime_result.workspace_integrity_result is not None and not runtime_result.workspace_integrity_result.passed:
+            return "; ".join(runtime_result.workspace_integrity_result.reasons)
         if runtime_result.replay_gate_result is not None and not runtime_result.replay_gate_result.passed:
             return "; ".join(runtime_result.replay_gate_result.reasons)
         if runtime_result.replay_gate_result is not None:

@@ -130,8 +130,14 @@ def main(argv: list[str] | None = None) -> int:
 def _run_once(args: argparse.Namespace, store: RuntimeStore) -> int:
     queue = TaskQueue()
     queue.add_task(Task(task_id=args.task_id, name=args.task_name))
+    approval_store = ApprovalStore(Path(args.approvals))
+    approval_queue = ApprovalQueue(store=approval_store)
 
-    coordinator = RuntimeCoordinator(queue=queue, store=store)
+    coordinator = RuntimeCoordinator(
+        queue=queue,
+        store=store,
+        approval_queue=approval_queue,
+    )
     contract = ScopeContract(
         allowed_files=tuple(args.allowed_file),
         forbidden_files=tuple(args.forbidden_file),
@@ -154,7 +160,7 @@ def _run_once(args: argparse.Namespace, store: RuntimeStore) -> int:
         for reason in result.replay_gate_result.reasons:
             print(f"- {reason}")
 
-    return 0 if result.passed else 1
+    return 0 if result.passed or result.requires_approval else 1
 
 
 def _resolve_approval(args: argparse.Namespace, approved: bool) -> int:

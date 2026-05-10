@@ -52,3 +52,85 @@ def test_cli_approvals_renders_pending_and_completed(tmp_path: Path, capsys):
     assert "Completed: 1" in captured.out
     assert "PR-APP-CLI-PENDING" in captured.out
     assert "APPROVED — PR-APP-CLI-APPROVED — approved after review" in captured.out
+
+
+def test_cli_approve_persists_decision(tmp_path: Path, capsys):
+    approvals = tmp_path / "approvals.json"
+    store = ApprovalStore(approvals)
+    queue = ApprovalQueue(store=store)
+    queue.add_request(
+        ApprovalRequest(
+            task_id="PR-APP-CLI-APPROVE",
+            session_id="session-approve",
+            reason="approval required severity: HIGH",
+        )
+    )
+
+    exit_code = main([
+        "approve",
+        "--approvals",
+        str(approvals),
+        "--task-id",
+        "PR-APP-CLI-APPROVE",
+        "--decided-by",
+        "reviewer",
+        "--reason",
+        "safe after review",
+    ])
+
+    captured = capsys.readouterr()
+    records = store.load()
+    assert exit_code == 0
+    assert "Approved PR-APP-CLI-APPROVE: safe after review" in captured.out
+    assert records[-1]["status"] == "APPROVED"
+    assert records[-1]["decided_by"] == "reviewer"
+    assert records[-1]["decision_reason"] == "safe after review"
+
+
+def test_cli_reject_persists_decision(tmp_path: Path, capsys):
+    approvals = tmp_path / "approvals.json"
+    store = ApprovalStore(approvals)
+    queue = ApprovalQueue(store=store)
+    queue.add_request(
+        ApprovalRequest(
+            task_id="PR-APP-CLI-REJECT",
+            session_id="session-reject",
+            reason="approval required severity: HIGH",
+        )
+    )
+
+    exit_code = main([
+        "reject",
+        "--approvals",
+        str(approvals),
+        "--task-id",
+        "PR-APP-CLI-REJECT",
+        "--decided-by",
+        "reviewer",
+        "--reason",
+        "unsafe after review",
+    ])
+
+    captured = capsys.readouterr()
+    records = store.load()
+    assert exit_code == 0
+    assert "Rejected PR-APP-CLI-REJECT: unsafe after review" in captured.out
+    assert records[-1]["status"] == "REJECTED"
+    assert records[-1]["decided_by"] == "reviewer"
+    assert records[-1]["decision_reason"] == "unsafe after review"
+
+
+def test_cli_approve_missing_task_returns_error(tmp_path: Path, capsys):
+    approvals = tmp_path / "approvals.json"
+
+    exit_code = main([
+        "approve",
+        "--approvals",
+        str(approvals),
+        "--task-id",
+        "MISSING-TASK",
+    ])
+
+    captured = capsys.readouterr()
+    assert exit_code == 1
+    assert "approval request not found: MISSING-TASK" in captured.out

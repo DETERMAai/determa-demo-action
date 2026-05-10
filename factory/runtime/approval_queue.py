@@ -7,13 +7,18 @@ from __future__ import annotations
 
 from dataclasses import dataclass, field
 from enum import Enum
-from typing import List
+from typing import List, Protocol
 
 
 class ApprovalStatus(str, Enum):
     PENDING = "PENDING"
     APPROVED = "APPROVED"
     REJECTED = "REJECTED"
+
+
+class ApprovalPersistence(Protocol):
+    def append(self, request: "ApprovalRequest") -> None:
+        """Persist an approval request."""
 
 
 @dataclass
@@ -42,9 +47,11 @@ class ApprovalRequest:
 class ApprovalQueue:
     pending: List[ApprovalRequest] = field(default_factory=list)
     completed: List[ApprovalRequest] = field(default_factory=list)
+    store: ApprovalPersistence | None = None
 
     def add_request(self, request: ApprovalRequest) -> None:
         self.pending.append(request)
+        self._persist(request)
 
     def list_pending(self) -> list[ApprovalRequest]:
         return list(self.pending)
@@ -55,6 +62,7 @@ class ApprovalQueue:
         request.decided_by = decided_by
         request.decision_reason = reason
         self.completed.append(request)
+        self._persist(request)
         return request
 
     def reject(self, task_id: str, decided_by: str, reason: str) -> ApprovalRequest:
@@ -63,6 +71,7 @@ class ApprovalQueue:
         request.decided_by = decided_by
         request.decision_reason = reason
         self.completed.append(request)
+        self._persist(request)
         return request
 
     def _pop_pending(self, task_id: str) -> ApprovalRequest:
@@ -70,3 +79,7 @@ class ApprovalQueue:
             if request.task_id == task_id:
                 return self.pending.pop(index)
         raise ValueError(f"approval request not found: {task_id}")
+
+    def _persist(self, request: ApprovalRequest) -> None:
+        if self.store is not None:
+            self.store.append(request)

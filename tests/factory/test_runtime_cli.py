@@ -251,7 +251,7 @@ def test_cli_run_once_blocks_scope_violation(tmp_path: Path, capsys):
     assert history.exists()
 
 
-def test_cli_run_once_persists_required_approval(tmp_path: Path, capsys):
+def test_cli_run_once_persists_security_review_approval(tmp_path: Path, capsys):
     history = tmp_path / "runtime_events.json"
     approvals = tmp_path / "approvals.json"
 
@@ -284,3 +284,37 @@ def test_cli_run_once_persists_required_approval(tmp_path: Path, capsys):
     assert records[0]["task_id"] == "PR-CLI-T3"
     assert records[0]["status"] == "PENDING"
     assert records[0]["reason"] == "approval required severity: HIGH"
+
+
+def test_cli_run_once_persists_medium_risk_review_approval(tmp_path: Path, capsys):
+    history = tmp_path / "runtime_events.json"
+    approvals = tmp_path / "approvals.json"
+
+    exit_code = main([
+        "run-once",
+        "--history",
+        str(history),
+        "--approvals",
+        str(approvals),
+        "--task-id",
+        "PR-CLI-T4",
+        "--task-name",
+        "medium risk cli task",
+        "--changed-file",
+        "src/auth.py",
+        "--allowed-file",
+        "src/*",
+        "--replay-json",
+        '{"severity":"LOW","trust_state":"TRUSTED"}',
+    ])
+
+    captured = capsys.readouterr()
+    records = ApprovalStore(approvals).load()
+
+    assert exit_code == 0
+    assert "Task PR-CLI-T4: REQUIRES_APPROVAL" in captured.out
+    assert approvals.exists()
+    assert len(records) == 1
+    assert records[0]["task_id"] == "PR-CLI-T4"
+    assert records[0]["status"] == "PENDING"
+    assert records[0]["reason"] == "medium risk execution requires human review"

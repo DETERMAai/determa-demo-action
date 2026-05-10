@@ -1,154 +1,237 @@
-# DETERMA — Governed AI Execution
+# DETERMA Replay
 
-**AI can write code.
-But who decides if it is allowed to execute?**
-
-## 🎬 40-second demo — how DETERMA blocks unsafe AI execution
-[![Watch the demo](docs/assets/allow.jpg)](https://youtu.be/ek8jdOmWAvw?si=EAnV1VU1bMnOSZZv)
-
-DETERMA is an execution authority layer that prevents AI-generated changes from running unless all required conditions are verified.
+Observe, replay, and explain AI-generated code mutations.
 
 ---
 
-## 🚨 The Problem
+## The Problem
 
-AI coding agents can:
+AI coding agents can change:
 
-* open pull requests automatically
-* repeat actions (replay)
-* mutate code after approval
-* operate outside intended scope
+- deployment behavior,
+- CI/CD pipelines,
+- permissions,
+- infrastructure,
+- secrets,
+- production rollout logic.
 
-There is no strict enforcement layer between **AI intent** and **actual execution**.
+Humans usually see the code diff.
+
+But they do not immediately see the operational consequences.
 
 ---
 
-## ✅ What this demo proves
+## The Solution
 
-* AI changes are **not executed automatically**
-* Every action requires a strict authority chain:
+DETERMA generates a deterministic Mutation Replay for pull requests.
+
+Before merge, DETERMA explains:
+
+- what changed,
+- why it matters,
+- which operational surfaces were touched,
+- whether the mutation should be trusted,
+- what the reviewer should do next.
+
+---
+
+## Example Replay
 
 ```text
-approval → capability → state witness → execution release
-```
+# DETERMA Mutation Replay
 
-* Replay attacks are blocked (idempotent execution)
-* Adversarial attempts fail closed
+Severity:
+CRITICAL
 
----
+Trust State:
+REQUIRES_APPROVAL
 
-## ⚡ Quick Demo (30 seconds)
+Mutation Surface:
+CI/CD / Deployment Infrastructure
 
-```bash
-make demo
-make demo-attack
-```
+Potential Consequences:
+- Production rollout behavior may be altered.
+- Release safety controls may be reduced or bypassed.
 
-### Expected result
-
-* Draft PR is created (mock or real)
-* Second run is blocked (no duplicate execution)
-* Attack scenarios → **ALL BLOCKED (FAIL-CLOSED)**
-
----
-
-## ⚙️ GitHub Action
-
-Run directly in your repo:
-
-```yaml
-steps:
-  - uses: actions/checkout@v4
-  - uses: DETERMAai/determa-demo-action@v0.1.0
-    with:
-      operator-token: demo-token
-```
-
-This executes a governed AI change flow inside GitHub.
-
----
-
-## 🧪 Demo Modes
-
-### Default (Mock Mode)
-
-* Zero setup
-* No GitHub writes
-* Safe for evaluation
-
-### Real GitHub Sandbox (Optional)
-
-Creates a **Draft PR** in a controlled repo.
-
-```bash
-export DETERMA_DEMO_REAL_GITHUB=1
-export GITHUB_TOKEN=your_token
-export DETERMA_DEMO_REPO=org/demo-repo
-export DETERMA_DEMO_BASE_BRANCH=main
-```
-
-Then run:
-
-```bash
-make demo-real
+Recommended Action:
+Human approval required before merge.
 ```
 
 ---
 
-## 🔐 Safety
+## Why This Exists
 
-* No auto-merge
-* No writes to protected branches
-* Fail-closed by default
-* Real mode requires explicit opt-in
+The problem is not only that AI writes code.
 
----
+The real problem is that AI-generated mutations can change operational behavior faster than humans can reconstruct intent.
 
-## 🧯 Troubleshooting
-
-**Execution blocked**
-→ Missing approval / capability / witness / release
-
-**GitHub 422 error**
-→ Invalid branch or base/head mismatch
-
-**No PR created**
-→ Running in mock mode (expected behavior)
+DETERMA exists to reconstruct operational meaning before trust.
 
 ---
 
-## 📌 What this is (and isn’t)
+## Current MVP Scope
 
-This is:
+DETERMA Replay v0.1 currently supports:
 
-* A **governed execution layer demo**
-* A proof of deterministic control over AI actions
+- GitHub pull request diff parsing
+- mutation surface classification
+- severity classification
+- consequence generation
+- trust-state generation
+- replay integrity markers
+- GitHub PR replay comments
 
-This is NOT:
+Current surfaces:
 
-* A production system
-* A general AI agent framework
-* A CI/CD replacement
-
----
-
-## 📊 Status
-
-Demo / design-partner stage
-Not production-ready
-
----
-
-## 🤝 Contact
-
-Looking for engineering teams using AI coding agents who want execution control.
-
-* Email: determa.ai@gmail.com
-* GitHub: open an issue with label `design-partner`
+- CI/CD
+- Deployment Infrastructure
+- Runtime Infrastructure
+- Infrastructure as Code
+- Secret Access
+- Authentication / IAM
+- Database Migration
+- Business Logic
+- Tests
+- Documentation
 
 ---
 
-## 🧠 Core Idea
+## Demo Scenarios
 
-AI can propose.
-**DETERMA decides what is allowed to run.**
+Example replay scenarios:
+
+```text
+examples/demo_prs/
+```
+
+Included demos:
+
+- deployment rollout changed from 10% to 100%
+- CI tests removed
+- auth middleware bypass
+- business logic mutation
+- documentation-only change
+
+Expected replay outputs:
+
+```text
+examples/expected_replays/
+```
+
+---
+
+## Quick Start
+
+### 1. Enable GitHub Actions
+
+The repository includes:
+
+```text
+.github/workflows/determa-replay.yml
+```
+
+### 2. Open a Pull Request
+
+Create a PR with a deployment, auth, CI/CD, or infrastructure mutation.
+
+### 3. Wait for DETERMA Replay
+
+DETERMA will:
+
+- fetch the PR diff,
+- classify mutation surfaces,
+- compute severity,
+- generate consequences,
+- determine trust state,
+- post or update a replay comment.
+
+---
+
+## Architecture
+
+Canonical replay pipeline:
+
+```text
+Pull Request Event
+→ Diff Fetch
+→ Diff Parser
+→ Mutation Surface Classification
+→ Severity Engine
+→ Consequence Engine
+→ Trust Engine
+→ Replay Integrity
+→ Markdown Renderer
+→ GitHub Replay Comment
+```
+
+---
+
+## Design Constraints
+
+DETERMA Replay v0.1 intentionally:
+
+- does not auto-merge,
+- does not mutate repositories,
+- does not execute arbitrary code,
+- does not bypass human approval,
+- fails closed on ambiguity.
+
+---
+
+## Category
+
+```text
+AI Mutation Replay
+```
+
+Core behavioral reflex:
+
+```text
+Before trusting AI-generated code,
+check the DETERMA Replay.
+```
+
+---
+
+## Roadmap
+
+Canonical sequence:
+
+```text
+Replay
+→ Replay Integrity
+→ Approval Gate
+→ State Witness
+→ Execution Release
+→ Governed Code Mutation
+→ Global Action Ledger
+```
+
+---
+
+## Repository Structure
+
+```text
+src/determa_replay/
+examples/demo_prs/
+examples/expected_replays/
+docs/
+.github/workflows/
+```
+
+---
+
+## Status
+
+Prototype / MVP stage
+
+Replay-first GitHub-native wedge.
+
+---
+
+## Contact
+
+Looking for engineering teams using AI coding agents who want replayable trust before merge.
+
+- GitHub: open an issue
+- Email: determa.ai@gmail.com

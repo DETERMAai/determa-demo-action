@@ -15,6 +15,7 @@ class RuntimeState(str, Enum):
     DISPATCHING = "DISPATCHING"
     EXECUTING = "EXECUTING"
     VERIFYING = "VERIFYING"
+    AWAITING_APPROVAL = "AWAITING_APPROVAL"
     BLOCKED = "BLOCKED"
     COMPLETE = "COMPLETE"
 
@@ -23,7 +24,12 @@ _ALLOWED_TRANSITIONS: dict[RuntimeState, set[RuntimeState]] = {
     RuntimeState.IDLE: {RuntimeState.DISPATCHING, RuntimeState.BLOCKED},
     RuntimeState.DISPATCHING: {RuntimeState.EXECUTING, RuntimeState.BLOCKED, RuntimeState.IDLE},
     RuntimeState.EXECUTING: {RuntimeState.VERIFYING, RuntimeState.BLOCKED},
-    RuntimeState.VERIFYING: {RuntimeState.COMPLETE, RuntimeState.BLOCKED},
+    RuntimeState.VERIFYING: {
+        RuntimeState.COMPLETE,
+        RuntimeState.AWAITING_APPROVAL,
+        RuntimeState.BLOCKED,
+    },
+    RuntimeState.AWAITING_APPROVAL: {RuntimeState.COMPLETE, RuntimeState.BLOCKED, RuntimeState.IDLE},
     RuntimeState.BLOCKED: {RuntimeState.IDLE},
     RuntimeState.COMPLETE: {RuntimeState.IDLE},
 }

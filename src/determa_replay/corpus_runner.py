@@ -10,6 +10,7 @@ import json
 import sys
 from pathlib import Path
 
+from .drift_analyzer import analyze_drift, render_drift_summary
 from .github_comment import build_replay_from_diff
 from .replay_evaluator import (
     ReplayEvaluation,
@@ -71,6 +72,9 @@ def render_report(evaluations: list[ReplayEvaluation]) -> str:
     lines.append(f"Total Scenarios: {len(evaluations)}")
     lines.append(f"Passed: {passed}")
     lines.append(f"Failed: {failed}")
+    lines.append("")
+
+    lines.append(render_drift_summary(analyze_drift(evaluations)).strip())
     lines.append("")
 
     for evaluation in evaluations:

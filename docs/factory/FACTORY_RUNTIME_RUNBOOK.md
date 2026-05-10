@@ -2,7 +2,29 @@
 
 Purpose:
 
-Operate the Factory Runtime safely, inspect governance state, recover after restarts, and resolve approval decisions.
+Operate the Factory Runtime safely, inspect governance state, recover after restarts, resolve approval decisions, and understand adaptive governance outcomes.
+
+---
+
+## Runtime Principle
+
+The Factory Runtime is not unrestricted autonomous execution.
+
+It is a governed execution control layer.
+
+Current execution path:
+
+```text
+Task
+→ Scope Validation
+→ Replay Gate
+→ Risk Assessment
+→ Governance Decision
+→ Approval Queue / Complete / Block
+→ Persistence
+→ Recovery
+→ Resume Planning
+```
 
 ---
 
@@ -12,7 +34,7 @@ Operate the Factory Runtime safely, inspect governance state, recover after rest
 PYTHONPATH=. pytest tests/factory -q
 ```
 
-Use this before changing runtime, replay gate, approval, recovery, or resume logic.
+Use this before changing runtime, replay gate, risk, policy, approval, recovery, resume, identity, or governance decision logic.
 
 ---
 
@@ -35,16 +57,57 @@ Expected result:
 PASSED
 ```
 
+Why:
+
+```text
+LOW replay severity
++ TRUSTED state
++ low-risk docs surface
+→ ALLOW_AUTONOMOUS
+```
+
 ---
 
-## Trigger Approval Flow
+## Trigger Medium-Risk Review Flow
 
-Sensitive execution:
+Auth-related change with LOW replay severity:
 
 ```bash
 python -m factory.runtime.cli run-once \
-  --task-id PR-APPROVAL \
-  --task-name "auth change" \
+  --task-id PR-MEDIUM-RISK \
+  --task-name "auth docs or code change" \
+  --changed-file src/auth.py \
+  --allowed-file "src/*" \
+  --replay-json '{"severity":"LOW","trust_state":"TRUSTED"}'
+```
+
+Expected result:
+
+```text
+REQUIRES_APPROVAL
+```
+
+Why:
+
+```text
+LOW replay severity
++ auth surface
+→ MEDIUM risk
+→ REQUIRE_REVIEW
+```
+
+This creates a persisted approval request.
+
+---
+
+## Trigger Security Review Flow
+
+High-risk execution:
+
+```bash
+python -m factory.runtime.cli run-once \
+  --task-id PR-SECURITY-REVIEW \
+  --task-name "sensitive auth change" \
   --changed-file src/auth.py \
   --allowed-file "src/*" \
   --replay-json '{"severity":"HIGH","trust_state":"TRUSTED"}'
@@ -56,7 +119,47 @@ Expected result:
 REQUIRES_APPROVAL
 ```
 
+Why:
+
+```text
+HIGH replay severity
++ auth surface
+→ HIGH risk
+→ REQUIRE_SECURITY_REVIEW
+```
+
 This creates a persisted approval request.
+
+---
+
+## Trigger Blocked Flow
+
+Critical governance risk:
+
+```bash
+python -m factory.runtime.cli run-once \
+  --task-id PR-CRITICAL \
+  --task-name "critical secret change" \
+  --changed-file secrets/prod_key.txt \
+  --allowed-file "secrets/*" \
+  --replay-json '{"severity":"HIGH","trust_state":"REQUIRES_APPROVAL"}'
+```
+
+Expected result:
+
+```text
+BLOCKED
+```
+
+Why:
+
+```text
+secret surface
++ HIGH severity
++ non-TRUSTED state
+→ CRITICAL risk
+→ DENY
+```
 
 ---
 
@@ -76,12 +179,31 @@ Shows:
 
 ## Approve Execution
 
+Human reviewer approval:
+
 ```bash
 python -m factory.runtime.cli approve \
-  --task-id PR-APPROVAL \
+  --task-id PR-MEDIUM-RISK \
   --decided-by reviewer \
+  --actor-role HUMAN_REVIEWER \
   --reason "safe after review"
 ```
+
+Security reviewer approval:
+
+```bash
+python -m factory.runtime.cli approve \
+  --task-id PR-SECURITY-REVIEW \
+  --decided-by security-reviewer \
+  --actor-role SECURITY_REVIEWER \
+  --reason "security approved"
+```
+
+Supported actor roles:
+
+- HUMAN_REVIEWER
+- SECURITY_REVIEWER
+- ADMIN
 
 ---
 
@@ -89,8 +211,9 @@ python -m factory.runtime.cli approve \
 
 ```bash
 python -m factory.runtime.cli reject \
-  --task-id PR-APPROVAL \
+  --task-id PR-SECURITY-REVIEW \
   --decided-by reviewer \
+  --actor-role ADMIN \
   --reason "unsafe after review"
 ```
 
@@ -169,6 +292,57 @@ Classifies sessions as:
 
 ---
 
+## Risk Levels
+
+The runtime currently classifies governance risk as:
+
+- LOW
+- MEDIUM
+- HIGH
+- CRITICAL
+
+Risk signals include:
+
+- replay severity
+- trust state
+- auth-related files
+- deployment-related files
+- secret-related files
+- policy/governance files
+- pending approvals
+- blocked events
+- orphaned sessions
+- override attempts
+- policy violations
+
+---
+
+## Governance Actions
+
+Risk-aware governance decisions currently map to:
+
+```text
+LOW
+→ ALLOW_AUTONOMOUS
+```
+
+```text
+MEDIUM
+→ REQUIRE_REVIEW
+```
+
+```text
+HIGH
+→ REQUIRE_SECURITY_REVIEW
+```
+
+```text
+CRITICAL
+→ DENY
+```
+
+---
+
 ## Operating Rule
 
 Do not resume execution automatically from recovered state.
@@ -193,6 +367,8 @@ It coordinates:
 Task
 → Scope Validation
 → Replay Gate
+→ Risk Assessment
+→ Governance Decision
 → Approval Queue
 → Persistence
 → Recovery

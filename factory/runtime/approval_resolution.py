@@ -1,7 +1,8 @@
 """Factory approval resolution engine.
 
 Resolves approval decisions for executions waiting in AWAITING_APPROVAL.
-Connects approval decisions to runtime transitions and session lifecycle updates.
+Connects authority-bound approval decisions to runtime transitions and session
+lifecycle updates.
 """
 
 from __future__ import annotations
@@ -11,6 +12,7 @@ from typing import Any
 
 from factory.runtime.approval import ApprovalRecord, approve_execution, reject_execution
 from factory.runtime.approval_queue import ApprovalQueue, ApprovalRequest, ApprovalStatus
+from factory.runtime.identity import ActorIdentity, human_reviewer
 from factory.runtime.session import FactorySession
 from factory.runtime.session_lifecycle import SessionLifecycleManager
 from factory.runtime.state import RuntimeState, RuntimeTransition
@@ -46,18 +48,28 @@ def resolve_approval(
     decided_by: str,
     reason: str,
     session: FactorySession | None = None,
+    actor: ActorIdentity | None = None,
 ) -> ApprovalResolutionResult:
     """Resolve a pending approval request.
 
     If approved, the runtime transition is AWAITING_APPROVAL -> COMPLETE.
     If rejected, the runtime transition is AWAITING_APPROVAL -> BLOCKED.
+
+    The optional actor enables authority-bound decisions. If omitted, the legacy
+    decided_by string is converted to a HUMAN_REVIEWER actor for compatibility.
     """
+    decision_actor = actor or human_reviewer(decided_by)
+
     if approved:
-        request = queue.approve(task_id=task_id, decided_by=decided_by, reason=reason)
+        request = queue.approve(
+            task_id=task_id,
+            decided_by=decision_actor.actor_id,
+            reason=reason,
+        )
         transition, record = approve_execution(
             task_id=task_id,
             current_state=RuntimeState.AWAITING_APPROVAL,
-            decided_by=decided_by,
+            actor=decision_actor,
             reason=reason,
         )
         updated_session = (
@@ -66,11 +78,15 @@ def resolve_approval(
             else session
         )
     else:
-        request = queue.reject(task_id=task_id, decided_by=decided_by, reason=reason)
+        request = queue.reject(
+            task_id=task_id,
+            decided_by=decision_actor.actor_id,
+            reason=reason,
+        )
         transition, record = reject_execution(
             task_id=task_id,
             current_state=RuntimeState.AWAITING_APPROVAL,
-            decided_by=decided_by,
+            actor=decision_actor,
             reason=reason,
         )
         updated_session = (

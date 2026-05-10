@@ -1,6 +1,7 @@
 """Factory runtime coordinator.
 
-Coordinates one bounded task from queue to worker validation and replay gating.
+Coordinates one bounded task from queue to worker validation, replay gating,
+and optional runtime persistence.
 No arbitrary command execution. No Git mutation. No merge.
 """
 
@@ -9,6 +10,7 @@ from __future__ import annotations
 from dataclasses import dataclass, field
 
 from factory.queue.task_queue import TaskQueue
+from factory.runtime.persistence import RuntimeEvent, RuntimeStore, build_event_id
 from factory.runtime.state import RuntimeState, RuntimeTransition, transition
 from factory.runtime.worker_runner import WorkerRunResult, run_worker_task
 from factory.verification.replay_gate import ReplayGateResult, evaluate_replay_gate
@@ -30,6 +32,9 @@ class RuntimeRunResult:
             return True
         return self.replay_gate_result.passed
 
+    def outcome(self) -> str:
+        return "PASSED" if self.passed else "BLOCKED"
+
 
 @dataclass
 class RuntimeCoordinator:
@@ -38,6 +43,7 @@ class RuntimeCoordinator:
     queue: TaskQueue
     state: RuntimeState = RuntimeState.IDLE
     transitions: list[RuntimeTransition] = field(default_factory=list)
+    store: RuntimeStore | None = None
 
     def run_next(
         self,
@@ -78,11 +84,49 @@ class RuntimeCoordinator:
             self.queue.mark_complete(task)
             self._move(RuntimeState.COMPLETE, f"completed {task.task_id}")
 
+        self._persist_result(
+            task_id=task.task_id,
+            runtime_result=runtime_result,
+            changed_files=changed_files,
+            replay=replay,
+        )
+
         return runtime_result
 
     def reset(self) -> None:
         """Reset runtime to IDLE after complete or blocked state."""
         self._move(RuntimeState.IDLE, "runtime reset")
+
+    def _persist_result(
+        self,
+        task_id: str,
+        runtime_result: RuntimeRunResult,
+        changed_files: tuple[str, ...],
+        replay: dict[str, object] | None,
+    ) -> None:
+        if self.store is None:
+            return
+
+        existing_events = self.store.load()
+        event = RuntimeEvent(
+            event_id=build_event_id(task_id, self.state.value, len(existing_events)),
+            task_id=task_id,
+            state=self.state.value,
+            outcome=runtime_result.outcome(),
+            reason=self._reason_for(runtime_result),
+            replay=replay,
+            changed_files=changed_files,
+        )
+        self.store.append(event)
+
+    def _reason_for(self, runtime_result: RuntimeRunResult) -> str:
+        if runtime_result.worker_result.status.value == "BLOCKED":
+            return "; ".join(runtime_result.worker_result.notes)
+        if runtime_result.replay_gate_result is not None and not runtime_result.replay_gate_result.passed:
+            return "; ".join(runtime_result.replay_gate_result.reasons)
+        if runtime_result.replay_gate_result is not None:
+            return "; ".join(runtime_result.replay_gate_result.reasons)
+        return "runtime completed without replay gate"
 
     def _move(self, next_state: RuntimeState, reason: str) -> None:
         if self.state == next_state:

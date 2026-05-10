@@ -1,7 +1,7 @@
 """Factory runtime coordinator.
 
 Coordinates one bounded task from queue to worker validation, replay generation,
-replay gating, and optional runtime persistence.
+replay gating, optional session lifecycle, and optional runtime persistence.
 No arbitrary command execution. No Git mutation. No merge.
 """
 
@@ -10,7 +10,10 @@ from __future__ import annotations
 from dataclasses import dataclass, field
 
 from factory.queue.task_queue import TaskQueue
+from factory.runtime.git_workspace import WorkspaceChangeSet
 from factory.runtime.persistence import RuntimeEvent, RuntimeStore, build_event_id
+from factory.runtime.session import FactorySession
+from factory.runtime.session_lifecycle import SessionLifecycleManager
 from factory.runtime.state import RuntimeState, RuntimeTransition, transition
 from factory.runtime.worker_runner import WorkerRunResult, run_worker_task
 from factory.verification.replay_artifact_builder import build_factory_replay_artifact
@@ -25,6 +28,7 @@ class RuntimeRunResult:
     worker_result: WorkerRunResult
     replay: dict[str, object] | None
     replay_gate_result: ReplayGateResult | None
+    session: FactorySession | None = None
 
     @property
     def passed(self) -> bool:
@@ -46,6 +50,7 @@ class RuntimeCoordinator:
     state: RuntimeState = RuntimeState.IDLE
     transitions: list[RuntimeTransition] = field(default_factory=list)
     store: RuntimeStore | None = None
+    session_lifecycle: SessionLifecycleManager | None = None
 
     def run_next(
         self,
@@ -62,6 +67,14 @@ class RuntimeCoordinator:
         if task is None:
             self._move(RuntimeState.IDLE, "no pending task")
             return None
+
+        session: FactorySession | None = None
+        if self.session_lifecycle is not None:
+            session = self.session_lifecycle.start_session(
+                task_id=task.task_id,
+                task_name=task.name,
+                change_set=WorkspaceChangeSet(changed_files=changed_files),
+            )
 
         self._move(RuntimeState.DISPATCHING, f"dispatching {task.task_id}")
         self._move(RuntimeState.EXECUTING, f"executing {task.task_id}")
@@ -86,14 +99,24 @@ class RuntimeCoordinator:
             worker_result=worker_result,
             replay=replay_artifact,
             replay_gate_result=replay_gate_result,
+            session=session,
         )
 
         if not runtime_result.passed:
             self.queue.mark_blocked(task)
             self._move(RuntimeState.BLOCKED, f"blocked {task.task_id}")
+            session = self._block_session(session, replay_artifact)
         else:
             self.queue.mark_complete(task)
             self._move(RuntimeState.COMPLETE, f"completed {task.task_id}")
+            session = self._complete_session(session, replay_artifact)
+
+        runtime_result = RuntimeRunResult(
+            worker_result=worker_result,
+            replay=replay_artifact,
+            replay_gate_result=replay_gate_result,
+            session=session,
+        )
 
         self._persist_result(
             task_id=task.task_id,
@@ -106,6 +129,24 @@ class RuntimeCoordinator:
     def reset(self) -> None:
         """Reset runtime to IDLE after complete or blocked state."""
         self._move(RuntimeState.IDLE, "runtime reset")
+
+    def _complete_session(
+        self,
+        session: FactorySession | None,
+        replay: dict[str, object] | None,
+    ) -> FactorySession | None:
+        if session is None or self.session_lifecycle is None:
+            return session
+        return self.session_lifecycle.complete_session(session, replay)
+
+    def _block_session(
+        self,
+        session: FactorySession | None,
+        replay: dict[str, object] | None,
+    ) -> FactorySession | None:
+        if session is None or self.session_lifecycle is None:
+            return session
+        return self.session_lifecycle.block_session(session, replay)
 
     def _persist_result(
         self,

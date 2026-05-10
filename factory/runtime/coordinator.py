@@ -1,8 +1,8 @@
 """Factory runtime coordinator.
 
 Coordinates one bounded task from queue to worker validation, workspace integrity,
-replay generation, replay gating, optional approval queue, optional session
-lifecycle, and optional runtime persistence.
+replay generation, replay gating, risk-aware governance decisions, optional
+approval queue, optional session lifecycle, and optional runtime persistence.
 No arbitrary command execution. No Git mutation. No merge.
 """
 
@@ -14,7 +14,9 @@ from factory.queue.task_queue import TaskQueue
 from factory.runtime.approval_queue import ApprovalQueue, ApprovalRequest
 from factory.runtime.branch_workspace import BranchWorkspaceSnapshot
 from factory.runtime.git_workspace import WorkspaceChangeSet
+from factory.runtime.governance_decision import GovernanceAction, GovernanceDecision, decide_governance_action
 from factory.runtime.persistence import RuntimeEvent, RuntimeStore, build_event_id
+from factory.runtime.risk import RiskAssessment, assess_runtime_risk
 from factory.runtime.session import FactorySession
 from factory.runtime.session_lifecycle import SessionLifecycleManager
 from factory.runtime.state import RuntimeState, RuntimeTransition, transition
@@ -34,6 +36,8 @@ class RuntimeRunResult:
     replay_gate_result: ReplayGateResult | None
     session: FactorySession | None = None
     workspace_integrity_result: WorkspaceIntegrityResult | None = None
+    risk_assessment: RiskAssessment | None = None
+    governance_decision: GovernanceDecision | None = None
 
     @property
     def passed(self) -> bool:
@@ -41,15 +45,21 @@ class RuntimeRunResult:
             return False
         if self.workspace_integrity_result is not None and not self.workspace_integrity_result.passed:
             return False
+        if self.governance_decision is not None and self.governance_decision.action == GovernanceAction.DENY:
+            return False
+        if self.requires_approval:
+            return False
         if self.replay_gate_result is None:
             return True
         return self.replay_gate_result.passed
 
     @property
     def requires_approval(self) -> bool:
+        if self.replay_gate_result is not None and self.replay_gate_result.status == ReplayGateStatus.REQUIRES_APPROVAL:
+            return True
         return (
-            self.replay_gate_result is not None
-            and self.replay_gate_result.status == ReplayGateStatus.REQUIRES_APPROVAL
+            self.governance_decision is not None
+            and self.governance_decision.requires_human_governance
         )
 
     def outcome(self) -> str:
@@ -77,7 +87,7 @@ class RuntimeCoordinator:
         expected_workspace: BranchWorkspaceSnapshot | None = None,
         current_workspace: BranchWorkspaceSnapshot | None = None,
     ) -> RuntimeRunResult | None:
-        """Run the next queued task through scope, workspace, and replay gates.
+        """Run the next queued task through scope, workspace, replay, and governance gates.
 
         If replay is not supplied, the coordinator builds one automatically from
         changed files.
@@ -115,12 +125,20 @@ class RuntimeCoordinator:
 
         replay_artifact: dict[str, object] | None = replay
         replay_gate_result: ReplayGateResult | None = None
+        risk_assessment: RiskAssessment | None = None
+        governance_decision: GovernanceDecision | None = None
 
         workspace_ok = workspace_integrity_result is None or workspace_integrity_result.passed
         if worker_result.status.value != "BLOCKED" and workspace_ok:
             if replay_artifact is None:
                 replay_artifact = build_factory_replay_artifact(changed_files).to_dict()
             replay_gate_result = evaluate_replay_gate(replay_artifact)
+            risk_assessment = assess_runtime_risk(
+                changed_files=changed_files,
+                replay_severity=str(replay_artifact.get("severity", "LOW")),
+                trust_state=str(replay_artifact.get("trust_state", "TRUSTED")),
+            )
+            governance_decision = decide_governance_action(risk_assessment)
 
         runtime_result = RuntimeRunResult(
             worker_result=worker_result,
@@ -128,6 +146,8 @@ class RuntimeCoordinator:
             replay_gate_result=replay_gate_result,
             session=session,
             workspace_integrity_result=workspace_integrity_result,
+            risk_assessment=risk_assessment,
+            governance_decision=governance_decision,
         )
 
         if runtime_result.requires_approval:
@@ -148,6 +168,8 @@ class RuntimeCoordinator:
             replay_gate_result=replay_gate_result,
             session=session,
             workspace_integrity_result=workspace_integrity_result,
+            risk_assessment=risk_assessment,
+            governance_decision=governance_decision,
         )
 
         self._persist_result(
@@ -228,6 +250,10 @@ class RuntimeCoordinator:
             return "; ".join(runtime_result.replay_gate_result.reasons)
         if runtime_result.replay_gate_result is not None and not runtime_result.replay_gate_result.passed:
             return "; ".join(runtime_result.replay_gate_result.reasons)
+        if runtime_result.governance_decision is not None and runtime_result.governance_decision.action == GovernanceAction.DENY:
+            return runtime_result.governance_decision.reason
+        if runtime_result.governance_decision is not None and runtime_result.governance_decision.requires_human_governance:
+            return runtime_result.governance_decision.reason
         if runtime_result.replay_gate_result is not None:
             return "; ".join(runtime_result.replay_gate_result.reasons)
         return "runtime completed without replay gate"

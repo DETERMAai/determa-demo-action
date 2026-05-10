@@ -2,6 +2,7 @@
 
 This module normalizes changed-file inputs from a Git workspace.
 It intentionally does not execute shell commands in v0.1.
+External CI may pass the output of `git diff --name-only` through a file or stdin.
 """
 
 from __future__ import annotations
@@ -37,6 +38,35 @@ def build_change_set_from_file(path: Path) -> WorkspaceChangeSet:
         return WorkspaceChangeSet(changed_files=())
 
     return build_change_set(path.read_text(encoding="utf-8").splitlines())
+
+
+def build_change_set_from_git_name_only_output(output: str) -> WorkspaceChangeSet:
+    """Build a change set from `git diff --name-only` style output."""
+    return build_change_set(output.splitlines())
+
+
+def build_change_set_from_status_output(output: str) -> WorkspaceChangeSet:
+    """Build a change set from simple `git status --short` style output.
+
+    Supports lines like:
+    - M path.py
+    - A new.py
+    - D old.py
+    - R old.py -> new.py
+    """
+    paths: list[str] = []
+
+    for line in output.splitlines():
+        stripped = line.strip()
+        if not stripped:
+            continue
+
+        path_part = stripped[2:].strip() if len(stripped) > 2 else stripped
+        if " -> " in path_part:
+            path_part = path_part.split(" -> ", 1)[1]
+        paths.append(path_part)
+
+    return build_change_set(paths)
 
 
 def _normalize_path(path: str) -> str:

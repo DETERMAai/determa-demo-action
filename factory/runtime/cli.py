@@ -1,7 +1,7 @@
 """Factory runtime CLI.
 
-Small CLI for reading runtime history, timeline, metrics, dashboard, and running
-one bounded factory runtime cycle.
+Small CLI for reading runtime history, timeline, metrics, dashboard, approvals,
+and running one bounded factory runtime cycle.
 No arbitrary shell execution.
 """
 
@@ -13,6 +13,7 @@ import sys
 from pathlib import Path
 
 from factory.queue.task_queue import Task, TaskQueue
+from factory.runtime.approval_store import ApprovalStore
 from factory.runtime.coordinator import RuntimeCoordinator
 from factory.runtime.dashboard_data import build_dashboard_data, render_dashboard_summary
 from factory.runtime.metrics import compute_runtime_metrics, render_runtime_metrics
@@ -23,13 +24,14 @@ from factory.verification.scope_validator import ScopeContract
 
 DEFAULT_HISTORY_PATH = Path("factory/runtime/history/runtime_events.json")
 DEFAULT_SESSIONS_PATH = Path("factory/runtime/history/sessions.json")
+DEFAULT_APPROVALS_PATH = Path("factory/runtime/history/approvals.json")
 
 
 def main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser(description="DETERMA Factory Runtime CLI")
     parser.add_argument(
         "command",
-        choices=("timeline", "metrics", "dashboard", "run-once"),
+        choices=("timeline", "metrics", "dashboard", "approvals", "run-once"),
         help="Command to run",
     )
     parser.add_argument(
@@ -41,6 +43,11 @@ def main(argv: list[str] | None = None) -> int:
         "--sessions",
         default=str(DEFAULT_SESSIONS_PATH),
         help="Path to session history JSON",
+    )
+    parser.add_argument(
+        "--approvals",
+        default=str(DEFAULT_APPROVALS_PATH),
+        help="Path to approval history JSON",
     )
     parser.add_argument("--task-id", default="manual-task", help="Task id for run-once")
     parser.add_argument("--task-name", default="manual task", help="Task name for run-once")
@@ -87,6 +94,11 @@ def main(argv: list[str] | None = None) -> int:
         print(render_dashboard_summary(dashboard), end="")
         return 0
 
+    if args.command == "approvals":
+        approval_store = ApprovalStore(Path(args.approvals))
+        print(_render_approvals(approval_store), end="")
+        return 0
+
     if args.command == "run-once":
         return _run_once(args, runtime_store)
 
@@ -121,6 +133,40 @@ def _run_once(args: argparse.Namespace, store: RuntimeStore) -> int:
             print(f"- {reason}")
 
     return 0 if result.passed else 1
+
+
+def _render_approvals(store: ApprovalStore) -> str:
+    lines: list[str] = []
+    pending = store.pending()
+    completed = store.completed()
+
+    lines.append("# DETERMA Factory Approvals")
+    lines.append("")
+    lines.append(f"Pending: {len(pending)}")
+    lines.append(f"Completed: {len(completed)}")
+    lines.append("")
+
+    lines.append("## Pending")
+    if not pending:
+        lines.append("- none")
+    else:
+        for request in pending:
+            lines.append(f"- {request.get('task_id', 'unknown-task')}: {request.get('reason', 'no reason')}")
+    lines.append("")
+
+    lines.append("## Completed")
+    if not completed:
+        lines.append("- none")
+    else:
+        for request in completed:
+            lines.append(
+                f"- {request.get('status', 'UNKNOWN')} — "
+                f"{request.get('task_id', 'unknown-task')} — "
+                f"{request.get('decision_reason', 'no decision reason')}"
+            )
+    lines.append("")
+
+    return "\n".join(lines).strip() + "\n"
 
 
 if __name__ == "__main__":

@@ -10,9 +10,54 @@ ACTIVE CANONICAL DOCUMENTATION ROOT
 
 ---
 
+# Repository Role
+
+This repository:
+
+`DETERMAai/determa-demo-action`
+
+is the ACTIVE MVP IMPLEMENTATION repository.
+
+This repository contains:
+
+- governed execution implementation
+- replay enforcement
+- constrained execution logic
+- authority validation
+- governed PR flow
+- replay artifacts
+- operational execution contracts
+
+---
+
+# Constitutional Doctrine
+
+The broader constitutional doctrine repository is:
+
+`DETERMAai/determa-sovereign-control`
+
+That repository defines:
+
+- category
+- legitimacy thesis
+- replay thesis
+- governance philosophy
+- long-term execution philosophy
+- strategic operating model
+
+This repository focuses on:
+
+```text
+active governed execution MVP delivery
+```
+
+not broad platform doctrine.
+
+---
+
 # Purpose
 
-This directory contains the canonical strategic and technical doctrine of DETERMA.
+This directory contains the canonical strategic and operational doctrine for the ACTIVE MVP execution slice.
 
 The documents inside this directory are intentionally designed as:
 
@@ -22,151 +67,68 @@ one connected operational doctrine
 
 not isolated documents.
 
-Each document answers a different layer of the same system.
+---
+
+# Operational Reading Order
 
 ---
 
-# Reading Order
-
-The canonical reading order is mandatory.
-
----
-
-# 1. Category + Positioning Doctrine
-
-Document:
-
-```text
-DETERMA_CATEGORY_AND_POSITIONING.md
-```
-
-Purpose:
+# 1. ACTIVE_MVP_EXECUTION_CONTEXT.md
 
 Defines:
 
-- why DETERMA must exist
-- the legitimacy thesis
-- execution legitimacy infrastructure
-- market differentiation
-- enterprise narrative
-- fail-closed doctrine
-- authority separation doctrine
-- replay thesis
-- why existing systems fail
-
-This document answers:
-
-```text
-WHY THIS CATEGORY EXISTS
-```
+- active MVP mission
+- governed execution loop
+- execution boundaries
+- codex execution rules
+- authority-first implementation sequencing
 
 ---
 
-# 2. Go-To-Market Doctrine
-
-Document:
-
-```text
-DETERMA_GO_TO_MARKET.md
-```
-
-Purpose:
+# 2. MUTATION_REGISTRY.md
 
 Defines:
 
-- category entry strategy
-- initial ICP
-- design partner strategy
-- messaging
-- distribution
-- adoption sequencing
-- pricing direction
-- canonical demo narrative
-- credibility-first GTM
-
-This document answers:
-
-```text
-HOW THIS CATEGORY ENTERS THE MARKET
-```
+- bounded mutation orders
+- execution waves
+- required invariants
+- forbidden scopes
+- replay guarantees
+- validation expectations
 
 ---
 
-# 3. One-Slice MVP Plan
+# 3. ONE_WEEK_EXECUTION_PLAN.md
 
-Document:
+Defines:
 
-```text
-DETERMA_ONE_SLICE_MVP_PLAN.md
-```
+- compressed delivery sequencing
+- implementation priorities
+- execution throughput strategy
+- week-level MVP closure plan
 
-Purpose:
+---
+
+# 4. EXECUTION_WAR_ROOM_BOOTSTRAP.md
+
+Defines:
+
+- execution operating model
+- PR workflow discipline
+- review loop
+- codex coordination rules
+
+---
+
+# 5. DETERMA_ONE_SLICE_MVP_PLAN.md
 
 Defines:
 
 - the canonical MVP
-- technical scope
 - governed execution flow
-- build boundaries
-- implementation priorities
-- runtime architecture
-- replay generation
-- operational rules
+- replay architecture
+- implementation boundaries
 - delivery targets
-
-This document answers:
-
-```text
-HOW WE BUILD THE FIRST LIVE GOVERNED EXECUTION SLICE
-```
-
----
-
-# Canonical Relationship Between Documents
-
-The doctrine hierarchy is:
-
-```text
-CATEGORY
-→ determines
-GTM
-→ determines
-MVP
-→ determines
-IMPLEMENTATION
-```
-
-Meaning:
-
-```text
-Strategic doctrine
-→ drives market positioning
-→ drives MVP scope
-→ drives technical implementation
-```
-
-NOT the reverse.
-
----
-
-# Core DETERMA Throughline
-
-All canonical documents share the same foundational thesis:
-
-```text
-AI-generated operational mutations require legitimacy infrastructure.
-```
-
-This thesis appears consistently across:
-
-- category definition
-- market positioning
-- MVP architecture
-- replay structure
-- governance logic
-- approval systems
-- operational boundaries
-- demo narratives
 
 ---
 
@@ -193,7 +155,7 @@ Observe
 
 # Canonical MVP Constraint
 
-All doctrine documents intentionally constrain the MVP toward:
+All operational doctrine intentionally constrains the MVP toward:
 
 ```text
 one governed execution slice
@@ -203,46 +165,56 @@ NOT:
 
 - generalized AI orchestration
 - autonomous swarms
-- broad governance platforms
-- infrastructure recursion
-- premature enterprise abstraction
+- recursive infrastructure
+- premature enterprise abstractions
 
 ---
 
-# Canonical Strategic Constraint
+# Current Execution Priority
 
-The current strategic objective is:
+Close:
+
+- MUTATION-001
+- MUTATION-002
+- MUTATION-003
+
+before executor authority expansion.
+
+Authority objects come before execution expansion.
+
+---
+
+# Repository Execution Rules
+
+Every PR MUST:
+
+- solve one bounded concern
+- remain deterministic
+- preserve replayability
+- preserve legitimacy boundaries
+- include tests
+- avoid architectural reinterpretation
+
+Every PR MUST NOT:
+
+- redesign the platform
+- introduce orchestration systems
+- introduce generalized abstractions
+- broaden executor authority
+- expand autonomy recursively
+
+---
+
+# Final Principle
+
+The current objective is:
 
 ```text
 prove governed execution legitimacy
 ```
 
-before expanding toward:
-
-- platformization
-- federation
-- distributed authority systems
-- large-scale orchestration
-
----
-
-# Canonical Success Condition
-
-The current success condition across all documents is:
+through:
 
 ```text
-Organizations begin changing merge behavior
-because replay changes operational trust.
+one undeniable governed execution loop
 ```
-
----
-
-# Operational Rule
-
-If future implementation work conflicts with these canonical documents:
-
-```text
-the canonical doctrine wins
-```
-
-until explicitly revised.

@@ -1,0 +1,19 @@
+{
+  "name": "determa-demo-action",
+  "version": "0.0.1",
+  "private": true,
+  "description": "Deterministic replay verification for irreversible merge legitimacy.",
+  "type": "commonjs",
+  "bin": {
+    "determa": "bin/determa.js"
+  },
+  "scripts": {
+    "replay": "node bin/determa.js replay constitution/vectors/VECTOR_002_MISSING_CAPABILITY.json",
+    "vectors": "node tests/vectors/run_vectors.js",
+    "drift": "node tests/drift/drift_harness.js",
+    "test": "npm run vectors && npm run drift"
+  },
+  "engines": {
+    "node": ">=18"
+  }
+}

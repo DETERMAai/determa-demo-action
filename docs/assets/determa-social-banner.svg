@@ -1,0 +1,15 @@
+<svg width="1400" height="700" viewBox="0 0 1400 700" xmlns="http://www.w3.org/2000/svg">
+<rect width="1400" height="700" fill="#0A0F1C"/>
+<text x="90" y="170" fill="#FFFFFF" font-size="72" font-family="Arial">DETERMA</text>
+<text x="90" y="240" fill="#94A3B8" font-size="34" font-family="Arial">Execution Legitimacy Infrastructure</text>
+<text x="90" y="360" fill="#3B82F6" font-size="32" font-family="Arial">VERIFY</text>
+<text x="300" y="360" fill="#22C55E" font-size="32" font-family="Arial">AUTHORIZE</text>
+<text x="570" y="360" fill="#F59E0B" font-size="32" font-family="Arial">EXECUTE</text>
+<text x="830" y="360" fill="#8B5CF6" font-size="32" font-family="Arial">REPLAY</text>
+<text x="1080" y="360" fill="#EF4444" font-size="32" font-family="Arial">RESTORE</text>
+<line x1="210" y1="348" x2="280" y2="348" stroke="#FFFFFF" stroke-width="4"/>
+<line x1="470" y1="348" x2="540" y2="348" stroke="#FFFFFF" stroke-width="4"/>
+<line x1="740" y1="348" x2="810" y2="348" stroke="#FFFFFF" stroke-width="4"/>
+<line x1="980" y1="348" x2="1050" y2="348" stroke="#FFFFFF" stroke-width="4"/>
+<text x="90" y="520" fill="#FFFFFF" font-size="28" font-family="Arial">Deterministic replay • Append-only lineage • Fail-closed recovery</text>
+</svg>

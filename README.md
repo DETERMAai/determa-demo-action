@@ -1,237 +1,327 @@
-# DETERMA Replay
+# DETERMA
 
-Observe, replay, and explain AI-generated code mutations.
+> Deterministic Governed Execution Infrastructure for AI Systems
 
----
-
-## The Problem
-
-AI coding agents can change:
-
-- deployment behavior,
-- CI/CD pipelines,
-- permissions,
-- infrastructure,
-- secrets,
-- production rollout logic.
-
-Humans usually see the code diff.
-
-But they do not immediately see the operational consequences.
+[![Runtime Proof Suite](https://img.shields.io/badge/runtime%20proof-45%2F45%20passing-success)](#runtime-proof-suite)
+[![Replay](https://img.shields.io/badge/replay-deterministic-blue)](#deterministic-replay)
+[![Append Only](https://img.shields.io/badge/ledger-append--only-orange)](#append-only-lineage)
+[![Release Baseline](https://img.shields.io/badge/release-signed-purple)](#signed-release-baseline)
 
 ---
 
-## The Solution
+## What DETERMA Is
 
-DETERMA generates a deterministic Mutation Replay for pull requests.
+DETERMA is a governed execution runtime for AI systems.
 
-Before merge, DETERMA explains:
+It verifies whether an AI-generated action is:
 
-- what changed,
-- why it matters,
-- which operational surfaces were touched,
-- whether the mutation should be trusted,
-- what the reviewer should do next.
+- authorized
+- replay-safe
+- state-valid
+- append-only traceable
+- recoverable after interruption
+- deterministically reproducible
+
+The system is built around executable runtime guarantees rather than policy-only governance.
 
 ---
 
-## Example Replay
+## Runtime Proof Suite
+
+Current governed runtime proof suite:
 
 ```text
-# DETERMA Mutation Replay
-
-Severity:
-CRITICAL
-
-Trust State:
-REQUIRES_APPROVAL
-
-Mutation Surface:
-CI/CD / Deployment Infrastructure
-
-Potential Consequences:
-- Production rollout behavior may be altered.
-- Release safety controls may be reduced or bypassed.
-
-Recommended Action:
-Human approval required before merge.
+45 / 45 PASSING
 ```
+
+Validated domains:
+
+| Runtime Domain | Status |
+|---|---|
+| Deterministic Replay | VERIFIED |
+| Append-Only Persistence | VERIFIED |
+| Crash Recovery | VERIFIED |
+| Replay Mutation Prevention | VERIFIED |
+| Authority Enforcement | VERIFIED |
+| Distributed Coordination | VERIFIED |
+| Multi-Process Recovery | VERIFIED |
+| Cross-Host Ledger Validation | VERIFIED |
+| Storage Atomicity | VERIFIED |
+| Corrupted-Ledger Detection | VERIFIED |
+| Restoration Equivalence | VERIFIED |
+| Remote GitHub Governance | VERIFIED |
+| Immutable Release Baseline | VERIFIED |
 
 ---
 
 ## Why This Exists
 
-The problem is not only that AI writes code.
+Modern AI agents can:
 
-The real problem is that AI-generated mutations can change operational behavior faster than humans can reconstruct intent.
+- modify infrastructure
+- change deployment behavior
+- alter CI/CD pipelines
+- mutate permissions
+- execute operational workflows
+- create distributed side effects
 
-DETERMA exists to reconstruct operational meaning before trust.
+The core problem is no longer generation.
 
----
+The problem is execution legitimacy.
 
-## Current MVP Scope
-
-DETERMA Replay v0.1 currently supports:
-
-- GitHub pull request diff parsing
-- mutation surface classification
-- severity classification
-- consequence generation
-- trust-state generation
-- replay integrity markers
-- GitHub PR replay comments
-
-Current surfaces:
-
-- CI/CD
-- Deployment Infrastructure
-- Runtime Infrastructure
-- Infrastructure as Code
-- Secret Access
-- Authentication / IAM
-- Database Migration
-- Business Logic
-- Tests
-- Documentation
+DETERMA exists to validate whether execution itself is trustworthy.
 
 ---
 
-## Demo Scenarios
+## Architecture Principles
 
-Example replay scenarios:
-
-```text
-examples/demo_prs/
-```
-
-Included demos:
-
-- deployment rollout changed from 10% to 100%
-- CI tests removed
-- auth middleware bypass
-- business logic mutation
-- documentation-only change
-
-Expected replay outputs:
+The runtime is designed around:
 
 ```text
-examples/expected_replays/
+verify -> authorize -> execute -> persist -> replay -> restore
 ```
+
+DETERMA intentionally avoids:
+
+- hidden governance
+- in-memory trust assumptions
+- fake replay semantics
+- mutable audit history
+- approval-only security theater
+- non-deterministic recovery
 
 ---
 
-## Quick Start
+## Runtime Capabilities
 
-### 1. Enable GitHub Actions
+### Deterministic Replay
 
-The repository includes:
+Every governed action can be replayed deterministically.
 
-```text
-.github/workflows/determa-replay.yml
-```
+Replay validation detects:
 
-### 2. Open a Pull Request
-
-Create a PR with a deployment, auth, CI/CD, or infrastructure mutation.
-
-### 3. Wait for DETERMA Replay
-
-DETERMA will:
-
-- fetch the PR diff,
-- classify mutation surfaces,
-- compute severity,
-- generate consequences,
-- determine trust state,
-- post or update a replay comment.
+- corruption
+- divergence
+- mutation tampering
+- lineage inconsistency
 
 ---
 
-## Architecture
+### Append-Only Lineage
 
-Canonical replay pipeline:
+Runtime lineage is append-only.
 
-```text
-Pull Request Event
-→ Diff Fetch
-→ Diff Parser
-→ Mutation Surface Classification
-→ Severity Engine
-→ Consequence Engine
-→ Trust Engine
-→ Replay Integrity
-→ Markdown Renderer
-→ GitHub Replay Comment
-```
+Mutation attempts against prior lineage entries are blocked.
+
+The system validates:
+
+- monotonic sequencing
+- immutable receipts
+- deterministic digest continuity
+- restoration equivalence
 
 ---
 
-## Design Constraints
+### Fail-Closed Authority Enforcement
 
-DETERMA Replay v0.1 intentionally:
+Execution requires:
 
-- does not auto-merge,
-- does not mutate repositories,
-- does not execute arbitrary code,
-- does not bypass human approval,
-- fails closed on ambiguity.
+- capability authorization
+- witness validation
+- lock ownership
+- replay-safe execution state
 
----
-
-## Category
-
-```text
-AI Mutation Replay
-```
-
-Core behavioral reflex:
-
-```text
-Before trusting AI-generated code,
-check the DETERMA Replay.
-```
+Invalid authority state blocks execution before mutation.
 
 ---
 
-## Roadmap
+### Crash Recovery
 
-Canonical sequence:
+The runtime supports:
 
-```text
-Replay
-→ Replay Integrity
-→ Approval Gate
-→ State Witness
-→ Execution Release
-→ Governed Code Mutation
-→ Global Action Ledger
-```
+- interruption recovery
+- stale lock recovery
+- replay reconstruction
+- deterministic lifecycle restoration
+
+---
+
+### Distributed Coordination
+
+Validated scenarios include:
+
+- concurrent node contention
+- multi-process coordination
+- cross-host append-only lineage
+- network partition fail-closed behavior
+- deterministic distributed replay equivalence
+
+---
+
+### Corruption Detection
+
+The runtime validates:
+
+- physical SQLite corruption detection
+- replay refusal on integrity violation
+- append-only restoration continuity
+- immutable recovery semantics
 
 ---
 
 ## Repository Structure
 
 ```text
-src/determa_replay/
-examples/demo_prs/
-examples/expected_replays/
-docs/
+runtime/
+  replay.py
+  recovery_runtime.py
+  orchestrator_loop.py
+  tests/
+
+receipts/
+  runtime_proof_snapshot.json
+  canonical_release_baseline.json
+  release_lineage.jsonl
+
 .github/workflows/
+  runtime-release-baseline.yml
+  release-signing-verification.yml
+  security-secrets-scan.yml
+
+docs/
+  RELEASE_SIGNING.md
 ```
 
 ---
 
-## Status
+## Security Model
 
-Prototype / MVP stage
+DETERMA security is not based on hidden source code.
 
-Replay-first GitHub-native wedge.
+The system assumes:
+
+```text
+trust must be externally verifiable
+```
+
+The repository intentionally exposes:
+
+- replay proofs
+- runtime verification logic
+- append-only lineage validation
+- restoration semantics
+- corruption handling
+
+while protecting:
+
+- production credentials
+- signing authority
+- deployment infrastructure
+- operational secrets
+
+See:
+
+```text
+SECURITY.md
+```
 
 ---
 
-## Contact
+## Signed Release Baseline
 
-Looking for engineering teams using AI coding agents who want replayable trust before merge.
+The repository includes:
 
-- GitHub: open an issue
-- Email: determa.ai@gmail.com
+- immutable runtime proof snapshots
+- signed release baselines
+- append-only release lineage
+- deterministic restoration proofs
+
+Release integrity is verified in CI.
+
+DETERMA supports:
+
+```text
+Sigstore / Cosign keyless verification
+```
+
+This allows independent validation of release authenticity.
+
+---
+
+## Quick Start
+
+### Install
+
+```bash
+python -m venv .venv
+source .venv/bin/activate
+pip install -r requirements.txt
+```
+
+### Run Replay
+
+```bash
+python -m runtime.replay
+```
+
+### Run Recovery Runtime
+
+```bash
+python -m runtime.recovery_runtime
+```
+
+### Run Orchestrator
+
+```bash
+python -m runtime.orchestrator_loop
+```
+
+### Execute Runtime Proof Suite
+
+```bash
+python -m pytest runtime/tests -v
+```
+
+---
+
+## Runtime Philosophy
+
+DETERMA does not attempt to prove that AI is aligned.
+
+It proves whether execution is:
+
+- authorized
+- replayable
+- recoverable
+- deterministic
+- append-only verifiable
+
+---
+
+## Current Status
+
+```text
+Governed Runtime Proof Baseline Frozen
+```
+
+Includes:
+
+- signed release baseline
+- immutable proof snapshot
+- deterministic restoration validation
+- append-only release lineage
+
+---
+
+## Category
+
+```text
+Governed Execution Infrastructure
+```
+
+Core reflex:
+
+```text
+Before trusting AI execution,
+verify the runtime lineage.
+```

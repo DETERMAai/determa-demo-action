@@ -1,0 +1,20 @@
+<svg width="1200" height="620" viewBox="0 0 1200 620" xmlns="http://www.w3.org/2000/svg">
+<rect width="1200" height="620" fill="#0A0F1C"/>
+<text x="60" y="70" fill="#FFFFFF" font-size="40" font-family="Arial">DETERMA Architecture Map</text>
+<text x="60" y="110" fill="#94A3B8" font-size="22" font-family="Arial">Deterministic governed execution runtime</text>
+<rect x="70" y="180" width="220" height="100" rx="16" fill="#121A2B" stroke="#3B82F6" stroke-width="3"/>
+<text x="125" y="240" fill="#3B82F6" font-size="28" font-family="Arial">PROPOSE</text>
+<rect x="370" y="180" width="220" height="100" rx="16" fill="#121A2B" stroke="#22C55E" stroke-width="3"/>
+<text x="425" y="240" fill="#22C55E" font-size="28" font-family="Arial">AUTHORIZE</text>
+<rect x="670" y="180" width="220" height="100" rx="16" fill="#121A2B" stroke="#F59E0B" stroke-width="3"/>
+<text x="735" y="240" fill="#F59E0B" font-size="28" font-family="Arial">EXECUTE</text>
+<rect x="370" y="390" width="220" height="100" rx="16" fill="#121A2B" stroke="#8B5CF6" stroke-width="3"/>
+<text x="425" y="450" fill="#8B5CF6" font-size="28" font-family="Arial">LINEAGE</text>
+<rect x="670" y="390" width="220" height="100" rx="16" fill="#121A2B" stroke="#EF4444" stroke-width="3"/>
+<text x="735" y="450" fill="#EF4444" font-size="28" font-family="Arial">REPLAY</text>
+<line x1="290" y1="230" x2="370" y2="230" stroke="#E5E7EB" stroke-width="4"/>
+<line x1="590" y1="230" x2="670" y2="230" stroke="#E5E7EB" stroke-width="4"/>
+<line x1="780" y1="280" x2="780" y2="390" stroke="#E5E7EB" stroke-width="4"/>
+<line x1="590" y1="440" x2="670" y2="440" stroke="#E5E7EB" stroke-width="4"/>
+<line x1="480" y1="280" x2="480" y2="390" stroke="#E5E7EB" stroke-width="4"/>
+</svg>

@@ -1,0 +1,19 @@
+title = "DETERMA Gitleaks Configuration"
+
+[allowlist]
+description = "Allow deterministic public proof artifacts"
+paths = [
+  '''receipts/runtime_proof_snapshot.json''',
+  '''receipts/runtime_proof_snapshot.sha256''',
+  '''receipts/canonical_release_baseline.json''',
+  '''receipts/canonical_release_baseline.sha256''',
+  '''receipts/release_lineage.jsonl'''
+]
+
+# Ignore obvious placeholder examples only.
+regexes = [
+  '''YOUR_REAL_PAT''',
+  '''ghp_x+''',
+  '''github_pat_x+''',
+  '''example'''
+]

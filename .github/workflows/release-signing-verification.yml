@@ -1,0 +1,53 @@
+name: DETERMA Release Signing Verification
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+
+jobs:
+  verify-release-signing:
+    runs-on: ubuntu-latest
+
+    permissions:
+      contents: read
+      id-token: write
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Install Cosign
+        uses: sigstore/cosign-installer@v3
+
+      - name: Verify signed artifact files exist when signatures are committed
+        shell: bash
+        run: |
+          if [ -f receipts/canonical_release_baseline.json.sig ]; then
+            test -f receipts/canonical_release_baseline.json.pem
+          fi
+
+      - name: Verify canonical release baseline signature
+        shell: bash
+        run: |
+          if [ -f receipts/canonical_release_baseline.json.sig ]; then
+            cosign verify-blob \
+              --certificate receipts/canonical_release_baseline.json.pem \
+              --signature receipts/canonical_release_baseline.json.sig \
+              receipts/canonical_release_baseline.json
+          else
+            echo 'No committed signature yet; verification skipped.'
+          fi
+
+      - name: Verify runtime proof snapshot signature
+        shell: bash
+        run: |
+          if [ -f receipts/runtime_proof_snapshot.json.sig ]; then
+            cosign verify-blob \
+              --certificate receipts/runtime_proof_snapshot.json.pem \
+              --signature receipts/runtime_proof_snapshot.json.sig \
+              receipts/runtime_proof_snapshot.json
+          else
+            echo 'No committed runtime proof signature yet; verification skipped.'
+          fi

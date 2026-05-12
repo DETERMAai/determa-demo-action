@@ -6,23 +6,24 @@
 [![Replay](https://img.shields.io/badge/replay-deterministic-blue)](#deterministic-replay)
 [![Append Only](https://img.shields.io/badge/ledger-append--only-orange)](#append-only-lineage)
 [![Release Baseline](https://img.shields.io/badge/release-signed-purple)](#signed-release-baseline)
+[![Recovery](https://img.shields.io/badge/recovery-fail--closed-green)](#crash-recovery)
+[![Distributed](https://img.shields.io/badge/distributed-verified-informational)](#distributed-coordination)
 
 ---
 
-## What DETERMA Is
+AI systems are becoming execution systems.
 
-DETERMA is a governed execution runtime for AI systems.
-
-It verifies whether an AI-generated action is:
+DETERMA verifies whether execution itself is:
 
 - authorized
-- replay-safe
-- state-valid
-- append-only traceable
-- recoverable after interruption
+- replayable
+- recoverable
+- append-only verifiable
 - deterministically reproducible
 
-The system is built around executable runtime guarantees rather than policy-only governance.
+---
+
+![Runtime Flow](docs/assets/runtime-flow.svg)
 
 ---
 
@@ -33,8 +34,6 @@ Current governed runtime proof suite:
 ```text
 45 / 45 PASSING
 ```
-
-Validated domains:
 
 | Runtime Domain | Status |
 |---|---|
@@ -54,22 +53,40 @@ Validated domains:
 
 ---
 
-## Why This Exists
+## Why Execution Legitimacy Matters
 
-Modern AI agents can:
+Modern AI systems can:
 
-- modify infrastructure
-- change deployment behavior
-- alter CI/CD pipelines
-- mutate permissions
-- execute operational workflows
-- create distributed side effects
+- mutate infrastructure
+- alter deployment behavior
+- modify CI/CD pipelines
+- change distributed operational state
+- execute irreversible actions
+- coordinate cross-system side effects
 
-The core problem is no longer generation.
+The problem is no longer generation.
 
 The problem is execution legitimacy.
 
-DETERMA exists to validate whether execution itself is trustworthy.
+DETERMA validates whether execution itself is trustworthy.
+
+---
+
+## Governed Runtime Flow
+
+```text
+VERIFY
+   ↓
+AUTHORIZE
+   ↓
+EXECUTE
+   ↓
+PERSIST
+   ↓
+REPLAY
+   ↓
+RESTORE
+```
 
 ---
 
@@ -92,9 +109,7 @@ DETERMA intentionally avoids:
 
 ---
 
-## Runtime Capabilities
-
-### Deterministic Replay
+## Deterministic Replay
 
 Every governed action can be replayed deterministically.
 
@@ -107,7 +122,7 @@ Replay validation detects:
 
 ---
 
-### Append-Only Lineage
+## Append-Only Lineage
 
 Runtime lineage is append-only.
 
@@ -122,7 +137,7 @@ The system validates:
 
 ---
 
-### Fail-Closed Authority Enforcement
+## Fail-Closed Authority Enforcement
 
 Execution requires:
 
@@ -135,7 +150,7 @@ Invalid authority state blocks execution before mutation.
 
 ---
 
-### Crash Recovery
+## Crash Recovery
 
 The runtime supports:
 
@@ -146,7 +161,7 @@ The runtime supports:
 
 ---
 
-### Distributed Coordination
+## Distributed Coordination
 
 Validated scenarios include:
 
@@ -156,9 +171,11 @@ Validated scenarios include:
 - network partition fail-closed behavior
 - deterministic distributed replay equivalence
 
+![Distributed Coordination](docs/assets/distributed-coordination.svg)
+
 ---
 
-### Corruption Detection
+## Corruption Detection
 
 The runtime validates:
 
@@ -169,28 +186,24 @@ The runtime validates:
 
 ---
 
-## Repository Structure
+## Signed Release Baseline
+
+The repository includes:
+
+- immutable runtime proof snapshots
+- signed release baselines
+- append-only release lineage
+- deterministic restoration proofs
+
+Release integrity is verified in CI.
+
+DETERMA supports:
 
 ```text
-runtime/
-  replay.py
-  recovery_runtime.py
-  orchestrator_loop.py
-  tests/
-
-receipts/
-  runtime_proof_snapshot.json
-  canonical_release_baseline.json
-  release_lineage.jsonl
-
-.github/workflows/
-  runtime-release-baseline.yml
-  release-signing-verification.yml
-  security-secrets-scan.yml
-
-docs/
-  RELEASE_SIGNING.md
+Sigstore / Cosign keyless verification
 ```
+
+This allows independent validation of release authenticity.
 
 ---
 
@@ -227,24 +240,29 @@ SECURITY.md
 
 ---
 
-## Signed Release Baseline
-
-The repository includes:
-
-- immutable runtime proof snapshots
-- signed release baselines
-- append-only release lineage
-- deterministic restoration proofs
-
-Release integrity is verified in CI.
-
-DETERMA supports:
+## Repository Structure
 
 ```text
-Sigstore / Cosign keyless verification
-```
+runtime/
+  replay.py
+  recovery_runtime.py
+  orchestrator_loop.py
+  tests/
 
-This allows independent validation of release authenticity.
+receipts/
+  runtime_proof_snapshot.json
+  canonical_release_baseline.json
+  release_lineage.jsonl
+
+docs/assets/
+  runtime-flow.svg
+  distributed-coordination.svg
+
+.github/workflows/
+  runtime-release-baseline.yml
+  release-signing-verification.yml
+  security-secrets-scan.yml
+```
 
 ---
 

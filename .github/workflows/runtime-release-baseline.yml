@@ -1,0 +1,89 @@
+name: DETERMA Runtime Release Baseline
+
+on:
+  push:
+    branches:
+      - main
+      - develop
+      - 'feature/**'
+  pull_request:
+
+jobs:
+  verify-runtime-baseline:
+    runs-on: ubuntu-latest
+
+    permissions:
+      contents: read
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Install test dependencies
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install pytest requests
+
+      - name: Verify canonical proof artifacts exist
+        shell: bash
+        run: |
+          test -f receipts/runtime_proof_snapshot.json
+          test -f receipts/runtime_proof_snapshot.sha256
+          test -f receipts/canonical_release_baseline.json
+          test -f receipts/canonical_release_baseline.sha256
+          test -f receipts/release_lineage.jsonl
+
+      - name: Verify runtime proof snapshot SHA256
+        shell: bash
+        run: |
+          expected="$(awk '{print $1}' receipts/runtime_proof_snapshot.sha256)"
+          actual="$(sha256sum receipts/runtime_proof_snapshot.json | awk '{print $1}')"
+          echo "runtime_proof_snapshot expected=$expected"
+          echo "runtime_proof_snapshot actual=$actual"
+          test "$expected" = "$actual"
+
+      - name: Verify canonical release baseline SHA256
+        shell: bash
+        run: |
+          expected="$(awk '{print $1}' receipts/canonical_release_baseline.sha256)"
+          actual="$(sha256sum receipts/canonical_release_baseline.json | awk '{print $1}')"
+          echo "canonical_release_baseline expected=$expected"
+          echo "canonical_release_baseline actual=$actual"
+          test "$expected" = "$actual"
+
+      - name: Verify release lineage is append-only shaped JSONL
+        shell: bash
+        run: |
+          test -s receipts/release_lineage.jsonl
+          python - <<'PY'
+          import json
+          from pathlib import Path
+
+          path = Path('receipts/release_lineage.jsonl')
+          previous = None
+          count = 0
+          for raw in path.read_text(encoding='utf-8').splitlines():
+              if not raw.strip():
+                  continue
+              item = json.loads(raw)
+              if count > 0:
+                  assert item.get('previous_hash') == previous, 'release lineage previous_hash mismatch'
+              previous = item.get('entry_hash') or item.get('hash') or item.get('sha256')
+              assert previous, 'release lineage entry missing hash'
+              count += 1
+          assert count >= 1, 'release lineage must contain at least one entry'
+          print(f'release_lineage_entries={count}')
+          PY
+
+      - name: Run deterministic replay command
+        run: python -m runtime.replay
+
+      - name: Run governed runtime proof suite
+        run: python -m pytest runtime/tests -v

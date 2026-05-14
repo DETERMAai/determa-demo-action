@@ -1,62 +1,65 @@
 # DETERMA
 
-> Execution validity is not permanent. It depends on the system state at the moment of execution.
+Runtime execution integrity system for verifying whether actions remain valid as system state changes.
 
 ---
 
-## A minimal runtime proof system for state-aware execution integrity
+## What this system is
 
-DETERMA demonstrates a simple but critical failure mode in automated systems:
+DETERMA is a governed execution runtime that ensures:
 
-> An approval made in one system state may become invalid when the system changes before execution is repeated.
-
----
-
-## ⚡ The Core Insight
-
-Most systems assume:
-
-> “If it was approved once, it is still valid later.”
-
-DETERMA shows why this assumption breaks in dynamic environments.
+> Actions are only valid if system state has not changed since approval.
 
 ---
 
-## 🔍 What it does (in one flow)
+## Core Idea
 
-- A system change is approved
-- The current runtime state is recorded
+Modern systems execute actions based on prior approval.
+
+But between approval and execution:
+
+- system state changes
+- dependencies shift
+- assumptions become outdated
+
+DETERMA makes this mismatch explicit, reproducible, and verifiable.
+
+---
+
+## What it does (simplified flow)
+
+- A change is proposed
+- The system records current state (snapshot)
 - The change is executed once
-- The system state evolves (drift)
-- The same execution is attempted again
-- The system detects state mismatch
+- The system evolves over time (drift)
+- A replay attempt is made
+- The system detects mismatch
 - The replay is blocked
-- A verifiable proof is generated
+- A proof artifact is generated
 
 ---
 
-## 🧠 Why it matters
+## Key Principle
 
-In AI systems, automation pipelines, and distributed infrastructure:
-
-- state changes constantly
-- approvals are often reused
-- execution is assumed to remain valid
-
-DETERMA makes this gap visible and testable.
+> Execution validity must match current system state, not historical approval.
 
 ---
 
-## 📦 What you get
+## What you can inspect
 
-- reproducible governed execution flow
-- runtime snapshot capture
-- deterministic replay invalidation
-- verifiable execution proof artifacts
+Each execution produces a proof containing:
+
+- state at approval time
+- state at replay time
+- execution identifier
+- authorization reference
+- invalidation reason
+
+All outputs are reproducible and verifiable.
 
 ---
 
-## 🧪 Try it
+## How to run
 
 ```bash
 python scripts/demo_governed_flow.py

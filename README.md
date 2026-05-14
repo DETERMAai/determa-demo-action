@@ -1,138 +1,134 @@
-<div align="center">
-
 # DETERMA
 
-### Runtime Execution Integrity System
+**Governed execution control for AI-driven mutation authority.**
 
----
+DETERMA is a runtime that governs whether AI-generated actions are allowed to mutate external systems.  
+It separates *intent generation* from *execution authority* and enforces deterministic, fail-closed mutation control.
 
-### Execution validity is not permanent.  
-### It depends on current system state.
+## NotebookLM Architecture Exploration
 
----
+Use the interactive architecture notebook to explore canonical replay, lineage, governance, and execution documents:
 
-</div>
+**Open Notebook:**  
+https://notebooklm.google.com/notebook/1c7fd705-9634-48e7-9249-4b06a0a6a2ef?authuser=8
 
----
+### Suggested Questions
 
-## ⚡ HERO — The Core Problem
+- How does deterministic replay work?
+- Why are capabilities single-use?
+- How does DETERMA prevent replay attacks?
+- What happens if runtime state changes?
+- How does append-only lineage work?
+- Why govern execution instead of prompts?
+- How does DETERMA differ from approval workflows?
 
-Modern automated systems assume:
+## What Governed Execution Means
 
-> If an action was approved once, it remains valid later.
+AI systems can generate actions.  
+DETERMA governs whether those actions are permitted to mutate external systems *at execution time*.
 
-But in reality:
+Core idea:
 
-- system state changes continuously
-- dependencies evolve
-- runtime conditions drift
+- Approval is necessary but not sufficient.
+- Authority must be valid at the moment of mutation.
+- Replay and stale authority must fail closed.
 
-👉 This creates a gap between **approval time** and **execution time**
+## One-Command Demo
 
----
+Run a complete governed execution ceremony:
 
-## 🧠 HERO — The Insight
-
-> An approval is only valid within the system state in which it was created.
-
-If the system changes, the approval may no longer apply.
-
----
-
-## 🔄 VISUAL FLOW (What the system does)
-
-```text id="f1m8qx"
-[ REQUEST ]
-     ↓
-[ SNAPSHOT STATE ]
-     ↓
-[ EXECUTION (ONCE) ]
-     ↓
-[ SYSTEM DRIFT ]
-     ↓
-[ REPLAY ATTEMPT ]
-     ↓
-[ STATE MISMATCH DETECTED ]
-     ↓
-[ EXECUTION BLOCKED ]
-     ↓
-[ PROOF GENERATED ]
-📦 WHAT THIS DEMO SHOWS
-governed execution flow
-immutable runtime snapshot capture
-single-use execution authority
-deterministic replay invalidation
-verifiable proof artifacts
-🔍 INTERACTIVE IDEA (how it feels)
-
-You see:
-
-1. Approval
-
-A system change is approved
-
-2. Execution
-
-Change is executed successfully
-
-3. Time passes
-
-System state evolves
-
-4. Replay attempt
-
-Same action is executed again
-
-5. Block
-
-Execution is stopped
-
-6. Explanation
-
-The system state has changed since approval
-
-📊 WHY THIS MATTERS
-
-In real-world systems:
-
-AI agents execute actions
-automation pipelines reuse approvals
-infrastructure changes continuously
-
-DETERMA makes a key failure mode visible:
-
-execution assumptions become invalid over time
-
-🧪 RUN LOCALLY
+```bash
 python scripts/demo_governed_flow.py
+```
 
-or:
+This demo walks through proposal creation, approval, capability issuance, governed execution, replay validation, and replay attack rejection.
 
-docker compose up
-🧩 SYSTEM COMPONENTS (Minimal View)
-runtime/    execution + snapshot + validation
-scripts/    demo flows
-receipts/   proof artifacts
-tests/      replay + drift validation
-⚠️ WHAT THIS IS NOT
+## Runtime Dashboard
 
-This project is NOT:
+Start the runtime shell:
 
-a governance platform
-a distributed orchestration system
-a security product
-a blockchain or consensus layer
+```bash
+uvicorn runtime.api_shell:app --host 0.0.0.0 --port 8000
+```
 
-It is a minimal runtime experiment that demonstrates execution validity under change.
+Open the governed execution experience:
 
-🎯 CORE PRINCIPLE
+- `http://127.0.0.1:8000/demo`
 
-Execution must be validated against current system state, not past authorization.
+Dashboard supports:
 
-💡 ONE-LINE SUMMARY
+- landing + threat framing
+- comparison mode: without governance vs with DETERMA
+- replay attack fail-closed visualization
+- post-demo architecture exploration gateway
 
-DETERMA shows why approvals can silently become invalid when systems change.
+## Threat Framing
 
-<div align="center">
-⭐ If this resonates, explore the runtime demo
-</div> ```
+DETERMA is built for the execution boundary where risk materializes:
+
+- prompt-injected intent
+- compromised agent behavior
+- capability reuse / replay attempts
+- stale execution context
+
+It does **not** claim to detect all unsafe cognition.  
+It enforces deterministic mutation authority controls before external change.
+
+## Without Governance vs With DETERMA
+
+| Dimension | Without Governance | With DETERMA |
+|---|---|---|
+| Mutation timing | Executes immediately | Intercepted behind authority checks |
+| Approval semantics | Often equivalent to execution | Approval separated from authority |
+| Capability reuse | Commonly reusable | Single-use and consumed |
+| Replay attempts | Can succeed | Blocked fail-closed |
+| Lineage guarantees | Weak / inconsistent | Append-only receipts and replay validation |
+| Failure mode | Fail-open | Fail-closed |
+
+## Runtime Principles
+
+- Deterministic replay validation
+- Append-only lineage and receipt integrity
+- Single-use execution capability consumption
+- Authority re-check at mutation boundary
+- Fail-closed behavior on ambiguity or invalid state
+- Crash-safe lifecycle recovery and reproducibility
+
+## Documentation Map
+
+### Core
+
+- [Canonical Language](docs/core/CANONICAL_LANGUAGE.md)
+- [MVP](docs/core/MVP.md)
+- [Architecture](docs/core/ARCHITECTURE.md)
+- [Governance](docs/core/GOVERNANCE.md)
+- [Invariants](docs/core/INVARIANTS.md)
+- [Security](docs/core/SECURITY.md)
+- [Threat Scenarios](docs/core/THREAT_SCENARIOS.md)
+- [Authority Ledger](docs/core/AUTHORITY_LEDGER.md)
+- [Execution Convergence](docs/core/EXECUTION_CONVERGENCE.md)
+- [Runtime Success Criteria](docs/core/RUNTIME_SUCCESS_CRITERIA.md)
+- [Anti-Fake Implementation](docs/core/ANTI_FAKE_IMPLEMENTATION.md)
+- [Canonical Stop Condition](docs/core/CANONICAL_STOP_CONDITION.md)
+
+### Demo
+
+- [Demo Semantics](docs/demo/DEMO.md)
+
+## Product Direction
+
+DETERMA is evolving as a governed execution platform narrative:
+
+- from runtime enforcement to explainable governance demonstrations
+- from standalone proofs to interactive architecture exploration
+- from approval-centric workflows to deterministic execution legitimacy
+
+The product direction remains strict: **control mutation authority, not thought content**.
+
+## Final Runtime Exploration CTA
+
+1. Run the ceremony: `python scripts/demo_governed_flow.py`
+2. Launch dashboard: `uvicorn runtime.api_shell:app --host 0.0.0.0 --port 8000`
+3. Open `/demo` and walk the fail-open vs fail-closed comparison
+4. Explore canonical architecture in NotebookLM:
+   https://notebooklm.google.com/notebook/1c7fd705-9634-48e7-9249-4b06a0a6a2ef?authuser=8

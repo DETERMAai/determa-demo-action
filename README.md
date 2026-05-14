@@ -1,123 +1,79 @@
-# DETERMA — Governed Execution Proof System
+# DETERMA
 
-DETERMA is a minimal execution verification system that demonstrates a core principle in modern runtime environments:
-
-> Execution legitimacy depends on the current system state, not on historical authorization.
+A minimal runtime execution integrity experiment.
 
 ---
 
-## The Problem
+## What this project demonstrates
 
-In modern automated systems, actions are often approved based on a snapshot of system conditions.
+DETERMA shows a simple but important idea:
 
-However, between approval and execution:
-
-- system state may change
-- dependencies may shift
-- runtime assumptions may become outdated
-
-This creates a gap between "approved intent" and "valid execution conditions".
+> A system action approved in one runtime state may become invalid if the system changes before execution is repeated.
 
 ---
 
-## What DETERMA Demonstrates
+## Core Problem
 
-DETERMA implements a minimal, reproducible proof system that shows how execution can become invalid when runtime conditions change.
+In automated systems:
 
-It demonstrates:
+- decisions are made based on current system state
+- execution may happen later
+- the system state can change in between
 
-- A single governed mutation flow
-- Immutable runtime snapshot capture at approval time
-- Single-use execution authority
-- Deterministic runtime drift after approval
-- Replay attempt using the same authority
-- Automatic rejection when state no longer matches
-- Verifiable execution evidence output
+This creates a mismatch between:
+- what was approved
+- and what is still valid
 
 ---
 
-## Core Insight
+## What DETERMA does
 
-> An approval is only valid within the runtime state in which it was granted.
-
-When runtime state changes, prior authorization may no longer be sufficient for execution.
-
----
-
-## System Behavior (Simplified)
+This project implements a minimal, reproducible flow that demonstrates this mismatch:
 
 1. A change is requested
-2. The system records current runtime state
-3. The change is executed once under approval
-4. The system state evolves over time
-5. A replay attempt is made using the same authorization
-6. The system rejects execution due to state mismatch
-7. A verifiable proof of invalidation is generated
+2. The system captures the current state
+3. The change is executed once
+4. The system state changes over time (drift)
+5. A replay of the same change is attempted
+6. The system detects that the state has changed
+7. The replay is blocked
+8. A proof record is generated explaining why
+
+---
+
+## Key Idea
+
+> Execution is only valid if the system state matches the state at the time of approval.
+
+When the system changes, previous approvals may no longer apply.
 
 ---
 
 ## Output
 
-Each run produces an execution proof containing:
+Each run produces a simple proof record containing:
 
-- approval-time system snapshot
-- post-change runtime state
+- system state at approval time
+- system state at replay time
 - execution identifier
-- single-use authorization record
-- replay invalidation reason
+- authorization reference
+- invalidation reason (if applicable)
 
-These outputs are structured to be inspectable and reproducible.
-
----
-
-## What This Is
-
-DETERMA is a **minimal proof-of-concept system** for reasoning about execution validity in changing runtime environments.
-
-It is intended as a foundation for:
-
-- runtime governance systems
-- execution integrity layers
-- agentic system safety boundaries
-- reproducible execution verification
+This allows verification of why an execution was accepted or rejected.
 
 ---
 
-## What This Is NOT
+## Why this matters
 
-DETERMA is not:
+Modern systems (automation, AI agents, distributed services) often assume:
 
-- a full production governance platform
-- a distributed orchestration system
-- a blockchain or consensus protocol
-- a security product or monitoring tool
+> If something was approved, it remains valid.
 
-It is a focused experimental system demonstrating a single execution principle.
+This project shows why that assumption can fail in dynamic systems.
 
 ---
 
-## Repository Scope
+## How to run
 
-This repository contains:
-
-- core governed execution implementation
-- deterministic proof generation flow
-- replay validation logic
-- runtime snapshot system
-- verification utilities
-
-It intentionally avoids unnecessary system complexity to preserve clarity of the core invariant.
-
----
-
-## Why It Matters
-
-As AI-driven and automated systems increasingly execute real-world actions, understanding when an authorization is no longer valid becomes critical.
-
-DETERMA explores this gap through a minimal, verifiable execution model.
-
----
-
-## Key Principle
-
-> Execution should only be valid if current runtime conditions match the conditions under which it was approved.
+```bash
+python scripts/demo_governed_flow.py

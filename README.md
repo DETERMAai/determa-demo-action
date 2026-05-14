@@ -1,79 +1,62 @@
 # DETERMA
 
-A minimal runtime execution integrity experiment.
+> Execution validity is not permanent. It depends on the system state at the moment of execution.
 
 ---
 
-## What this project demonstrates
+## A minimal runtime proof system for state-aware execution integrity
 
-DETERMA shows a simple but important idea:
+DETERMA demonstrates a simple but critical failure mode in automated systems:
 
-> A system action approved in one runtime state may become invalid if the system changes before execution is repeated.
-
----
-
-## Core Problem
-
-In automated systems:
-
-- decisions are made based on current system state
-- execution may happen later
-- the system state can change in between
-
-This creates a mismatch between:
-- what was approved
-- and what is still valid
+> An approval made in one system state may become invalid when the system changes before execution is repeated.
 
 ---
 
-## What DETERMA does
+## ⚡ The Core Insight
 
-This project implements a minimal, reproducible flow that demonstrates this mismatch:
+Most systems assume:
 
-1. A change is requested
-2. The system captures the current state
-3. The change is executed once
-4. The system state changes over time (drift)
-5. A replay of the same change is attempted
-6. The system detects that the state has changed
-7. The replay is blocked
-8. A proof record is generated explaining why
+> “If it was approved once, it is still valid later.”
+
+DETERMA shows why this assumption breaks in dynamic environments.
 
 ---
 
-## Key Idea
+## 🔍 What it does (in one flow)
 
-> Execution is only valid if the system state matches the state at the time of approval.
-
-When the system changes, previous approvals may no longer apply.
-
----
-
-## Output
-
-Each run produces a simple proof record containing:
-
-- system state at approval time
-- system state at replay time
-- execution identifier
-- authorization reference
-- invalidation reason (if applicable)
-
-This allows verification of why an execution was accepted or rejected.
+- A system change is approved
+- The current runtime state is recorded
+- The change is executed once
+- The system state evolves (drift)
+- The same execution is attempted again
+- The system detects state mismatch
+- The replay is blocked
+- A verifiable proof is generated
 
 ---
 
-## Why this matters
+## 🧠 Why it matters
 
-Modern systems (automation, AI agents, distributed services) often assume:
+In AI systems, automation pipelines, and distributed infrastructure:
 
-> If something was approved, it remains valid.
+- state changes constantly
+- approvals are often reused
+- execution is assumed to remain valid
 
-This project shows why that assumption can fail in dynamic systems.
+DETERMA makes this gap visible and testable.
 
 ---
 
-## How to run
+## 📦 What you get
+
+- reproducible governed execution flow
+- runtime snapshot capture
+- deterministic replay invalidation
+- verifiable execution proof artifacts
+
+---
+
+## 🧪 Try it
 
 ```bash
 python scripts/demo_governed_flow.py

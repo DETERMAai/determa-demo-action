@@ -2,38 +2,51 @@
 
 # DETERMA Runtime
 
-### Deterministic Governed Execution for Autonomous AI Systems
+### Public Governed Execution Demonstration
 
 AI systems can generate actions.  
-DETERMA governs whether those actions are allowed to mutate real systems.
+DETERMA demonstrates how execution authority can govern whether those actions are allowed to mutate real systems.
 
 <p>
   <img src="docs/assets/determa-runtime-hero.svg" width="100%" alt="DETERMA Runtime Hero"/>
 </p>
 
 <p>
-  <img src="https://img.shields.io/badge/runtime-validation-60%20passed-success"/>
-  <img src="https://img.shields.io/badge/replay-verified-success"/>
+  <img src="https://img.shields.io/badge/public-demo-success"/>
   <img src="https://img.shields.io/badge/runtime-fail--closed-critical"/>
-  <img src="https://img.shields.io/badge/container-parity-verified-success"/>
+  <img src="https://img.shields.io/badge/replay-blocked-success"/>
+  <img src="https://img.shields.io/badge/status-showcase-blue"/>
 </p>
 
 </div>
 
 ---
 
-# Governed Execution for AI Systems
+# What This Repository Is
 
-DETERMA demonstrates a governed execution runtime where:
+This repository is the public DETERMA showcase.
 
-- AI-generated mutations are intercepted before execution
-- execution authority is explicitly issued
-- execution capabilities are single-use
-- replay attacks fail closed
-- runtime lineage remains append-only
-- deterministic replay verifies execution legitimacy
+It demonstrates a narrow governed execution loop where an AI-generated action does not receive direct mutation authority. Instead, the action must pass through an execution boundary before any governed mutation is allowed.
 
-Unlike traditional AI safety layers that focus on prompts or outputs, DETERMA governs execution authority itself.
+The goal of this repository is to prove the principle:
+
+```text
+AI proposes.
+Authority governs.
+Execution is constrained.
+Lineage is recorded.
+Replay attempts fail closed.
+```
+
+---
+
+# What This Repository Is Not
+
+This public repository is not the full DETERMA authority core.
+
+It intentionally does not contain the full internal protocol specification, private architecture corpus, patent-sensitive material, partner diligence materials, roadmap, or the complete NotebookLM knowledge base.
+
+Those materials are maintained privately and shared selectively with qualified technical, enterprise, investor, and strategic partners.
 
 ---
 
@@ -55,194 +68,115 @@ Then open:
 http://localhost:8000/demo
 ```
 
----
-
-# Explore the DETERMA Runtime Architecture
-
-All canonical replay, lineage, governance, runtime, and threat-model documents are searchable through the interactive DETERMA architecture notebook.
-
-## Interactive Architecture Notebook
-
-👉 https://notebooklm.google.com/notebook/1c7fd705-9634-48e7-9249-4b06a0a6a2ef?authuser=8
-
----
-
-## Suggested Questions
-
-- How does deterministic replay work?
-- Why are capabilities single-use?
-- How does DETERMA prevent replay attacks?
-- What happens if runtime state changes?
-- How does append-only lineage work?
-- Why govern execution instead of prompts?
-- How does DETERMA differ from approval workflows?
+The demo is designed to show the governed execution flow, including authority checks, lineage recording, and replay blocking behavior.
 
 ---
 
 # Governed Execution Flow
 
 ```text
-AI
- ↓
-Proposal
- ↓
-Authority Boundary
- ↓
-Capability Issuance
- ↓
-Governed Execution
- ↓
-Replay Verification
- ↓
-Replay Attack Blocked
+AI-generated proposal
+        ↓
+Execution boundary
+        ↓
+Authority check
+        ↓
+Single-use governed capability
+        ↓
+Constrained execution
+        ↓
+Replay verification
+        ↓
+Append-only lineage
 ```
 
 ---
 
-# Why Existing AI Governance Is Not Enough
-
-```text
-Prompt
- ↓
-Model
- ↓
-Agent
- ↓
-Mutation Attempt
- ↓
-DETERMA Execution Boundary
- ↓
-Governed Execution
-```
+# Why Govern Execution Instead of Prompts
 
 Most AI governance systems focus on:
 
-- prompts
-- outputs
+- prompt rules
+- output filtering
 - orchestration
 - observability
-- approvals
+- human approval workflows
 
-DETERMA focuses on the execution boundary itself.
+Those controls are useful, but they do not fully answer the execution question:
 
-Even compromised or manipulated AI systems cannot mutate governed systems without explicitly issued execution authority.
+```text
+Should this specific machine-generated action be allowed to mutate this specific system now?
+```
+
+DETERMA focuses on that boundary.
+
+The public demo shows how a mutation attempt can be intercepted, governed, and verified before execution is treated as legitimate.
 
 ---
 
 # Architectural Comparison
 
-| Category | Typical Approach | Limitation | DETERMA Approach |
+| Category | Typical Approach | Limitation | DETERMA Public Demo |
 |---|---|---|---|
-| Prompt Security | Filter prompts | Cannot govern execution | Governs execution authority |
-| Approval Workflows | Human approval | Approvals can be replayed | Single-use execution capabilities |
-| Observability Platforms | Detect after execution | Mutation already occurred | Fail-closed execution boundary |
-| Agent Frameworks | Orchestration | Execution trust assumed | Execution trust verified |
-| RBAC / IAM | Identity control | Not replay-aware | Replay-verifiable lineage |
+| Prompt Security | Filter prompts | Cannot govern execution | Demonstrates execution boundary |
+| Approval Workflows | Human approval | Approval can be reused or misapplied | Demonstrates bounded authority |
+| Observability | Detect after execution | Mutation already happened | Demonstrates pre-execution control |
+| Agent Frameworks | Orchestrate actions | Execution trust is assumed | Demonstrates governed execution |
+| Audit Logs | Record events | May not block unsafe execution | Demonstrates lineage plus blocking |
 
 ---
 
-# Without Governance vs With DETERMA
-
-| Without Governance | With DETERMA |
-|---|---|
-| execution occurs immediately | execution is intercepted |
-| replay attempts can succeed | replay attacks fail closed |
-| authority is implicit | authority is explicit |
-| fail-open behavior | fail-closed behavior |
-| mutation trust is assumed | mutation trust is verified |
-
----
-
-# Runtime Guarantees Verified
+# Runtime Guarantees Demonstrated
 
 <div align="center">
 
-| Guarantee | Status |
+| Demonstrated Property | Public Demo Status |
 |---|---|
-| Deterministic replay | ✅ Verified |
-| Append-only lineage | ✅ Verified |
-| Replay prevention | ✅ Verified |
-| Fail-closed authority checks | ✅ Verified |
-| Crash recovery | ✅ Verified |
-| Cross-process coordination | ✅ Verified |
-| Corruption detection | ✅ Verified |
-| Restoration equivalence | ✅ Verified |
-| Container parity | ✅ Verified |
+| Governed execution ceremony | ✅ Demonstrated |
+| Replay blocking behavior | ✅ Demonstrated |
+| Append-only lineage concept | ✅ Demonstrated |
+| Fail-closed authority check | ✅ Demonstrated |
+| Runtime dashboard | ✅ Included |
+| Docker runtime path | ✅ Included |
 
 </div>
 
 ---
 
-# Documentation Map
+# Public Documentation Map
 
-## Core Runtime
-
-| Document | Purpose |
-|---|---|
-| `README.md` | Product overview and governed execution entrypoint |
-| `runtime/` | Canonical runtime implementation |
-| `runtime/github_governor.py` | Governed GitHub mutation flow |
-| `runtime/api_shell.py` | Thin observability/API layer |
-
-## Replay and Integrity
-
-| Document | Purpose |
-|---|---|
-| `docs/core/AUTHORITY_LEDGER.md` | Append-only lineage model |
-| `docs/core/EXECUTION_CONVERGENCE.md` | Deterministic replay guarantees |
-| `docs/core/CANONICAL_STOP_CONDITION.md` | Fail-closed execution semantics |
-| `docs/core/ANTI_FAKE_IMPLEMENTATION.md` | Runtime legitimacy constraints |
-
-## Threat and Governance
-
-| Document | Purpose |
-|---|---|
-| `docs/core/THREAT_SCENARIOS.md` | Attack and compromise scenarios |
-| `docs/core/CANONICAL_LANGUAGE.md` | Canonical governance terminology |
-| `docs/core/RUNTIME_SUCCESS_CRITERIA.md` | Runtime legitimacy conditions |
-
-## Runtime Proofs and Receipts
-
-| Document | Purpose |
-|---|---|
-| `receipts/` | Replay-verifiable runtime artifacts |
-| `receipts/runtime_proof_snapshot.json` | Canonical replay proof snapshot |
-| `receipts/release_lineage.jsonl` | Append-only release lineage |
+| Area | Location | Purpose |
+|---|---|---|
+| Runtime demo | `scripts/demo_governed_flow.py` | One-command governed execution demonstration |
+| Runtime implementation | `runtime/` | Public proof implementation |
+| API/dashboard shell | `runtime/api_shell.py` | Thin demo and observability layer |
+| Public docs | `docs/` | Showcase-level architecture and runtime notes |
+| Receipts | `receipts/` | Public demo proof artifacts |
 
 ---
 
-# Runtime Principles
+# Private Architecture and Partner Review
 
-```text
-AI proposes.
-Authority decides.
-Execution is verified.
-Replay is reproducible.
-Lineage is append-only.
-```
+The full DETERMA architecture is maintained separately from this public showcase.
 
-The runtime preserves:
+Selective access may include:
 
-- deterministic replay
-- append-only lineage
-- fail-closed execution
-- replay digest consistency
-- restoration equivalence
-- single-use capability semantics
-- authority-bound execution
+- internal authority core documentation
+- deeper execution governance materials
+- expanded threat model
+- partner diligence package
+- private NotebookLM corpus
+- implementation roadmap
+
+Access is granted manually after an introductory technical or strategic conversation.
 
 ---
 
-# Product Direction
+# Public Product Statement
 
-DETERMA is evolving toward deterministic governed execution infrastructure focused on:
+DETERMA is building governed execution authority for machine-initiated change.
 
-- governed AI mutations
-- replay-verifiable execution
-- append-only lineage
-- authority-bound execution
-- recoverable runtime workflows
-- fail-closed mutation governance
+This repository demonstrates one public proof slice. It should not be interpreted as the full production authority plane or the complete internal system design.
 
 ---
 
@@ -260,6 +194,4 @@ Open the runtime dashboard:
 http://localhost:8000/demo
 ```
 
-Explore the architecture notebook:
-
-👉 https://notebooklm.google.com/notebook/1c7fd705-9634-48e7-9249-4b06a0a6a2ef?authuser=8
+For deeper technical review, request curated private access from the DETERMA team.

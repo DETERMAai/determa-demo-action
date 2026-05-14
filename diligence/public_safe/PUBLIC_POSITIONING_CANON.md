@@ -1,3 +1,6 @@
+STATUS: CANONICAL
+EXPOSURE: PUBLIC_SAFE
+
 # DETERMA Public Positioning Canon
 
 ## Purpose

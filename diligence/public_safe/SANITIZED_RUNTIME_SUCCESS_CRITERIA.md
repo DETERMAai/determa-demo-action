@@ -1,3 +1,7 @@
+STATUS: SANITIZED_DERIVATIVE
+EXPOSURE: PUBLIC_SAFE
+CANONICAL_SOURCE: /docs/core/RUNTIME_SUCCESS_CRITERIA.md
+
 # Sanitized Runtime Success Criteria
 
 ## Purpose

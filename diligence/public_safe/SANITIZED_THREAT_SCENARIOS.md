@@ -1,3 +1,7 @@
+STATUS: SANITIZED_DERIVATIVE
+EXPOSURE: PUBLIC_SAFE
+CANONICAL_SOURCE: /docs/core/THREAT_SCENARIOS.md
+
 # Sanitized Threat Scenarios
 
 ## Purpose

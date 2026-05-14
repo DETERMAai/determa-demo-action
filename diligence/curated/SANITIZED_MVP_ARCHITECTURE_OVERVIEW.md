@@ -1,3 +1,7 @@
+STATUS: SANITIZED_DERIVATIVE
+EXPOSURE: DILIGENCE
+CANONICAL_SOURCE: /DETERMA MVP Architecture.docx
+
 # Sanitized MVP Architecture Overview
 
 ## Purpose

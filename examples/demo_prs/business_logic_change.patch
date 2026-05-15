@@ -1,7 +1,0 @@
-diff --git a/src/pricing/service.py b/src/pricing/service.py
-index 7777777..8888888 100644
---- a/src/pricing/service.py
-+++ b/src/pricing/service.py
-@@ -5,7 +5,7 @@ def calculate_total(price, quantity):
--    return price * quantity
-+    return (price * quantity) * 0.9

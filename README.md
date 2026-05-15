@@ -1,40 +1,55 @@
 # DETERMA
 
-Runtime-legitimacy category surface.
+## Runtime Legitimacy Field Publication Surface
 
-## NotebookLM (Start Here)
-Public architecture and concept docs for exploration live in [`docs/notebooklm/INDEX.md`](docs/notebooklm/INDEX.md).
+> The approval remained.  
+> The system changed.
 
-Notebook link:
-- https://notebooklm.google.com/notebook/1c7fd705-9634-48e7-9249-4b06a0a6a2ef?authuser=8
+This repository is a public conceptual doctrine surface for runtime legitimacy.
 
-## What Problem Exists?
-Historical authorization can remain present while runtime reality changes.
+It explains why historical authorization can diverge from present execution legitimacy as runtime reality evolves.
 
-## Why Current Systems Fail
-Most approval flows assume runtime stability between approval and execution.
+## Public Navigation
 
-## Why Execution Legitimacy Must Be Runtime-Aware
-Execution legitimacy must be evaluated against current runtime state, not historical approval state alone.
+Primary ontology surface:
 
-Core claim:
-Historical authorization does not guarantee present execution legitimacy.
+```text
+docs/notebooklm_public/
+```
 
-## Public Demo
-- Open [`docs/demo/index.html`](docs/demo/index.html) for the runtime contradiction walkthrough.
+Public contradiction demo:
 
-## Public Documentation
-- [`docs/notebooklm/INDEX.md`](docs/notebooklm/INDEX.md)
-- [`docs/canonical/governed_execution.md`](docs/canonical/governed_execution.md)
-- [`docs/canonical/runtime_legitimacy.md`](docs/canonical/runtime_legitimacy.md)
-- [`docs/canonical/authorization_continuity.md`](docs/canonical/authorization_continuity.md)
-- [`docs/canonical/mutation_legitimacy.md`](docs/canonical/mutation_legitimacy.md)
-- [`docs/demo/DEMO_SCRIPT_90_SECONDS.md`](docs/demo/DEMO_SCRIPT_90_SECONDS.md)
-- [`docs/positioning/governed_execution_category.md`](docs/positioning/governed_execution_category.md)
+```text
+demo/index.html
+```
 
-## Public/Private Boundary
-Certain operational enforcement details are intentionally excluded from this repository.
+Public conceptual examples:
 
-This public repository explains why runtime legitimacy matters.
+```text
+examples/
+```
 
-Enforcement internals are relocated to THEFACTORY private storage.
+## Core Concept
+
+Traditional assumption:
+
+```text
+Approval -> Execution
+```
+
+Runtime legitimacy model:
+
+```text
+Approval -> Runtime Revalidation -> Execution Decision
+```
+
+## Public Repository Scope
+
+- legitimacy field theory
+- runtime governance conceptual framing
+- distributed authority conceptual models
+- ontology-governed NotebookLM ingestion materials
+
+## Disclosure Boundary
+
+Operational runtime internals, orchestration mechanics, and implementation-sensitive enforcement materials are intentionally excluded from this public repository surface.

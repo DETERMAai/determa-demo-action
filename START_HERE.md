@@ -1,6 +1,6 @@
 # Start Here
 
 1. Read `README.md`.
-2. Open `docs/demo/index.html`.
-3. Review canonical definitions in `docs/canonical/`.
-4. Explore conceptual notebook docs in `docs/notebooklm/INDEX.md`.
+2. Open `docs/notebooklm_public/START_HERE.md`.
+3. Follow `docs/notebooklm_public/INDEX.md`.
+4. Open `demo/index.html` for the public contradiction walkthrough.

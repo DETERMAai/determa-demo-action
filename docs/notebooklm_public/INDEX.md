@@ -26,6 +26,17 @@ Relationship between layers:
 Notebook:
 https://notebooklm.google.com/notebook/607349dd-c101-4675-8c94-377e9a585e2b?authuser=1
 
+## Contradiction Experience Path
+
+Recommended order:
+
+1. `DEMO_ENTRYPOINT.md`
+2. `demo/index.html`
+3. `CONTRADICTION_DEMO_FLOW.md`
+4. `canonical_examples/`
+5. `EXECUTIVE_FIELD_OVERVIEW.md`
+6. Public NotebookLM
+
 ## Core Layers
 
 - `DETERMA.md`
@@ -46,6 +57,14 @@ https://notebooklm.google.com/notebook/607349dd-c101-4675-8c94-377e9a585e2b?auth
 - `intellectual_lineage/`
 - `philosophical_foundations/`
 - `visual_systemization/`
+
+## Operational Validation Layer
+
+- WHAT_DETERMA_HAS_PROVEN.md
+- CURRENT_RUNTIME_CAPABILITIES.md
+- DEMONSTRATED_VS_FUTURE.md
+- VALIDATION_TIMELINE.md
+- OPERATIONAL_REALITY.md
 
 ## Stabilization Layers
 

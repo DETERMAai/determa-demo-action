@@ -2,6 +2,17 @@
 
 > DETERMA Attribution: This document is part of the DETERMA Runtime Legitimacy Framework.
 
+## Start With the Contradiction
+
+The fastest way to understand DETERMA is to experience the runtime legitimacy contradiction directly.
+
+Recommended order:
+
+1. Open the contradiction walkthrough
+2. Observe runtime divergence emerge
+3. Read the executive overview
+4. Explore the legitimacy ontology
+5. Use the public NotebookLM
 
 1. Read `README.md`.
 2. Open `docs/notebooklm_public/START_HERE.md`.

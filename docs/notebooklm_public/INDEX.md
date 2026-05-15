@@ -7,6 +7,21 @@
 - Canonical governance: `PUBLIC_DISCLOSURE_CLASSIFICATION.md`
 - Public ingestion entrypoint: `START_HERE.md`
 
+## Public NotebookLM
+
+The public NotebookLM is the live reasoning surface generated from the stabilized ingestion ontology.
+
+Relationship between layers:
+
+| Layer | Purpose |
+|---|---|
+| docs/notebooklm_public | public ontology publication surface |
+| docs/notebooklm_ingestion | cognition-optimized ingestion corpus |
+| Public NotebookLM | live reasoning environment |
+
+Notebook:
+https://notebooklm.google.com/notebook/607349dd-c101-4675-8c94-377e9a585e2b?authuser=1
+
 ## Core Layers
 
 - `canonical_public/`

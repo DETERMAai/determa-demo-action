@@ -9,6 +9,21 @@ It is designed for:
 - topology and state-transition reasoning
 - governance emergence interpretation
 
+## Public Reasoning Environment
+
+The public DETERMA NotebookLM is generated from the curated ingestion surface contained in this directory.
+
+Public NotebookLM:
+https://notebooklm.google.com/notebook/607349dd-c101-4675-8c94-377e9a585e2b?authuser=1
+
+This environment is intended for:
+
+- runtime legitimacy exploration
+- distributed authority reasoning
+- contradiction analysis
+- legitimacy topology understanding
+- infrastructure governance cognition
+
 ## Reading Paths
 
 Minimal core path:

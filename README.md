@@ -1,18 +1,18 @@
-# DETERMA
+﻿# DETERMA
 
-**Governed execution runtime for AI mutation authority.**
+Governed execution infrastructure for runtime legitimacy.
 
-DETERMA is an execution-governance system that decides whether AI-generated actions are permitted to mutate external systems at runtime.  
-It separates **intent generation** from **mutation authority** and enforces deterministic, fail-closed execution control.
+## NotebookLM (Public Architecture Layer)
 
-## Architecture Notebook (NotebookLM)
+All public, NotebookLM-safe architecture and conceptual documents are curated in:
 
-All canonical replay, lineage, governance, and execution architecture documents are searchable in the interactive DETERMA notebook:
+- `docs/notebooklm/`
 
-**Notebook Link:**  
-https://notebooklm.google.com/notebook/1c7fd705-9634-48e7-9249-4b06a0a6a2ef?authuser=8
+Notebook link:
 
-### Suggested Questions
+- https://notebooklm.google.com/notebook/1c7fd705-9634-48e7-9249-4b06a0a6a2ef?authuser=8
+
+Suggested questions:
 
 - How does deterministic replay work?
 - Why are capabilities single-use?
@@ -22,169 +22,73 @@ https://notebooklm.google.com/notebook/1c7fd705-9634-48e7-9249-4b06a0a6a2ef?auth
 - Why govern execution instead of prompts?
 - How does DETERMA differ from approval workflows?
 
----
+## Public Scope
 
-## Governed Execution, Precisely
+This public repository explains:
 
-AI systems can generate actions.  
-DETERMA governs whether those actions are authorized to mutate external systems **at execution time**.
+- governed execution
+- runtime legitimacy
+- runtime drift
+- mutation legitimacy
+- replay-aware execution
+- execution-boundary consistency
 
-Execution invariants:
+Certain operational enforcement details are intentionally excluded from the public materials.
 
-- approval is required but not sufficient
-- authority must be valid at mutation boundary
-- replay or stale authority must fail closed
-
----
-
-## Why Existing AI Governance Is Not Enough
-
-Most governance layers stop at policy, prompts, approvals, or workflow checkpoints.
-
-These controls do not fully resolve execution-risk conditions:
-
-- runtime state drift after approval
-- capability reuse across attempts
-- replay of previously valid authority
-- ambiguity at the exact mutation boundary
-
-DETERMA addresses this gap with deterministic execution legitimacy verification.
-
----
+The public repository focuses on runtime legitimacy concepts, governed execution architecture, and the execution-boundary problem category.
 
 ## One-Command Demo
 
-Run the full governed execution ceremony:
+Run the governed execution demo flow:
 
 ```bash
 python scripts/demo_governed_flow.py
 ```
 
-Ceremony includes proposal, approval, capability issuance, governed mutation, replay validation, and replay attack rejection.
-
----
-
-## Runtime Dashboard
-
-Start runtime shell:
+Launch the runtime shell:
 
 ```bash
-uvicorn runtime.api_shell:app --host 0.0.0.0 --port 8000
+uvicorn runtime.api_shell:app --host 127.0.0.1 --port 8001
 ```
 
-Open demo experience:
+Open the demo:
 
-- `http://127.0.0.1:8000/demo`
+- `http://127.0.0.1:8001/demo`
 
-Dashboard includes:
+## Public Documentation Map
 
-- landing + threat framing
-- scenario narrative mode
-- comparison mode (without governance vs with DETERMA)
-- replay attack fail-closed visualization
-- post-demo architecture exploration
+### Public Conceptual Docs
 
----
+- `docs/public/governed_execution_overview.md`
+- `docs/public/runtime_legitimacy_and_drift.md`
+- `docs/public/mutation_legitimacy_walkthrough.md`
+- `docs/public/replay_aware_execution_consequences.md`
+- `docs/public/high_level_architecture_semantics.md`
+- `docs/public/market_category_framing.md`
 
-## Threat Framing
+### NotebookLM Source Set
 
-DETERMA is built for execution-boundary risk:
+- `docs/notebooklm/README.md`
+- `docs/notebooklm/faq.md`
+- `docs/notebooklm/runtime_legitimacy_primer.md`
+- `docs/notebooklm/governed_execution_walkthrough.md`
+- `docs/notebooklm/replay_aware_category_note.md`
 
-- prompt-injected mutation intent
-- compromised agent behavior
-- capability reuse / replay attempts
-- stale execution context
+## Public/Private Separation
 
-DETERMA does **not** claim universal unsafe-intent detection.  
-It enforces deterministic authority constraints before external mutation.
+Public materials are designed for:
 
----
+- investor exploration
+- design partner onboarding
+- architectural understanding
+- category positioning
 
-## Without Governance vs With DETERMA
+Private operational materials (enforcement internals, implementation details, and security-sensitive mechanics) are staged in `docs/private_archive/` for relocation to private storage/repository.
 
-| Dimension | Without Governance | With DETERMA |
-|---|---|---|
-| Mutation timing | Executes immediately | Intercepted behind authority checks |
-| Approval semantics | Often equivalent to execution | Approval separated from execution legitimacy |
-| Capability reuse | Reusable in practice | Single-use and consumed |
-| Replay attempts | May succeed | Blocked fail-closed |
-| Runtime verification | Partial / workflow-bound | Deterministic replay + lifecycle verification |
-| Failure mode | Fail-open | Fail-closed |
+## Category Statement
 
----
+DETERMA addresses a specific infrastructure problem:
 
-## Architectural Comparison
+approval and execution can diverge when runtime reality changes.
 
-| Architecture Pattern | Control Plane Focus | Mutation Boundary Guarantees |
-|---|---|---|
-| Prompt / policy governance | Intent-level behavior | Weak direct mutation guarantees |
-| Approval workflow governance | Human checkpointing | Vulnerable to stale/replayed authority |
-| **DETERMA execution governance** | Runtime authority legitimacy | Deterministic, append-only, fail-closed mutation control |
-
----
-
-## Runtime Guarantees
-
-- deterministic replay validation
-- append-only lineage + receipt integrity
-- single-use capability consumption
-- authority re-check at execution boundary
-- fail-closed behavior on invalid/ambiguous state
-- crash-safe lifecycle reconstruction and reproducibility
-
----
-
-## Runtime Principles
-
-- governance at the mutation boundary, not only at intent time
-- deterministic verification over discretionary branching
-- explicit authority state transitions over implicit trust
-- immutable lineage over mutable runtime narratives
-
----
-
-## Documentation Map
-
-### Core Runtime
-
-- [Canonical Language](docs/core/CANONICAL_LANGUAGE.md)
-- [MVP](docs/core/MVP.md)
-- [Architecture](docs/core/ARCHITECTURE.md)
-- [Governance](docs/core/GOVERNANCE.md)
-- [Invariants](docs/core/INVARIANTS.md)
-- [Security](docs/core/SECURITY.md)
-- [Threat Scenarios](docs/core/THREAT_SCENARIOS.md)
-- [Authority Ledger](docs/core/AUTHORITY_LEDGER.md)
-
-### Determinism and Recovery
-
-- [Execution Convergence](docs/core/EXECUTION_CONVERGENCE.md)
-- [Runtime Success Criteria](docs/core/RUNTIME_SUCCESS_CRITERIA.md)
-- [Anti-Fake Implementation](docs/core/ANTI_FAKE_IMPLEMENTATION.md)
-- [Canonical Stop Condition](docs/core/CANONICAL_STOP_CONDITION.md)
-
-### Demo Semantics
-
-- [Demo Semantics](docs/demo/DEMO.md)
-
----
-
-## Product Direction
-
-DETERMA is positioned as governed execution infrastructure:
-
-- from approval-centric workflows to execution-legitimacy control
-- from static policy overlays to deterministic runtime verification
-- from standalone demos to explorable governed-execution platform narrative
-
-Category thesis: **control mutation authority, not thought generation**.
-
----
-
-## Final Runtime Exploration
-
-1. Run ceremony: `python scripts/demo_governed_flow.py`
-2. Launch dashboard: `uvicorn runtime.api_shell:app --host 0.0.0.0 --port 8000`
-3. Open `/demo` and inspect fail-open vs fail-closed contrast
-4. Explore architecture in NotebookLM:
-   https://notebooklm.google.com/notebook/1c7fd705-9634-48e7-9249-4b06a0a6a2ef?authuser=8
+The runtime legitimacy boundary exists at execution time, not approval time.

@@ -1,71 +1,36 @@
-# DETERMA public repository hardening
-# Never commit local environments, secrets, credentials, generated DBs, or runtime scratch state.
-
-# Python / virtualenv
-.venv/
-venv/
-env/
+﻿# Python
 __pycache__/
-*.py[cod]
+*.pyc
+*.pyo
+*.pyd
+
+# Virtual environments
+.venv/
+.venv_validation/
+.venv_lo/
+
+# Pytest
 .pytest_cache/
-.mypy_cache/
-.ruff_cache/
-.coverage
-htmlcov/
+.pytest_tmp*/
+.pytest_cache_validation/
 
-# Local environment and secrets
-.env
-.env.*
-!.env.example
-*.pem
-*.key
-*.crt
-*.p12
-*.pfx
-*.jks
-*.keystore
-id_rsa
-id_dsa
-id_ecdsa
-id_ed25519
-*.kubeconfig
-
-# Tokens / credentials / local auth material
-*token*
-*secret*
-*credential*
-*.auth
-*.oauth
-*.pat
-
-# Allow documentation/policy files that intentionally include the words token/secret/credential
-!docs/**
-!SECURITY.md
-!.gitleaks.toml
-
-# SQLite and runtime state
+# Runtime databases
 *.db
-*.sqlite
-*.sqlite3
-*.db-wal
 *.db-shm
-*.db-journal
-runtime_state/
-ledger_state/
-.tmp_runtime/
+*.db-wal
 
-# Logs and local outputs
+# Logs
 *.log
-logs/
-tmp/
-temp/
+*.out
+*.err
+
+# Local runtime artifacts
+proof_demo_runtime.db
+runtime.db
+
+# OS
 .DS_Store
 Thumbs.db
 
-# Generated receipts policy:
-# Public-safe canonical proof receipts may be committed intentionally under receipts/.
-# Do not commit live runtime DBs, private keys, tokens, or environment-specific outputs.
-receipts/*.local.*
-receipts/*secret*
-receipts/*token*
-receipts/*credential*
+# Private export staging
+.private_repo_export/

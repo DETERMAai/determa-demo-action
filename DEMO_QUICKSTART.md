@@ -13,6 +13,7 @@ A contradiction where historical authorization persists while runtime legitimacy
 - legitimacy invalidation
 
 ## Direct Links
-- Demo: `demo/index.html`
+- Live Demo: [https://determaai.github.io/DETERMA-v0.1-Governed-Runtime-Proof-Baseline/](https://determaai.github.io/DETERMA-v0.1-Governed-Runtime-Proof-Baseline/)
+- Repo Demo Path: `demo/index.html`
 - Walkthrough: `docs/notebooklm_public/FIRST_DEMO_WALKTHROUGH.md`
-- Public NotebookLM: https://notebooklm.google.com/notebook/607349dd-c101-4675-8c94-377e9a585e2b?authuser=1
+- Public NotebookLM: [https://notebooklm.google.com/notebook/607349dd-c101-4675-8c94-377e9a585e2b?authuser=1](https://notebooklm.google.com/notebook/607349dd-c101-4675-8c94-377e9a585e2b?authuser=1)

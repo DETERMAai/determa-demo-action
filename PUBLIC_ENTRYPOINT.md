@@ -3,13 +3,13 @@
 Canonical public onboarding sequence:
 
 1. Live demo
-- https://determaai.github.io/DETERMA-v0.1-Governed-Runtime-Proof-Baseline/
+- [Open Live Demo](https://determaai.github.io/DETERMA-v0.1-Governed-Runtime-Proof-Baseline/)
 
 2. Read walkthrough
 - [FIRST_DEMO_WALKTHROUGH](docs/notebooklm_public/FIRST_DEMO_WALKTHROUGH.md)
 
 3. Explore NotebookLM
-- https://notebooklm.google.com/notebook/607349dd-c101-4675-8c94-377e9a585e2b?authuser=1
+- [Open Public NotebookLM](https://notebooklm.google.com/notebook/607349dd-c101-4675-8c94-377e9a585e2b?authuser=1)
 
 4. Investor fast path
 - [INVESTOR_FAST_PATH](INVESTOR_FAST_PATH.md)

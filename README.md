@@ -47,11 +47,9 @@ DETERMA demonstrates how historically valid authorization can become illegitimat
 
 ## Live Demo Status
 
-GitHub Pages deployment is prepared.
+GitHub Pages live walkthrough entrypoint:
 
-To activate the live public walkthrough:
-
-Repository Settings -> Pages -> Deploy from `main` branch.
+[https://determaai.github.io/DETERMA-v0.1-Governed-Runtime-Proof-Baseline/](https://determaai.github.io/DETERMA-v0.1-Governed-Runtime-Proof-Baseline/)
 
 ## Real Operational Failure Modes
 
@@ -74,6 +72,12 @@ Traditional governance systems generally validate approval history.
 DETERMA evaluates whether execution remains legitimate after runtime mutation, delayed execution, dependency drift, and environment divergence.
 
 This distinction becomes increasingly important in autonomous execution systems.
+
+## Why This Category Emerges
+
+Modern autonomous systems increasingly execute across delayed timelines, mutable runtimes, dependency drift, and replayable authority contexts.
+
+Under these conditions, historical approval alone becomes insufficient.
 
 ## Current Maturity
 

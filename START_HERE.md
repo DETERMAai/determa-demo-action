@@ -9,7 +9,7 @@ The fastest way to understand DETERMA is to experience the runtime legitimacy co
 Recommended order:
 
 1. Read `docs/notebooklm_public/FIRST_DEMO_WALKTHROUGH.md`
-2. Open the contradiction walkthrough
+2. Open the contradiction walkthrough: [Live Demo](https://determaai.github.io/DETERMA-v0.1-Governed-Runtime-Proof-Baseline/)
 3. Observe runtime divergence emerge
 4. Read the executive overview
 5. Explore the legitimacy ontology
@@ -28,3 +28,6 @@ The DETERMA public NotebookLM provides a guided reasoning surface for exploring 
 
 Notebook:
 https://notebooklm.google.com/notebook/607349dd-c101-4675-8c94-377e9a585e2b?authuser=1
+
+Live Demo:
+[https://determaai.github.io/DETERMA-v0.1-Governed-Runtime-Proof-Baseline/](https://determaai.github.io/DETERMA-v0.1-Governed-Runtime-Proof-Baseline/)

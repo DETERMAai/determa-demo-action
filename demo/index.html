@@ -64,6 +64,41 @@
       color: var(--text-secondary);
       font-size: 14px;
     }
+    .observe {
+      margin-top: 12px;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 10px;
+      background: rgba(255,255,255,0.02);
+    }
+    .observe p {
+      margin: 0;
+      color: var(--text-primary);
+      font-size: 13px;
+      line-height: 1.5;
+      font-family: "IBM Plex Mono", "JetBrains Mono", Consolas, monospace;
+    }
+    .timeline {
+      margin-top: 12px;
+      border: 1px solid rgba(125, 211, 252, 0.35);
+      border-radius: 8px;
+      padding: 12px;
+      background: rgba(125, 211, 252, 0.06);
+    }
+    .timeline h2 {
+      margin: 0 0 8px 0;
+      font-size: 14px;
+      color: var(--accent);
+      text-transform: uppercase;
+      letter-spacing: 0.02em;
+    }
+    .timeline pre {
+      margin: 0;
+      color: var(--text-primary);
+      font-size: 13px;
+      font-family: "IBM Plex Mono", "JetBrains Mono", Consolas, monospace;
+      line-height: 1.45;
+    }
     .first-time {
       margin-top: 12px;
       border: 1px solid var(--border);
@@ -175,6 +210,21 @@
       text-decoration: none;
       font-size: 12px;
     }
+    .copy-btn {
+      border: 1px solid var(--border);
+      background: transparent;
+      color: var(--text-secondary);
+      border-radius: 6px;
+      font-size: 12px;
+      padding: 7px 10px;
+      cursor: pointer;
+      margin-top: 10px;
+    }
+    .copy-status {
+      margin: 8px 0 0 0;
+      color: var(--text-secondary);
+      font-size: 11px;
+    }
     .footer-note {
       margin-top: 12px;
       padding: 10px;
@@ -198,6 +248,12 @@
       <h1>Runtime Legitimacy Contradiction</h1>
       <p>The approval remained. The system changed.</p>
       <p style="margin-top: 6px;">This walkthrough demonstrates why historical authorization may no longer remain legitimate after runtime mutation.</p>
+      <section class="observe">
+        <p>You are observing a runtime legitimacy contradiction.<br>
+The authorization remained valid.<br>
+The runtime reality changed.<br>
+Execution legitimacy diverged.</p>
+      </section>
       <section class="first-time">
         <h2>First Time Here?</h2>
         <div class="cta-row" style="margin-top: 0;">
@@ -210,6 +266,19 @@
         <a class="btn" href="https://notebooklm.google.com/notebook/607349dd-c101-4675-8c94-377e9a585e2b?authuser=1" target="_blank" rel="noreferrer">Open Public NotebookLM</a>
         <a class="btn" href="../docs/notebooklm_public/EXECUTIVE_FIELD_OVERVIEW.md">Read Executive Overview</a>
       </div>
+    </section>
+
+    <section class="timeline">
+      <h2>Runtime Timeline</h2>
+      <pre>Approval
+↓
+Runtime Mutation
+↓
+Replay Attempt
+↓
+Legitimacy Failure
+↓
+Revalidation Required</pre>
     </section>
 
     <section id="stage1" class="stage">
@@ -257,14 +326,17 @@
 
     <details class="details-card">
       <summary>View Execution Evidence</summary>
-      <pre class="evidence-pre">Approval Timestamp: 2026-05-15T14:01:22Z
+      <pre class="evidence-pre" id="evidenceExport">Approval Timestamp: 2026-05-15T14:01:22Z
+Approval Epoch: approval_epoch_12
 Runtime Epoch: runtime_epoch_47
-Dependency Drift: detected
 Mutation State: changed
+Dependency Drift: detected
 Replay Context: historical
 Legitimacy Status: invalidated
-Reason:
+Divergence Reason:
 Authorization context no longer valid for current runtime.</pre>
+      <button class="copy-btn" id="copyEvidence" type="button">Copy Evidence</button>
+      <p class="copy-status" id="copyStatus"></p>
     </details>
 
     <section class="nav-card">
@@ -286,6 +358,9 @@ Authorization context no longer valid for current runtime.</pre>
     const stageIds = ["stage1", "stage2", "stage3", "stage4", "stage5"];
     const delays = [250, 900, 1100, 1200, 1200];
     const startBtn = document.getElementById("startFlow");
+    const copyBtn = document.getElementById("copyEvidence");
+    const copyStatus = document.getElementById("copyStatus");
+    const evidenceExport = document.getElementById("evidenceExport");
 
     function sleep(ms) {
       return new Promise(resolve => setTimeout(resolve, ms));
@@ -304,6 +379,17 @@ Authorization context no longer valid for current runtime.</pre>
     }
 
     startBtn.addEventListener("click", playStages);
+
+    async function copyEvidence() {
+      try {
+        await navigator.clipboard.writeText(evidenceExport.textContent);
+        copyStatus.textContent = "Evidence copied.";
+      } catch (_) {
+        copyStatus.textContent = "Copy failed. Select and copy manually.";
+      }
+    }
+
+    copyBtn.addEventListener("click", copyEvidence);
   </script>
 </body>
 </html>

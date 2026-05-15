@@ -4,7 +4,11 @@
 The demo shows how historically valid authorization can become illegitimate under changing runtime conditions.
 
 ## Launch
-Open:
+Open live:
+
+[https://determaai.github.io/DETERMA-v0.1-Governed-Runtime-Proof-Baseline/](https://determaai.github.io/DETERMA-v0.1-Governed-Runtime-Proof-Baseline/)
+
+or run locally:
 
 `demo/index.html`
 

@@ -1,4 +1,4 @@
-﻿<!doctype html>
+<!doctype html>
 <html lang="en">
 <head>
   <meta charset="utf-8">
@@ -12,7 +12,8 @@
       --text-primary: #f3f4f6;
       --text-secondary: #9ca3af;
       --accent: #7dd3fc;
-      --border: rgba(255,255,255,0.08);
+      --border: rgba(255,255,255,0.1);
+      --danger: #fca5a5;
     }
     * { box-sizing: border-box; }
     body {
@@ -20,43 +21,50 @@
       background: var(--bg);
       color: var(--text-primary);
       font-family: Inter, "Segoe UI", system-ui, sans-serif;
-      line-height: 1.45;
+      line-height: 1.5;
     }
     .wrap {
       max-width: 980px;
       margin: 0;
-      padding: 16px;
+      padding: 18px;
+      display: grid;
+      gap: 12px;
+    }
+    .card {
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      background: var(--surface);
+      padding: 14px;
+      transition: border-color 180ms ease, background-color 180ms ease;
+    }
+    .card:hover {
+      border-color: rgba(125, 211, 252, 0.35);
+      background: #171d27;
     }
     .top-nav {
       display: flex;
       flex-wrap: wrap;
       gap: 8px;
-      margin-bottom: 12px;
-      padding: 8px;
-      border: 1px solid var(--border);
-      border-radius: 8px;
-      background: var(--surface);
     }
     .top-nav a {
       color: var(--accent);
       text-decoration: none;
       font-size: 12px;
       border: 1px solid var(--border);
-      border-radius: 6px;
-      padding: 6px 8px;
+      border-radius: 7px;
+      padding: 7px 10px;
       background: var(--surface-soft);
+      transition: border-color 160ms ease, transform 160ms ease;
     }
-    .hero {
-      border: 1px solid var(--border);
-      border-radius: 8px;
-      background: var(--surface);
-      padding: 18px;
-      margin-bottom: 14px;
+    .top-nav a:hover {
+      border-color: rgba(125, 211, 252, 0.4);
+      transform: translateY(-1px);
     }
     .hero h1 {
       margin: 0 0 8px 0;
-      font-size: 32px;
-      font-weight: 600;
+      font-size: 34px;
+      font-weight: 620;
+      line-height: 1.2;
       letter-spacing: 0.01em;
     }
     .hero p {
@@ -71,135 +79,123 @@
       padding: 10px;
       background: rgba(255,255,255,0.02);
     }
-    .observe p {
+    .observe pre, .status pre, .timeline pre, .why pre, .evidence-pre {
       margin: 0;
-      color: var(--text-primary);
-      font-size: 13px;
-      line-height: 1.5;
+      white-space: pre-wrap;
       font-family: "IBM Plex Mono", "JetBrains Mono", Consolas, monospace;
+      font-size: 12px;
+      line-height: 1.55;
     }
-    .timeline {
-      margin-top: 12px;
-      border: 1px solid rgba(125, 211, 252, 0.35);
-      border-radius: 8px;
-      padding: 12px;
-      background: rgba(125, 211, 252, 0.06);
-    }
-    .timeline h2 {
+    .status h2, .timeline h2, .why h2 {
       margin: 0 0 8px 0;
-      font-size: 14px;
-      color: var(--accent);
+      font-size: 12px;
       text-transform: uppercase;
-      letter-spacing: 0.02em;
+      letter-spacing: 0.05em;
+      color: var(--accent);
     }
-    .timeline pre {
-      margin: 0;
-      color: var(--text-primary);
-      font-size: 13px;
-      font-family: "IBM Plex Mono", "JetBrains Mono", Consolas, monospace;
-      line-height: 1.45;
+    .status {
+      background: #121721;
+      border-left: 3px solid rgba(125, 211, 252, 0.6);
+      transition: border-left-color 200ms ease;
     }
-    .first-time {
-      margin-top: 12px;
-      border: 1px solid var(--border);
-      border-radius: 8px;
-      padding: 10px;
-      background: rgba(125, 211, 252, 0.04);
+    .status.mutated {
+      border-left-color: rgba(252, 165, 165, 0.7);
     }
+    .timeline { background: rgba(125, 211, 252, 0.05); }
+    .why { background: rgba(255,255,255,0.02); }
     .first-time h2 {
       margin: 0 0 8px 0;
-      font-size: 16px;
-      font-weight: 600;
-      color: var(--text-primary);
+      font-size: 15px;
+      font-weight: 580;
     }
     .cta-row {
       display: flex;
       flex-wrap: wrap;
       gap: 8px;
-      margin-top: 12px;
+      margin-top: 10px;
     }
     .btn {
       border: 1px solid var(--border);
       background: transparent;
       color: var(--text-secondary);
-      border-radius: 6px;
+      border-radius: 7px;
       font-size: 12px;
-      padding: 8px 10px;
+      padding: 8px 11px;
       text-decoration: none;
       cursor: pointer;
+      transition: border-color 160ms ease, color 160ms ease, transform 160ms ease;
+    }
+    .btn:hover {
+      border-color: rgba(125, 211, 252, 0.45);
+      color: var(--text-primary);
+      transform: translateY(-1px);
     }
     .btn.primary {
       color: var(--text-primary);
       border-color: rgba(125, 211, 252, 0.45);
-      background: rgba(125, 211, 252, 0.08);
+      background: rgba(125, 211, 252, 0.1);
       font-size: 14px;
-      padding: 10px 14px;
+      padding: 10px 16px;
       font-weight: 600;
     }
     .stage {
       display: none;
       opacity: 0;
       border: 1px solid var(--border);
-      border-radius: 8px;
+      border-radius: 9px;
       background: var(--surface-soft);
       padding: 12px;
-      margin-bottom: 10px;
+      transition: border-color 220ms ease;
     }
     .stage.show {
       display: block;
-      animation: fade 200ms linear forwards;
+      animation: fadeIn 220ms ease forwards;
     }
-    @keyframes fade {
-      from { opacity: 0; }
-      to { opacity: 1; }
+    .stage.invalid {
+      border-color: rgba(252, 165, 165, 0.55);
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(2px); }
+      to { opacity: 1; transform: translateY(0); }
     }
     .stage h2 {
       margin: 0 0 8px 0;
-      font-size: 14px;
+      font-size: 13px;
       font-weight: 600;
       color: var(--accent);
-      letter-spacing: 0.02em;
       text-transform: uppercase;
+      letter-spacing: 0.04em;
     }
     .stage ul {
       margin: 0;
       padding-left: 18px;
-      color: var(--text-primary);
       font-size: 13px;
-    }
-    .stage li { margin: 3px 0; }
-    .details-card {
-      margin-top: 12px;
-      border: 1px solid var(--border);
-      border-radius: 8px;
-      background: var(--surface);
-      padding: 10px;
     }
     .details-card summary {
       cursor: pointer;
-      color: var(--text-primary);
       font-size: 13px;
       font-weight: 500;
     }
-    .evidence-pre {
-      margin: 8px 0 0 0;
-      white-space: pre-wrap;
-      font-size: 12px;
-      color: var(--text-secondary);
-      font-family: "IBM Plex Mono", "JetBrains Mono", Consolas, monospace;
-      line-height: 1.5;
+    .details-card[open] {
+      border-color: rgba(125, 211, 252, 0.35);
+      transition: border-color 200ms ease;
     }
-    .nav-card {
-      margin-top: 12px;
+    .copy-btn {
+      margin-top: 10px;
       border: 1px solid var(--border);
-      border-radius: 8px;
-      background: var(--surface);
-      padding: 10px;
+      background: transparent;
+      color: var(--text-secondary);
+      border-radius: 7px;
+      padding: 7px 11px;
+      font-size: 12px;
+      cursor: pointer;
+      transition: border-color 160ms ease, color 160ms ease;
     }
-    .nav-card h3 {
-      margin: 0 0 8px 0;
-      font-size: 13px;
-      color: var(--text-primary);
+    .copy-btn:hover { border-color: rgba(125, 211, 252, 0.45); color: var(--text-primary); }
+    .copy-status {
+      margin: 7px 0 0 0;
+      color: var(--text-secondary);
+      font-size: 11px;
     }
     .nav-links {
       display: grid;
@@ -210,57 +206,46 @@
       text-decoration: none;
       font-size: 12px;
     }
-    .copy-btn {
-      border: 1px solid var(--border);
-      background: transparent;
-      color: var(--text-secondary);
-      border-radius: 6px;
-      font-size: 12px;
-      padding: 7px 10px;
-      cursor: pointer;
-      margin-top: 10px;
-    }
-    .copy-status {
-      margin: 8px 0 0 0;
-      color: var(--text-secondary);
-      font-size: 11px;
-    }
     .footer-note {
-      margin-top: 12px;
-      padding: 10px;
-      border: 1px solid var(--border);
-      border-radius: 8px;
       color: var(--text-secondary);
       font-size: 12px;
-      background: var(--surface);
+    }
+    @media (max-width: 640px) {
+      .wrap { padding: 12px; }
+      .hero h1 { font-size: 28px; }
     }
   </style>
 </head>
 <body>
   <main class="wrap">
-    <nav class="top-nav" aria-label="Top Navigation">
+    <nav class="top-nav card" aria-label="Top Navigation">
       <a href="https://determaai.github.io/DETERMA-v0.1-Governed-Runtime-Proof-Baseline/">Live Demo</a>
       <a href="../docs/notebooklm_public/FIRST_DEMO_WALKTHROUGH.md">Walkthrough</a>
       <a href="../docs/notebooklm_public/EXECUTIVE_FIELD_OVERVIEW.md">Executive Overview</a>
       <a href="https://notebooklm.google.com/notebook/607349dd-c101-4675-8c94-377e9a585e2b?authuser=1" target="_blank" rel="noreferrer">NotebookLM</a>
     </nav>
-    <section class="hero">
+
+    <section class="hero card">
       <h1>Runtime Legitimacy Contradiction</h1>
       <p>The approval remained. The system changed.</p>
       <p style="margin-top: 6px;">This walkthrough demonstrates why historical authorization may no longer remain legitimate after runtime mutation.</p>
-      <section class="observe">
-        <p>You are observing a runtime legitimacy contradiction.<br>
-The authorization remained valid.<br>
-The runtime reality changed.<br>
-Execution legitimacy diverged.</p>
+
+      <section class="observe" aria-label="What you are seeing">
+        <pre>You are observing a runtime legitimacy contradiction.
+
+The authorization remained valid.
+The runtime reality changed.
+Execution legitimacy diverged.</pre>
       </section>
-      <section class="first-time">
+
+      <section class="card first-time" style="margin-top: 10px; padding: 10px;">
         <h2>First Time Here?</h2>
         <div class="cta-row" style="margin-top: 0;">
           <a class="btn" href="../docs/notebooklm_public/FIRST_DEMO_WALKTHROUGH.md">Read Before Starting</a>
           <a class="btn" href="https://notebooklm.google.com/notebook/607349dd-c101-4675-8c94-377e9a585e2b?authuser=1" target="_blank" rel="noreferrer">Explore the Public Runtime Legitimacy Notebook</a>
         </div>
       </section>
+
       <div class="cta-row">
         <button id="startFlow" class="btn primary" type="button">Start Contradiction Walkthrough</button>
         <a class="btn" href="https://notebooklm.google.com/notebook/607349dd-c101-4675-8c94-377e9a585e2b?authuser=1" target="_blank" rel="noreferrer">Open Public NotebookLM</a>
@@ -268,7 +253,16 @@ Execution legitimacy diverged.</p>
       </div>
     </section>
 
-    <section class="timeline">
+    <section id="runtimeStatus" class="status card">
+      <h2>Runtime Status</h2>
+      <pre>Approval Epoch   approval_epoch_12
+Runtime Epoch    runtime_epoch_47
+Mutation State   changed
+Divergence       detected
+Legitimacy       invalidated</pre>
+    </section>
+
+    <section class="timeline card">
       <h2>Runtime Timeline</h2>
       <pre>Approval
 ↓
@@ -281,8 +275,26 @@ Legitimacy Failure
 Revalidation Required</pre>
     </section>
 
+    <section class="why card">
+      <h2>Why This Matters</h2>
+      <pre>Traditional Systems:
+Approval
+↓
+Execution
+
+Mutable Autonomous Systems:
+Approval
+↓
+Runtime Mutation
+↓
+Legitimacy Revalidation
+↓
+Execution Decision</pre>
+      <p style="margin: 8px 0 0 0; font-size: 12px; color: var(--text-secondary);">Reference: <a style="color: var(--accent);" href="../assets/visuals/why_runtime_legitimacy_emerges.md">assets/visuals/why_runtime_legitimacy_emerges.md</a></p>
+    </section>
+
     <section id="stage1" class="stage">
-      <h2>Stage 1 — Initial Approval</h2>
+      <h2>Stage 1 - Initial Approval</h2>
       <ul>
         <li>valid authorization</li>
         <li>stable runtime</li>
@@ -291,7 +303,7 @@ Revalidation Required</pre>
     </section>
 
     <section id="stage2" class="stage">
-      <h2>Stage 2 — Runtime Mutation</h2>
+      <h2>Stage 2 - Runtime Mutation</h2>
       <ul>
         <li>dependency drift</li>
         <li>runtime change</li>
@@ -300,7 +312,7 @@ Revalidation Required</pre>
     </section>
 
     <section id="stage3" class="stage">
-      <h2>Stage 3 — Replay Attempt</h2>
+      <h2>Stage 3 - Replay Attempt</h2>
       <ul>
         <li>historical approval reused</li>
         <li>environment divergence</li>
@@ -308,23 +320,23 @@ Revalidation Required</pre>
       </ul>
     </section>
 
-    <section id="stage4" class="stage">
-      <h2>Stage 4 — Legitimacy Collapse</h2>
+    <section id="stage4" class="stage invalid">
+      <h2>Stage 4 - Legitimacy Collapse</h2>
       <ul>
         <li>authorization remains historically valid</li>
         <li>execution legitimacy fails</li>
       </ul>
     </section>
 
-    <section id="stage5" class="stage">
-      <h2>Stage 5 — Revalidation Requirement</h2>
+    <section id="stage5" class="stage invalid">
+      <h2>Stage 5 - Revalidation Requirement</h2>
       <ul>
         <li>legitimacy must be re-evaluated</li>
         <li>authority continuity must be re-established</li>
       </ul>
     </section>
 
-    <details class="details-card">
+    <details class="details-card card" id="evidenceBlock">
       <summary>View Execution Evidence</summary>
       <pre class="evidence-pre" id="evidenceExport">Approval Timestamp: 2026-05-15T14:01:22Z
 Approval Epoch: approval_epoch_12
@@ -339,8 +351,8 @@ Authorization context no longer valid for current runtime.</pre>
       <p class="copy-status" id="copyStatus"></p>
     </details>
 
-    <section class="nav-card">
-      <h3>Navigation</h3>
+    <section class="card">
+      <h2 style="margin: 0 0 8px 0; font-size: 13px;">Navigation</h2>
       <div class="nav-links">
         <a href="../docs/notebooklm_public/EXECUTIVE_FIELD_OVERVIEW.md">Executive Overview</a>
         <a href="../docs/notebooklm_public/CONTRADICTION_DEMO_FLOW.md">Contradiction Demo Flow</a>
@@ -349,18 +361,20 @@ Authorization context no longer valid for current runtime.</pre>
       </div>
     </section>
 
-    <section class="footer-note">
+    <section class="card footer-note">
       Next steps: open <code>../docs/notebooklm_public/CONTRADICTION_DEMO_FLOW.md</code>, review <code>../docs/notebooklm_public/canonical_examples/</code>, then continue into the public NotebookLM reasoning environment.
     </section>
   </main>
 
   <script>
     const stageIds = ["stage1", "stage2", "stage3", "stage4", "stage5"];
-    const delays = [250, 900, 1100, 1200, 1200];
+    const delays = [220, 850, 1000, 1200, 1200];
     const startBtn = document.getElementById("startFlow");
     const copyBtn = document.getElementById("copyEvidence");
     const copyStatus = document.getElementById("copyStatus");
     const evidenceExport = document.getElementById("evidenceExport");
+    const runtimeStatus = document.getElementById("runtimeStatus");
+    const evidenceBlock = document.getElementById("evidenceBlock");
 
     function sleep(ms) {
       return new Promise(resolve => setTimeout(resolve, ms));
@@ -368,6 +382,8 @@ Authorization context no longer valid for current runtime.</pre>
 
     function resetStages() {
       stageIds.forEach(id => document.getElementById(id).classList.remove("show"));
+      runtimeStatus.classList.remove("mutated");
+      evidenceBlock.open = false;
     }
 
     async function playStages() {
@@ -375,6 +391,13 @@ Authorization context no longer valid for current runtime.</pre>
       for (let i = 0; i < stageIds.length; i += 1) {
         await sleep(delays[i]);
         document.getElementById(stageIds[i]).classList.add("show");
+        if (i >= 1) {
+          runtimeStatus.classList.add("mutated");
+        }
+        if (i === stageIds.length - 1) {
+          await sleep(250);
+          evidenceBlock.open = true;
+        }
       }
     }
 

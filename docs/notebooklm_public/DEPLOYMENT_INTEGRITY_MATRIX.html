@@ -1,0 +1,93 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Deployment Integrity Matrix</title>
+  <link rel="stylesheet" href="assets/global.css">
+  <style>
+    .matrix { width: 100%; border-collapse: collapse; font-size: 13px; }
+    .matrix th, .matrix td { border: 1px solid var(--border); padding: 9px; text-align: left; vertical-align: top; }
+    .matrix th { color: var(--accent); font-weight: 600; }
+    .risk-high { color: #fca5a5; }
+    .risk-med { color: #fcd34d; }
+    .risk-low { color: #86efac; }
+  </style>
+</head>
+<body>
+  <main class="container">
+    <header class="hero">
+      <p class="eyebrow">DETERMA Runtime Legitimacy Framework</p>
+      <h1>Deployment Integrity Matrix</h1>
+      <p class="tagline">The approval remained. The runtime changed. Execution legitimacy diverged.</p>
+      <p>This matrix makes deployment legitimacy visible across local, repository, Pages, and runtime states.</p>
+    </header>
+
+    <nav class="nav">
+      <a href="https://determaai.github.io/DETERMA-v0.1-Governed-Runtime-Proof-Baseline/">Live Demo</a>
+      <a href="INDEX.md">NotebookLM Public Index</a>
+      <a href="ONTOLOGY_MAP.html">Ontology Map</a>
+      <a href="https://notebooklm.google.com/notebook/607349dd-c101-4675-8c94-377e9a585e2b?authuser=1">Public NotebookLM</a>
+      <a href="../../README.md">GitHub Root</a>
+    </nav>
+
+    <section class="panel">
+      <table class="matrix">
+        <thead>
+          <tr>
+            <th>State Pair</th>
+            <th>Failure Pattern</th>
+            <th>Legitimacy Risk</th>
+            <th>Expected Check</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Local vs Repository</td>
+            <td>Local runtime changes not committed</td>
+            <td class="risk-high">High</td>
+            <td>Verify clean commit scope and branch</td>
+          </tr>
+          <tr>
+            <td>Repository vs Pages</td>
+            <td>Push completed but Pages not yet propagated</td>
+            <td class="risk-med">Medium</td>
+            <td>Validate public URL and build metadata</td>
+          </tr>
+          <tr>
+            <td>Pages vs Runtime</td>
+            <td>Public demo serves stale runtime session logic</td>
+            <td class="risk-high">High</td>
+            <td>Run runtime self-verification indicators</td>
+          </tr>
+          <tr>
+            <td>Assets vs Demo</td>
+            <td>Screenshots or visuals missing from deployed paths</td>
+            <td class="risk-med">Medium</td>
+            <td>Verify asset URLs and screenshot references</td>
+          </tr>
+          <tr>
+            <td>Demo vs NotebookLM</td>
+            <td>NotebookLM link unreachable from live surface</td>
+            <td class="risk-low">Low</td>
+            <td>Open NotebookLM link from deployed demo</td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+
+    <section class="panel">
+      <h2>Convergence Target</h2>
+      <pre>Local State
+   ↓
+Repository State
+   ↓
+Pages State
+   ↓
+Runtime State
+   ↓
+Deployment Legitimacy Achieved</pre>
+    </section>
+  </main>
+</body>
+</html>

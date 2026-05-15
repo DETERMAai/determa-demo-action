@@ -45,6 +45,11 @@
       display: flex;
       flex-wrap: wrap;
       gap: 8px;
+      position: sticky;
+      top: 0;
+      z-index: 60;
+      backdrop-filter: blur(4px);
+      box-shadow: 0 6px 18px rgba(0, 0, 0, 0.28);
     }
     .top-nav a {
       color: var(--accent);
@@ -101,8 +106,24 @@
     .status.mutated {
       border-left-color: rgba(252, 165, 165, 0.7);
     }
+    .status.flash {
+      border-left-color: rgba(125, 211, 252, 0.95);
+    }
+    .status.escalating {
+      border-left-color: rgba(251, 191, 36, 0.85);
+    }
+    .status.invalid {
+      border-left-color: rgba(252, 165, 165, 0.9);
+    }
     .timeline { background: rgba(125, 211, 252, 0.05); }
     .why { background: rgba(255,255,255,0.02); }
+    .gif-card img {
+      width: 100%;
+      height: auto;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      display: block;
+    }
     .first-time h2 {
       margin: 0 0 8px 0;
       font-size: 15px;
@@ -129,6 +150,11 @@
       border-color: rgba(125, 211, 252, 0.45);
       color: var(--text-primary);
       transform: translateY(-1px);
+    }
+    .btn:disabled {
+      opacity: 0.45;
+      cursor: not-allowed;
+      transform: none;
     }
     .btn.primary {
       color: var(--text-primary);
@@ -197,9 +223,170 @@
       color: var(--text-secondary);
       font-size: 11px;
     }
+    .snapshot-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+    }
+    .snapshot-panel {
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 10px;
+      background: rgba(255,255,255,0.02);
+      font-family: "IBM Plex Mono", "JetBrains Mono", Consolas, monospace;
+      font-size: 12px;
+    }
+    .snapshot-panel .line {
+      display: flex;
+      justify-content: space-between;
+      gap: 10px;
+      padding: 2px 0;
+    }
+    .snapshot-panel .line.changed {
+      color: #fbcfe8;
+    }
+    .timeline-flow {
+      display: grid;
+      grid-template-columns: repeat(6, minmax(0, 1fr));
+      gap: 8px;
+      margin-top: 8px;
+    }
+    .phase {
+      border: 1px solid var(--border);
+      border-radius: 7px;
+      padding: 8px;
+      font-size: 12px;
+      color: var(--text-secondary);
+      text-align: center;
+      transition: border-color 160ms ease, color 160ms ease, background 160ms ease;
+      background: rgba(255,255,255,0.01);
+    }
+    .phase.active {
+      border-color: rgba(125,211,252,0.6);
+      color: var(--text-primary);
+      background: rgba(125,211,252,0.08);
+    }
+    .phase.done {
+      border-color: rgba(125,211,252,0.3);
+      color: #d1d5db;
+    }
+    .stream-log {
+      margin: 0;
+      padding: 10px;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      background: #121720;
+      max-height: 220px;
+      overflow-y: auto;
+      font-family: "IBM Plex Mono", "JetBrains Mono", Consolas, monospace;
+      font-size: 12px;
+      line-height: 1.45;
+    }
+    .stream-entry {
+      opacity: 0;
+      animation: streamIn 180ms ease forwards;
+    }
+    @keyframes streamIn {
+      from { opacity: 0; transform: translateY(2px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
     .nav-links {
       display: grid;
       gap: 6px;
+    }
+    .history-list {
+      margin: 0;
+      padding-left: 18px;
+      font-family: "IBM Plex Mono", "JetBrains Mono", Consolas, monospace;
+      font-size: 12px;
+      line-height: 1.45;
+    }
+    .archive-grid {
+      display: grid;
+      gap: 8px;
+    }
+    .archive-item {
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      background: rgba(255,255,255,0.02);
+      padding: 8px;
+    }
+    .archive-item pre {
+      margin: 0;
+      white-space: pre-wrap;
+      font-family: "IBM Plex Mono", "JetBrains Mono", Consolas, monospace;
+      font-size: 12px;
+      line-height: 1.5;
+    }
+    .lineage-chain {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 8px;
+      font-family: "IBM Plex Mono", "JetBrains Mono", Consolas, monospace;
+      font-size: 12px;
+    }
+    .lineage-node {
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 6px 8px;
+      background: rgba(255,255,255,0.02);
+    }
+    .lineage-node.mutation {
+      border-color: rgba(251, 191, 36, 0.55);
+    }
+    .lineage-node.invalid {
+      border-color: rgba(252, 165, 165, 0.65);
+    }
+    .lineage-arrow {
+      color: var(--accent);
+    }
+    .compare-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-bottom: 8px;
+    }
+    .select {
+      border: 1px solid var(--border);
+      border-radius: 7px;
+      background: var(--surface-soft);
+      color: var(--text-primary);
+      padding: 7px 10px;
+      font-size: 12px;
+    }
+    .decision-pre {
+      margin: 0;
+      white-space: pre-wrap;
+      font-family: "IBM Plex Mono", "JetBrains Mono", Consolas, monospace;
+      font-size: 12px;
+      line-height: 1.5;
+    }
+    .immutable-banner {
+      display: none;
+      margin-top: 8px;
+      border: 1px solid rgba(125, 211, 252, 0.45);
+      border-radius: 8px;
+      padding: 8px;
+      font-family: "IBM Plex Mono", "JetBrains Mono", Consolas, monospace;
+      font-size: 12px;
+      color: var(--text-primary);
+      background: rgba(125,211,252,0.08);
+    }
+    .op-footer {
+      position: sticky;
+      bottom: 0;
+      z-index: 55;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 8px 10px;
+      background: rgba(18, 23, 32, 0.95);
+      font-family: "IBM Plex Mono", "JetBrains Mono", Consolas, monospace;
+      font-size: 11px;
+      color: var(--text-secondary);
+      display: grid;
+      gap: 2px;
+      backdrop-filter: blur(4px);
     }
     .nav-links a {
       color: var(--accent);
@@ -213,6 +400,8 @@
     @media (max-width: 640px) {
       .wrap { padding: 12px; }
       .hero h1 { font-size: 28px; }
+      .snapshot-grid { grid-template-columns: 1fr; }
+      .timeline-flow { grid-template-columns: 1fr 1fr; }
     }
   </style>
 </head>
@@ -222,6 +411,7 @@
       <a href="https://determaai.github.io/DETERMA-v0.1-Governed-Runtime-Proof-Baseline/">Live Demo</a>
       <a href="../docs/notebooklm_public/FIRST_DEMO_WALKTHROUGH.md">Walkthrough</a>
       <a href="../docs/notebooklm_public/EXECUTIVE_FIELD_OVERVIEW.md">Executive Overview</a>
+      <a href="../docs/notebooklm_public/ONTOLOGY_MAP.html">Ontology Map</a>
       <a href="https://notebooklm.google.com/notebook/607349dd-c101-4675-8c94-377e9a585e2b?authuser=1" target="_blank" rel="noreferrer">NotebookLM</a>
     </nav>
 
@@ -247,32 +437,94 @@ Execution legitimacy diverged.</pre>
       </section>
 
       <div class="cta-row">
-        <button id="startFlow" class="btn primary" type="button">Start Contradiction Walkthrough</button>
+        <button id="replaySession" class="btn primary" type="button" disabled>Replay Session</button>
+        <button id="newScenario" class="btn" type="button" disabled>Generate New Runtime Scenario</button>
         <a class="btn" href="https://notebooklm.google.com/notebook/607349dd-c101-4675-8c94-377e9a585e2b?authuser=1" target="_blank" rel="noreferrer">Open Public NotebookLM</a>
+        <a class="btn" href="../docs/notebooklm_public/ONTOLOGY_MAP.html">Open Ontology Map</a>
         <a class="btn" href="../docs/notebooklm_public/EXECUTIVE_FIELD_OVERVIEW.md">Read Executive Overview</a>
       </div>
     </section>
 
+    <section class="card gif-card">
+      <h2 style="margin:0 0 8px 0; font-size:13px; color:var(--accent); text-transform:uppercase; letter-spacing:.05em;">Runtime Contradiction Loop</h2>
+      <img src="../assets/runtime_legitimacy_contradiction.gif" alt="Approval granted, runtime mutated, replay attempt, legitimacy diverged, execution blocked.">
+    </section>
+
+    <section id="sessionCard" class="status card">
+      <h2>Session Initialization</h2>
+      <pre id="sessionInitText">initializing runtime session...</pre>
+    </section>
+
     <section id="runtimeStatus" class="status card">
       <h2>Runtime Status</h2>
-      <pre>Approval Epoch   approval_epoch_12
-Runtime Epoch    runtime_epoch_47
-Mutation State   changed
-Divergence       detected
-Legitimacy       invalidated</pre>
+      <pre id="runtimeStatusText">initializing runtime status...</pre>
+    </section>
+
+    <section class="card">
+      <h2 style="margin:0 0 8px 0; font-size:13px; color:var(--accent); text-transform:uppercase; letter-spacing:.05em;">Runtime Integrity Verification</h2>
+      <pre id="runtimeIntegrityText" class="decision-pre">running runtime integrity checks...</pre>
     </section>
 
     <section class="timeline card">
       <h2>Runtime Timeline</h2>
-      <pre>Approval
-↓
-Runtime Mutation
-↓
-Replay Attempt
-↓
-Legitimacy Failure
-↓
-Revalidation Required</pre>
+      <div class="timeline-flow" id="timelineFlow">
+        <div class="phase" data-phase="approval">Approval</div>
+        <div class="phase" data-phase="mutation">Mutation</div>
+        <div class="phase" data-phase="replay">Replay</div>
+        <div class="phase" data-phase="divergence">Divergence</div>
+        <div class="phase" data-phase="invalidation">Invalidation</div>
+        <div class="phase" data-phase="blocked">Execution Blocked</div>
+      </div>
+    </section>
+
+    <section class="card">
+      <h2 style="margin:0 0 8px 0; font-size:13px; color:var(--accent); text-transform:uppercase; letter-spacing:.05em;">Runtime Snapshot Diff</h2>
+      <div class="snapshot-grid">
+        <div class="snapshot-panel">
+          <div style="margin-bottom:8px; color:var(--accent);">Approval Runtime Snapshot</div>
+          <div id="approvalSnapshotBox"></div>
+        </div>
+        <div class="snapshot-panel">
+          <div style="margin-bottom:8px; color:var(--accent);">Current Runtime Snapshot</div>
+          <div id="currentSnapshotBox"></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="card">
+      <h2 style="margin:0 0 8px 0; font-size:13px; color:var(--accent); text-transform:uppercase; letter-spacing:.05em;">Runtime Event Stream</h2>
+      <pre id="runtimeStream" class="stream-log"></pre>
+    </section>
+
+    <section class="card">
+      <h2 style="margin:0 0 8px 0; font-size:13px; color:var(--accent); text-transform:uppercase; letter-spacing:.05em;">Mutation Diff</h2>
+      <pre id="mutationDiffText" class="decision-pre">pending mutation diff...</pre>
+    </section>
+
+    <section class="card">
+      <h2 style="margin:0 0 8px 0; font-size:13px; color:var(--accent); text-transform:uppercase; letter-spacing:.05em;">Execution Decision Engine</h2>
+      <pre id="decisionEngineText" class="decision-pre">evaluating decision engine...</pre>
+    </section>
+
+    <section class="card">
+      <h2 style="margin:0 0 8px 0; font-size:13px; color:var(--accent); text-transform:uppercase; letter-spacing:.05em;">Runtime Lineage</h2>
+      <div id="runtimeLineage" class="lineage-chain"></div>
+    </section>
+
+    <section class="card">
+      <h2 style="margin:0 0 8px 0; font-size:13px; color:var(--accent); text-transform:uppercase; letter-spacing:.05em;">Session History</h2>
+      <ul id="sessionHistoryList" class="history-list"></ul>
+    </section>
+
+    <section class="card">
+      <h2 style="margin:0 0 8px 0; font-size:13px; color:var(--accent); text-transform:uppercase; letter-spacing:.05em;">What Has Been Proven</h2>
+      <ul style="margin:0; padding-left:18px; font-size:13px;">
+        <li>runtime divergence detection</li>
+        <li>replay invalidation</li>
+        <li>legitimacy collapse modeling</li>
+        <li>execution evidence generation</li>
+        <li>runtime revalidation flows</li>
+      </ul>
     </section>
 
     <section class="why card">
@@ -336,20 +588,46 @@ Execution Decision</pre>
       </ul>
     </section>
 
+    <section id="stage6" class="stage invalid">
+      <h2>Stage 6 - Execution Blocked</h2>
+      <ul>
+        <li>execution blocked under runtime mismatch</li>
+        <li>authorization context no longer valid for current runtime</li>
+      </ul>
+    </section>
+
     <details class="details-card card" id="evidenceBlock">
       <summary>View Execution Evidence</summary>
-      <pre class="evidence-pre" id="evidenceExport">Approval Timestamp: 2026-05-15T14:01:22Z
-Approval Epoch: approval_epoch_12
-Runtime Epoch: runtime_epoch_47
-Mutation State: changed
-Dependency Drift: detected
-Replay Context: historical
-Legitimacy Status: invalidated
-Divergence Reason:
-Authorization context no longer valid for current runtime.</pre>
+      <pre class="evidence-pre" id="evidenceExport">Generating session evidence...</pre>
       <button class="copy-btn" id="copyEvidence" type="button">Copy Evidence</button>
+      <button class="copy-btn" id="copySession" type="button">Copy Runtime Session</button>
+      <button class="copy-btn" id="exportEvidenceTxt" type="button">Export Evidence (.txt)</button>
+      <button class="copy-btn" id="exportEvidenceMd" type="button">Export Evidence (.md)</button>
+      <div id="immutableBanner" class="immutable-banner"></div>
       <p class="copy-status" id="copyStatus"></p>
     </details>
+
+    <section class="card">
+      <h2 style="margin:0 0 8px 0; font-size:13px; color:var(--accent); text-transform:uppercase; letter-spacing:.05em;">Evidence Archive</h2>
+      <div id="evidenceArchive" class="archive-grid"></div>
+    </section>
+
+    <section class="card">
+      <h2 style="margin:0 0 8px 0; font-size:13px; color:var(--accent); text-transform:uppercase; letter-spacing:.05em;">Compare Runtime Sessions</h2>
+      <div class="compare-row">
+        <select id="compareA" class="select"></select>
+        <select id="compareB" class="select"></select>
+      </div>
+      <pre id="compareOutput" class="decision-pre">select two sessions to compare...</pre>
+    </section>
+
+    <section id="whyBlocked" class="card" style="display:none;">
+      <h2 style="margin:0 0 8px 0; font-size:13px; color:var(--accent); text-transform:uppercase; letter-spacing:.05em;">Why Execution Was Blocked</h2>
+      <pre class="observe">Execution was blocked because the authorization context no longer matched the current runtime reality.
+
+The approval remained historically valid,
+but execution legitimacy diverged after runtime mutation.</pre>
+    </section>
 
     <section class="card">
       <h2 style="margin: 0 0 8px 0; font-size: 13px;">Navigation</h2>
@@ -357,6 +635,7 @@ Authorization context no longer valid for current runtime.</pre>
         <a href="../docs/notebooklm_public/EXECUTIVE_FIELD_OVERVIEW.md">Executive Overview</a>
         <a href="../docs/notebooklm_public/CONTRADICTION_DEMO_FLOW.md">Contradiction Demo Flow</a>
         <a href="../docs/notebooklm_public/canonical_examples/">Canonical Examples</a>
+        <a href="../docs/notebooklm_public/ONTOLOGY_MAP.html">Ontology Map</a>
         <a href="https://notebooklm.google.com/notebook/607349dd-c101-4675-8c94-377e9a585e2b?authuser=1" target="_blank" rel="noreferrer">Public NotebookLM</a>
       </div>
     </section>
@@ -364,55 +643,742 @@ Authorization context no longer valid for current runtime.</pre>
     <section class="card footer-note">
       Next steps: open <code>../docs/notebooklm_public/CONTRADICTION_DEMO_FLOW.md</code>, review <code>../docs/notebooklm_public/canonical_examples/</code>, then continue into the public NotebookLM reasoning environment.
     </section>
+
+    <section id="operationalFooter" class="op-footer">
+      <div id="opLine1">runtime legitimacy engine active</div>
+      <div id="opLine2">session integrity monitored</div>
+      <div id="opLine3">execution continuity enforced</div>
+      <div id="opLine4">runtime build: pending</div>
+    </section>
   </main>
 
   <script>
-    const stageIds = ["stage1", "stage2", "stage3", "stage4", "stage5"];
-    const delays = [220, 850, 1000, 1200, 1200];
-    const startBtn = document.getElementById("startFlow");
-    const copyBtn = document.getElementById("copyEvidence");
-    const copyStatus = document.getElementById("copyStatus");
-    const evidenceExport = document.getElementById("evidenceExport");
+    const HISTORY_STORAGE_KEY = "determa_runtime_session_history_v1";
+    const DEPLOYMENT_METADATA = {
+      timestamp: "2026-05-15T00:00:00Z",
+      buildId: "deploy_20260515_0000",
+      pagesVersion: "public_v2.5.0"
+    };
+    const stageIds = ["stage1", "stage2", "stage3", "stage4", "stage5", "stage6"];
+    const phaseOrder = ["approval", "mutation", "replay", "divergence", "invalidation", "blocked"];
     const runtimeStatus = document.getElementById("runtimeStatus");
+    const sessionInitText = document.getElementById("sessionInitText");
+    const runtimeStatusText = document.getElementById("runtimeStatusText");
+    const runtimeIntegrityText = document.getElementById("runtimeIntegrityText");
     const evidenceBlock = document.getElementById("evidenceBlock");
+    const evidenceExport = document.getElementById("evidenceExport");
+    const runtimeStream = document.getElementById("runtimeStream");
+    const approvalSnapshotBox = document.getElementById("approvalSnapshotBox");
+    const currentSnapshotBox = document.getElementById("currentSnapshotBox");
+    const mutationDiffText = document.getElementById("mutationDiffText");
+    const decisionEngineText = document.getElementById("decisionEngineText");
+    const runtimeLineage = document.getElementById("runtimeLineage");
+    const sessionHistoryList = document.getElementById("sessionHistoryList");
+    const evidenceArchive = document.getElementById("evidenceArchive");
+    const compareA = document.getElementById("compareA");
+    const compareB = document.getElementById("compareB");
+    const compareOutput = document.getElementById("compareOutput");
+    const immutableBanner = document.getElementById("immutableBanner");
+    const copyBtn = document.getElementById("copyEvidence");
+    const copySessionBtn = document.getElementById("copySession");
+    const exportEvidenceTxtBtn = document.getElementById("exportEvidenceTxt");
+    const exportEvidenceMdBtn = document.getElementById("exportEvidenceMd");
+    const copyStatus = document.getElementById("copyStatus");
+    const replayBtn = document.getElementById("replaySession");
+    const newScenarioBtn = document.getElementById("newScenario");
+    const whyBlocked = document.getElementById("whyBlocked");
+    const opLine1 = document.getElementById("opLine1");
+    const opLine2 = document.getElementById("opLine2");
+    const opLine3 = document.getElementById("opLine3");
+    const opLine4 = document.getElementById("opLine4");
 
-    function sleep(ms) {
-      return new Promise(resolve => setTimeout(resolve, ms));
+    const scenarioPool = [
+      {
+        mutation: "dependency_drift",
+        runtimePatch: "patch_6.1.3",
+        capabilityShift: "limited -> limited",
+        checksumShift: "a77f -> b91c",
+        divergenceNarrative: "escalating divergence",
+        depDeltaA: "auth-runtime 2.1.4",
+        depDeltaB: "auth-runtime 2.2.0",
+        diffLine: "execution-core checksum changed"
+      },
+      {
+        mutation: "runtime_patch",
+        runtimePatch: "patch_6.2.0",
+        capabilityShift: "limited -> elevated",
+        checksumShift: "bc11 -> d33a",
+        divergenceNarrative: "authority continuity failure",
+        depDeltaA: "runtime-base 6.1.8",
+        depDeltaB: "runtime-base 6.2.0",
+        diffLine: "runtime policy checksum mismatch detected"
+      },
+      {
+        mutation: "environment_change",
+        runtimePatch: "env_roll_2.7",
+        capabilityShift: "limited -> limited",
+        checksumShift: "df20 -> ef99",
+        divergenceNarrative: "contradiction detected",
+        depDeltaA: "exec-env container_a",
+        depDeltaB: "exec-env container_b",
+        diffLine: "execution substrate hash divergence identified"
+      },
+      {
+        mutation: "delayed_execution",
+        runtimePatch: "scheduler_hold_4h",
+        capabilityShift: "limited -> limited",
+        checksumShift: "aa88 -> c101",
+        divergenceNarrative: "escalating divergence",
+        depDeltaA: "job-scheduler window_a",
+        depDeltaB: "job-scheduler window_b",
+        diffLine: "approval/execution delay exceeded continuity window"
+      },
+      {
+        mutation: "capability_escalation",
+        runtimePatch: "cap_model_3.4",
+        capabilityShift: "limited -> elevated",
+        checksumShift: "cc34 -> f8c2",
+        divergenceNarrative: "authority continuity failure",
+        depDeltaA: "capability-scope limited",
+        depDeltaB: "capability-scope elevated",
+        diffLine: "capability boundary delta introduced"
+      },
+      {
+        mutation: "sandbox_reallocation",
+        runtimePatch: "sandbox_move_9",
+        capabilityShift: "limited -> constrained",
+        checksumShift: "e11d -> b02f",
+        divergenceNarrative: "contradiction detected",
+        depDeltaA: "sandbox-node pool_a",
+        depDeltaB: "sandbox-node pool_c",
+        diffLine: "runtime placement hash divergence identified"
+      }
+    ];
+
+    const noiseLines = [
+      "runtime consistency verification running...",
+      "execution substrate synchronized",
+      "authority state reconciliation complete"
+    ];
+
+    const flow = [
+      { at: 0, stage: 1, phase: "approval", mutationState: "none", divergenceState: "none", legitimacyState: "VALID", executionState: "APPROVAL_GRANTED", stream: "approval context validated" },
+      { at: 3, stage: 2, phase: "mutation", mutationState: "introduced", divergenceState: "none", legitimacyState: "VALID", executionState: "RUNTIME_MUTATING", stream: "dependency graph mutation detected" },
+      { at: 5, stage: 3, phase: "replay", mutationState: "active", divergenceState: "none", legitimacyState: "VALID", executionState: "REPLAY_ATTEMPT", stream: "execution replay initiated" },
+      { at: 7, stage: 4, phase: "divergence", mutationState: "active", divergenceState: "detected", legitimacyState: "ESCALATING", executionState: "AUTHORITY_DEGRADED", stream: "runtime legitimacy divergence escalating" },
+      { at: 9, stage: 5, phase: "invalidation", mutationState: "active", divergenceState: "detected", legitimacyState: "INVALIDATED", executionState: "INVALIDATING", stream: "execution authority invalidated" },
+      { at: 11, stage: 6, phase: "blocked", mutationState: "active", divergenceState: "detected", legitimacyState: "INVALIDATED", executionState: "BLOCKED", stream: "mutation execution blocked" }
+    ];
+
+    let scenarioCursor = 0;
+    let timers = [];
+    let tickTimer = null;
+    let noiseTimer = null;
+    let session = null;
+    let historyRecords = [];
+
+    function nowIso() {
+      return new Date().toISOString();
     }
 
-    function resetStages() {
-      stageIds.forEach(id => document.getElementById(id).classList.remove("show"));
-      runtimeStatus.classList.remove("mutated");
-      evidenceBlock.open = false;
+    function formatClock(d) {
+      const pad = (n, l = 2) => String(n).padStart(l, "0");
+      return `${pad(d.getHours())}:${pad(d.getMinutes())}:${pad(d.getSeconds())}.${pad(d.getMilliseconds(), 3)}`;
     }
 
-    async function playStages() {
-      resetStages();
-      for (let i = 0; i < stageIds.length; i += 1) {
-        await sleep(delays[i]);
-        document.getElementById(stageIds[i]).classList.add("show");
-        if (i >= 1) {
-          runtimeStatus.classList.add("mutated");
-        }
-        if (i === stageIds.length - 1) {
-          await sleep(250);
-          evidenceBlock.open = true;
-        }
+    function stampForId(d) {
+      const pad = (n) => String(n).padStart(2, "0");
+      return `${d.getUTCFullYear()}${pad(d.getUTCMonth() + 1)}${pad(d.getUTCDate())}_${pad(d.getUTCHours())}${pad(d.getUTCMinutes())}${pad(d.getUTCSeconds())}`;
+    }
+
+    function uuidLike(prefix) {
+      if (typeof crypto !== "undefined" && crypto.randomUUID) {
+        return `${prefix}_${crypto.randomUUID().replace(/-/g, "").slice(0, 12)}`;
+      }
+      return `${prefix}_${Math.random().toString(16).slice(2, 14)}`;
+    }
+
+    function loadHistory() {
+      try {
+        const raw = localStorage.getItem(HISTORY_STORAGE_KEY);
+        if (!raw) return [];
+        const parsed = JSON.parse(raw);
+        return Array.isArray(parsed) ? parsed : [];
+      } catch (_) {
+        return [];
       }
     }
 
-    startBtn.addEventListener("click", playStages);
+    function saveHistory() {
+      try {
+        localStorage.setItem(HISTORY_STORAGE_KEY, JSON.stringify(historyRecords.slice(0, 10)));
+      } catch (_) {
+        // ignore storage failures to keep demo operational
+      }
+    }
+
+    function currentRuntimeEpoch(elapsedSec) {
+      return session.runtimeEpochStart + Math.floor(elapsedSec * 0.9);
+    }
+
+    function currentSnapshot(elapsedSec) {
+      const epoch = currentRuntimeEpoch(elapsedSec);
+      return {
+        runtime_epoch: `runtime_epoch_${epoch}`,
+        dep_graph: session.currentDepGraph,
+        cap_scope: session.currentCapScope,
+        exec_checksum: session.currentChecksum
+      };
+    }
+
+    function approvalSnapshot() {
+      return {
+        runtime_epoch: `runtime_epoch_${session.runtimeEpochStart}`,
+        dep_graph: session.approvalDepGraph,
+        cap_scope: "limited",
+        exec_checksum: session.approvalChecksum
+      };
+    }
+
+    function snapshotLine(label, value, changed) {
+      return `<div class="line ${changed ? "changed" : ""}"><span>${label}</span><span>${value}</span></div>`;
+    }
+
+    function renderSnapshots() {
+      const elapsedSec = Math.max(0, (Date.now() - session.startMs) / 1000);
+      const a = approvalSnapshot();
+      const c = currentSnapshot(elapsedSec);
+      approvalSnapshotBox.innerHTML =
+        snapshotLine("runtime_epoch", a.runtime_epoch, false) +
+        snapshotLine("dep_graph", a.dep_graph, false) +
+        snapshotLine("cap_scope", a.cap_scope, false) +
+        snapshotLine("exec_checksum", a.exec_checksum, false);
+      currentSnapshotBox.innerHTML =
+        snapshotLine("runtime_epoch", c.runtime_epoch, c.runtime_epoch !== a.runtime_epoch) +
+        snapshotLine("dep_graph", c.dep_graph, c.dep_graph !== a.dep_graph) +
+        snapshotLine("cap_scope", c.cap_scope, c.cap_scope !== a.cap_scope) +
+        snapshotLine("exec_checksum", c.exec_checksum, c.exec_checksum !== a.exec_checksum);
+    }
+
+    function setPhase(phase) {
+      const phaseNodes = document.querySelectorAll(".phase");
+      const idx = phaseOrder.indexOf(phase);
+      phaseNodes.forEach((node, i) => {
+        node.classList.remove("active", "done");
+        if (i < idx) node.classList.add("done");
+        if (i === idx) node.classList.add("active");
+      });
+    }
+
+    function appendStream(line) {
+      const ts = formatClock(new Date());
+      const entry = document.createElement("div");
+      entry.className = "stream-entry";
+      entry.textContent = `[${ts}] ${line}`;
+      runtimeStream.appendChild(entry);
+      session.streamLines.push(`[${ts}] ${line}`);
+      runtimeStream.scrollTop = runtimeStream.scrollHeight;
+    }
+
+    function clearTimers() {
+      timers.forEach((t) => clearTimeout(t));
+      timers = [];
+      if (tickTimer) clearInterval(tickTimer);
+      if (noiseTimer) clearTimeout(noiseTimer);
+      tickTimer = null;
+      noiseTimer = null;
+    }
+
+    function resetVisuals() {
+      stageIds.forEach((id) => document.getElementById(id).classList.remove("show"));
+      runtimeStatus.classList.remove("mutated", "flash", "escalating", "invalid");
+      evidenceBlock.open = false;
+      whyBlocked.style.display = "none";
+      copyStatus.textContent = "";
+      runtimeStream.textContent = "";
+      immutableBanner.style.display = "none";
+      immutableBanner.textContent = "";
+    }
+
+    function renderSessionInit() {
+      sessionInitText.textContent =
+`Session ID         ${session.sessionId}
+Execution ID       ${session.executionId}
+Evidence ID        ${session.evidenceId}
+Mutation ID        ${session.mutationId}
+Approval Timestamp ${session.approvalTimestamp}
+Runtime Epoch      runtime_epoch_${session.runtimeEpochStart}
+Mutation Window    ${session.mutationWindow}`;
+    }
+
+    function renderRuntimeStatus() {
+      const elapsedSec = Math.max(0, (Date.now() - session.startMs) / 1000);
+      const runtimeTs = new Date(session.startMs + elapsedSec * 1000).toISOString();
+      const snap = currentSnapshot(elapsedSec);
+      runtimeStatusText.textContent =
+`Approval Timestamp ${session.approvalTimestamp}
+Runtime Timestamp  ${runtimeTs}
+Mutation State     ${session.state.mutationState}
+Divergence State   ${session.state.divergenceState}
+Legitimacy State   ${session.state.legitimacyState}
+Execution State    ${session.state.executionState}
+Current Runtime    ${snap.runtime_epoch}
+Dependency Graph   ${snap.dep_graph}
+Capability Scope   ${snap.cap_scope}
+Context Checksum   ${snap.exec_checksum}`;
+    }
+
+    function renderMutationDiff() {
+      const currentCap = session.currentCapScope;
+      const currentCsum = session.currentChecksum;
+      const currentDep = session.currentDepGraph;
+      mutationDiffText.textContent =
+`dependencies:
+- ${session.scenario.depDeltaA}
++ ${session.scenario.depDeltaB}
+
+runtime patch:
+- ${session.scenario.runtimePatch}
+
+capability scope:
+- limited -> ${currentCap}
+
+checksum:
+- ${session.approvalChecksum} -> ${currentCsum}
+
+current dep graph:
+- ${session.approvalDepGraph} -> ${currentDep}
+
+note:
+${session.scenario.diffLine}`;
+    }
+
+    function renderDecisionEngine() {
+      const approvalValidity = "TRUE";
+      const runtimeMatch = session.state.divergenceState === "detected" ? "FALSE" : "TRUE";
+      const authorityContinuity = session.state.legitimacyState === "INVALIDATED" || session.state.legitimacyState === "ESCALATING" ? "BROKEN" : "INTACT";
+      const finalDecision = session.state.executionState === "BLOCKED" ? "BLOCK_EXECUTION" : "CONTINUE_EVALUATION";
+      decisionEngineText.textContent =
+`approval_validity = ${approvalValidity}
+runtime_match = ${runtimeMatch}
+authority_continuity = ${authorityContinuity}
+
+FINAL_DECISION:
+${finalDecision}`;
+    }
+
+    function renderLineage() {
+      const elapsedSec = Math.max(0, (Date.now() - session.startMs) / 1000);
+      const snap = currentSnapshot(elapsedSec);
+      const legitimacyNode = session.state.legitimacyState === "INVALIDATED" ? "legitimacy_diverged" : `legitimacy_${session.state.legitimacyState.toLowerCase()}`;
+      runtimeLineage.innerHTML = `
+        <span class="lineage-node">runtime_epoch_${session.runtimeEpochStart}</span>
+        <span class="lineage-arrow">↓</span>
+        <span class="lineage-node mutation">${session.scenario.mutation}</span>
+        <span class="lineage-arrow">↓</span>
+        <span class="lineage-node">${snap.runtime_epoch}</span>
+        <span class="lineage-arrow">↓</span>
+        <span class="lineage-node invalid">${legitimacyNode}</span>
+      `;
+    }
+
+    function renderOperationalFooter() {
+      if (session.state.executionState === "BLOCKED") {
+        opLine1.textContent = "runtime legitimacy engine active";
+        opLine2.textContent = "session integrity monitored";
+        opLine3.textContent = "execution blocked under continuity mismatch";
+        opLine4.textContent = `runtime build: ${DEPLOYMENT_METADATA.buildId} | pages: ${DEPLOYMENT_METADATA.pagesVersion} | deployed: ${DEPLOYMENT_METADATA.timestamp}`;
+        return;
+      }
+      if (session.state.legitimacyState === "ESCALATING") {
+        opLine1.textContent = "runtime legitimacy engine active";
+        opLine2.textContent = "continuity pressure escalating";
+        opLine3.textContent = "authority reconciliation in progress";
+        opLine4.textContent = `runtime build: ${DEPLOYMENT_METADATA.buildId} | pages: ${DEPLOYMENT_METADATA.pagesVersion} | deployed: ${DEPLOYMENT_METADATA.timestamp}`;
+        return;
+      }
+      if (session.state.mutationState.includes("active")) {
+        opLine1.textContent = "runtime legitimacy engine active";
+        opLine2.textContent = "mutation window monitored";
+        opLine3.textContent = "execution continuity enforced";
+        opLine4.textContent = `runtime build: ${DEPLOYMENT_METADATA.buildId} | pages: ${DEPLOYMENT_METADATA.pagesVersion} | deployed: ${DEPLOYMENT_METADATA.timestamp}`;
+        return;
+      }
+      opLine1.textContent = "runtime legitimacy engine active";
+      opLine2.textContent = "session integrity monitored";
+      opLine3.textContent = "execution continuity enforced";
+      opLine4.textContent = `runtime build: ${DEPLOYMENT_METADATA.buildId} | pages: ${DEPLOYMENT_METADATA.pagesVersion} | deployed: ${DEPLOYMENT_METADATA.timestamp}`;
+    }
+
+    function renderRuntimeIntegrity() {
+      const sessionInitialized = session && session.sessionId ? "PASS" : "FAIL";
+      const eventStreamActive = session && session.streamLines.length > 0 ? "PASS" : "WAIT";
+      const evidenceActive = session && session.evidenceStage >= 1 ? "PASS" : "WAIT";
+      const lineageActive = session && Boolean(runtimeLineage.innerHTML.trim()) ? "PASS" : "WAIT";
+      const exportActive = copyBtn && exportEvidenceTxtBtn && exportEvidenceMdBtn ? "PASS" : "FAIL";
+
+      runtimeIntegrityText.textContent =
+`session initialized: ${sessionInitialized}
+event stream active: ${eventStreamActive}
+evidence generation active: ${evidenceActive}
+lineage tracking active: ${lineageActive}
+export subsystem active: ${exportActive}`;
+    }
+
+    function buildEvidenceText(markdownMode = false) {
+      const elapsedSec = Math.max(0, (Date.now() - session.startMs) / 1000);
+      const snap = currentSnapshot(elapsedSec);
+      const authorityContinuity = session.state.legitimacyState === "INVALIDATED" ? "BROKEN" : "INTACT";
+      const reason = session.state.legitimacyState === "INVALIDATED"
+        ? "Execution authority no longer matches current runtime reality."
+        : "Execution authority still matches current runtime reality.";
+      const header = markdownMode ? "# EXECUTION EVIDENCE RECORD" : "EXECUTION EVIDENCE RECORD";
+      const lines = [
+        header, "",
+        "Session ID:", session.sessionId, "",
+        "Execution ID:", session.executionId, "",
+        "Evidence ID:", session.evidenceId
+      ];
+      if (session.evidenceStage >= 1) {
+        lines.push("", "Approval Timestamp:", session.approvalTimestamp, "", "Approval Runtime:", `runtime_epoch_${session.runtimeEpochStart}`);
+      }
+      if (session.evidenceStage >= 2) {
+        lines.push("", "Current Runtime:", snap.runtime_epoch, "", "Mutation Detected:", session.scenario.mutation);
+      }
+      if (session.evidenceStage >= 3) {
+        lines.push("", "Authority Continuity:", authorityContinuity, "", "Divergence State:", session.state.divergenceState);
+      }
+      if (session.evidenceStage >= 5) {
+        lines.push("", "Legitimacy Result:", session.state.legitimacyState, "", "Execution Decision:", session.state.executionState, "", "Reason:", reason);
+      }
+      return lines.join("\n");
+    }
+
+    function renderEvidence() {
+      evidenceExport.textContent = buildEvidenceText(false);
+    }
+
+    function pulseStatus() {
+      runtimeStatus.classList.add("flash");
+      const timeout = setTimeout(() => runtimeStatus.classList.remove("flash"), 180);
+      timers.push(timeout);
+    }
+
+    function setPressureVisuals() {
+      runtimeStatus.classList.remove("escalating", "invalid");
+      if (session.state.legitimacyState === "ESCALATING") runtimeStatus.classList.add("escalating");
+      if (session.state.legitimacyState === "INVALIDATED") runtimeStatus.classList.add("invalid");
+    }
+
+    function updatePanels() {
+      renderRuntimeStatus();
+      renderSnapshots();
+      renderMutationDiff();
+      renderDecisionEngine();
+      renderLineage();
+      renderEvidence();
+      renderRuntimeIntegrity();
+      renderOperationalFooter();
+    }
+
+    function buildHistoryRecord() {
+      const finalTs = nowIso();
+      const finalRuntimeEpoch = currentSnapshot(Math.max(0, (Date.now() - session.startMs) / 1000)).runtime_epoch;
+      return {
+        session_id: session.sessionId,
+        execution_id: session.executionId,
+        evidence_id: session.evidenceId,
+        mutation_id: session.mutationId,
+        mutation_type: session.scenario.mutation,
+        approval_timestamp: session.approvalTimestamp,
+        finalized_timestamp: finalTs,
+        approval_runtime_epoch: `runtime_epoch_${session.runtimeEpochStart}`,
+        current_runtime_epoch: finalRuntimeEpoch,
+        legitimacy_result: session.state.legitimacyState,
+        execution_decision: session.state.executionState,
+        divergence_state: session.state.divergenceState,
+        stream: session.streamLines.slice(-60),
+        evidence_text: buildEvidenceText(false)
+      };
+    }
+
+    function renderHistoryPanel() {
+      if (historyRecords.length === 0) {
+        sessionHistoryList.innerHTML = "<li>no persisted sessions yet</li>";
+        return;
+      }
+      sessionHistoryList.innerHTML = historyRecords
+        .slice(0, 10)
+        .map((r) => `<li>${r.execution_id} | mutation: ${r.mutation_type} | result: ${r.legitimacy_result} | decision: ${r.execution_decision} | ${r.finalized_timestamp}</li>`)
+        .join("");
+    }
+
+    function downloadText(filename, text) {
+      const blob = new Blob([text], { type: "text/plain;charset=utf-8" });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = filename;
+      a.click();
+      URL.revokeObjectURL(url);
+    }
+
+    function renderArchive() {
+      if (historyRecords.length === 0) {
+        evidenceArchive.innerHTML = "<div class='archive-item'><pre>no historical evidence records yet</pre></div>";
+        return;
+      }
+      evidenceArchive.innerHTML = "";
+      historyRecords.slice(0, 10).forEach((record) => {
+        const wrap = document.createElement("details");
+        wrap.className = "archive-item";
+        const summary = document.createElement("summary");
+        summary.textContent = `${record.execution_id} | ${record.mutation_type} | ${record.legitimacy_result}`;
+        const pre = document.createElement("pre");
+        pre.textContent = record.evidence_text;
+        const row = document.createElement("div");
+        row.className = "cta-row";
+        const copy = document.createElement("button");
+        copy.className = "copy-btn";
+        copy.type = "button";
+        copy.textContent = "Copy Historical Evidence";
+        copy.addEventListener("click", async () => {
+          try {
+            await navigator.clipboard.writeText(record.evidence_text);
+            copyStatus.textContent = `Copied ${record.execution_id}.`;
+          } catch (_) {
+            copyStatus.textContent = "Copy failed. Select and copy manually.";
+          }
+        });
+        const exportBtn = document.createElement("button");
+        exportBtn.className = "copy-btn";
+        exportBtn.type = "button";
+        exportBtn.textContent = "Export Historical Record";
+        exportBtn.addEventListener("click", () => {
+          downloadText(`${record.execution_id}_historical_evidence.txt`, record.evidence_text);
+          copyStatus.textContent = `Exported ${record.execution_id}.`;
+        });
+        row.appendChild(copy);
+        row.appendChild(exportBtn);
+        wrap.appendChild(summary);
+        wrap.appendChild(pre);
+        wrap.appendChild(row);
+        evidenceArchive.appendChild(wrap);
+      });
+    }
+
+    function fillCompareSelects() {
+      const options = historyRecords.slice(0, 10)
+        .map((r, i) => `<option value="${i}">${r.execution_id} (${r.mutation_type})</option>`)
+        .join("");
+      compareA.innerHTML = options || "<option value=''>no sessions</option>";
+      compareB.innerHTML = options || "<option value=''>no sessions</option>";
+      if (historyRecords.length > 1) {
+        compareA.selectedIndex = 0;
+        compareB.selectedIndex = 1;
+      } else if (historyRecords.length === 1) {
+        compareA.selectedIndex = 0;
+        compareB.selectedIndex = 0;
+      }
+      renderComparison();
+    }
+
+    function renderComparison() {
+      if (historyRecords.length === 0) {
+        compareOutput.textContent = "no historical sessions available for comparison...";
+        return;
+      }
+      const a = historyRecords[Number(compareA.value)] || historyRecords[0];
+      const b = historyRecords[Number(compareB.value)] || historyRecords[0];
+      const aEpoch = Number(String(a.current_runtime_epoch).split("_").pop());
+      const bEpoch = Number(String(b.current_runtime_epoch).split("_").pop());
+      compareOutput.textContent =
+`Session A: ${a.execution_id}
+Session B: ${b.execution_id}
+
+runtime_epoch_delta: ${bEpoch - aEpoch}
+mutation_delta: ${a.mutation_type} -> ${b.mutation_type}
+legitimacy_state_delta: ${a.legitimacy_result} -> ${b.legitimacy_result}
+execution_outcome_delta: ${a.execution_decision} -> ${b.execution_decision}`;
+    }
+
+    function persistAndRenderHistory() {
+      const record = buildHistoryRecord();
+      historyRecords.unshift(record);
+      historyRecords = historyRecords.slice(0, 10);
+      saveHistory();
+      renderHistoryPanel();
+      renderArchive();
+      fillCompareSelects();
+    }
+
+    function finalizeEvidenceRecord() {
+      const finalizedTs = nowIso();
+      immutableBanner.style.display = "block";
+      immutableBanner.textContent = `EXECUTION EVIDENCE FINALIZED\n${finalizedTs}`;
+      persistAndRenderHistory();
+    }
+
+    function applyFlowEvent(event) {
+      const mutationDescriptor = event.at >= 3 ? `${event.mutationState} (${session.scenario.mutation})` : event.mutationState;
+      session.state = {
+        mutationState: mutationDescriptor,
+        divergenceState: event.divergenceState,
+        legitimacyState: event.legitimacyState,
+        executionState: event.executionState
+      };
+      session.evidenceStage = Math.max(session.evidenceStage, event.stage);
+      session.currentDepGraph = event.at >= 3 ? session.currentDepGraph : session.approvalDepGraph;
+      session.currentCapScope = event.at >= 7 ? session.scenario.capabilityShift.split(" -> ")[1] : session.scenario.capabilityShift.split(" -> ")[0];
+      session.currentChecksum = event.at >= 7 ? session.scenario.checksumShift.split(" -> ")[1] : session.approvalChecksum;
+      document.getElementById(`stage${event.stage}`).classList.add("show");
+      if (event.at >= 3) runtimeStatus.classList.add("mutated");
+      setPhase(event.phase);
+      setPressureVisuals();
+      pulseStatus();
+      appendStream(event.stream);
+      if (event.phase === "divergence") appendStream("runtime reconciliation delay observed");
+      if (event.phase === "invalidation") appendStream("evidence propagation delay settled");
+      updatePanels();
+
+      if (event.stage === 6) {
+        appendStream(`authority continuity ${session.scenario.divergenceNarrative}`);
+        evidenceBlock.open = true;
+        whyBlocked.style.display = "block";
+        replayBtn.disabled = false;
+        newScenarioBtn.disabled = false;
+        finalizeEvidenceRecord();
+      }
+    }
+
+    function noiseDelayForState() {
+      if (session.state.legitimacyState === "INVALIDATED") return 900;
+      if (session.state.legitimacyState === "ESCALATING") return 1400;
+      if (session.state.mutationState.includes("active")) return 1900;
+      return 2600;
+    }
+
+    function scheduleNoise() {
+      if (!session || session.state.executionState === "BLOCKED") return;
+      const idx = session.streamLines.length % noiseLines.length;
+      appendStream(noiseLines[idx]);
+      noiseTimer = setTimeout(scheduleNoise, noiseDelayForState());
+    }
+
+    function startSessionRun() {
+      clearTimers();
+      resetVisuals();
+      replayBtn.disabled = true;
+      newScenarioBtn.disabled = true;
+      session.startMs = Date.now();
+      session.streamLines = [];
+      session.evidenceStage = 0;
+      session.currentDepGraph = session.approvalDepGraph;
+      session.currentCapScope = "limited";
+      session.currentChecksum = session.approvalChecksum;
+      session.state = {
+        mutationState: "none",
+        divergenceState: "none",
+        legitimacyState: "VALID",
+        executionState: "APPROVAL_GRANTED"
+      };
+      renderSessionInit();
+      setPhase("approval");
+      updatePanels();
+      appendStream("runtime snapshot persisted");
+      scheduleNoise();
+
+      const latencyOffset = [0, 140, 210, 280, 320, 370];
+      flow.forEach((event, idx) => {
+        const t = setTimeout(() => applyFlowEvent(event), (event.at * 1000) + latencyOffset[idx]);
+        timers.push(t);
+      });
+
+      tickTimer = setInterval(() => updatePanels(), 1000);
+    }
+
+    function initSession(newScenario) {
+      if (newScenario) scenarioCursor = (scenarioCursor + 1) % scenarioPool.length;
+      const scenario = scenarioPool[scenarioCursor];
+      const now = new Date();
+      const stamp = stampForId(now);
+      const baseEpoch = 180 + (now.getUTCMinutes() % 12) + scenarioCursor * 3;
+      const depSeed = (baseEpoch * 97).toString(16).slice(0, 4);
+      const depNext = ((baseEpoch + 9) * 113).toString(16).slice(0, 4);
+      session = {
+        sessionId: `sess_${stamp}_${String(scenarioCursor + 1).padStart(2, "0")}`,
+        executionId: `exec_${stamp}_${uuidLike("e").slice(2, 8)}`,
+        evidenceId: uuidLike("evidence"),
+        mutationId: `mut_${stamp}_${scenario.mutation}`,
+        approvalTimestamp: nowIso(),
+        runtimeEpochStart: baseEpoch,
+        mutationWindow: "T+3s to T+11s",
+        scenario,
+        approvalDepGraph: `dep_graph_${depSeed}`,
+        approvalChecksum: `ctx_${depSeed}`,
+        startMs: Date.now(),
+        state: {},
+        streamLines: [],
+        evidenceStage: 0,
+        currentDepGraph: `dep_graph_${depNext}`,
+        currentCapScope: "limited",
+        currentChecksum: `ctx_${depNext}`
+      };
+    }
 
     async function copyEvidence() {
       try {
-        await navigator.clipboard.writeText(evidenceExport.textContent);
+        await navigator.clipboard.writeText(buildEvidenceText(false));
         copyStatus.textContent = "Evidence copied.";
       } catch (_) {
         copyStatus.textContent = "Copy failed. Select and copy manually.";
       }
     }
 
+    async function copyRuntimeSession() {
+      const payload =
+`RUNTIME SESSION LOG
+Session ID: ${session.sessionId}
+Execution ID: ${session.executionId}
+Evidence ID: ${session.evidenceId}
+Mutation ID: ${session.mutationId}
+
+EVENT STREAM
+${session.streamLines.join("\n")}
+
+${buildEvidenceText(false)}`;
+      try {
+        await navigator.clipboard.writeText(payload);
+        copyStatus.textContent = "Runtime session copied.";
+      } catch (_) {
+        copyStatus.textContent = "Copy failed. Select and copy manually.";
+      }
+    }
+
+    replayBtn.addEventListener("click", () => startSessionRun());
+    newScenarioBtn.addEventListener("click", () => {
+      initSession(true);
+      startSessionRun();
+    });
+    compareA.addEventListener("change", renderComparison);
+    compareB.addEventListener("change", renderComparison);
     copyBtn.addEventListener("click", copyEvidence);
+    copySessionBtn.addEventListener("click", copyRuntimeSession);
+    exportEvidenceTxtBtn.addEventListener("click", () => {
+      downloadText(`${session.executionId}_evidence.txt`, buildEvidenceText(false));
+      copyStatus.textContent = "Evidence exported (.txt).";
+    });
+    exportEvidenceMdBtn.addEventListener("click", () => {
+      downloadText(`${session.executionId}_evidence.md`, buildEvidenceText(true));
+      copyStatus.textContent = "Evidence exported (.md).";
+    });
+
+    historyRecords = loadHistory();
+    renderHistoryPanel();
+    renderArchive();
+    fillCompareSelects();
+    initSession(false);
+    startSessionRun();
   </script>
 </body>
 </html>

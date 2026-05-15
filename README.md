@@ -1,6 +1,32 @@
 # DETERMA — Runtime Legitimacy Infrastructure
 
-👉 [Launch Live Demo](https://determaai.github.io/DETERMA-v0.1-Governed-Runtime-Proof-Baseline/)
+[Launch Live Demo](https://determaai.github.io/DETERMA-v0.1-Governed-Runtime-Proof-Baseline/)
+
+![Runtime Legitimacy Contradiction](assets/runtime_legitimacy_contradiction.gif)
+
+## Public Runtime Status
+
+```text
+Live Demo: ACTIVE
+Pages Deployment: ACTIVE
+Runtime Sessions: ENABLED
+Evidence Export: VERIFIED
+NotebookLM Surface: ONLINE
+```
+
+## Recent Public Runtime Updates
+
+- deployment timestamp: 2026-05-15T00:00:00Z
+- runtime session engine: persistent lineage + evidence archive enabled
+- evidence export layer: copy + txt/md export verified in demo surface
+- latest deployment verification: deployment legitimacy pass completed
+
+## Executive Entry
+
+- [Board-Level Overview](docs/notebooklm_public/BOARD_LEVEL_ONE_PAGER.html)
+- [Why DETERMA Exists](docs/notebooklm_public/WHY_DETERMA_EXISTS.html)
+- [Live Runtime Legitimacy Demo](https://determaai.github.io/DETERMA-v0.1-Governed-Runtime-Proof-Baseline/)
+- [Public NotebookLM](https://notebooklm.google.com/notebook/607349dd-c101-4675-8c94-377e9a585e2b?authuser=1)
 
 ```text
 The approval remained.
@@ -8,95 +34,66 @@ The runtime changed.
 Execution legitimacy diverged.
 ```
 
+## 30-Second Understanding
+
+```text
+Traditional systems ask:
+
+"Was this approved?"
+
+DETERMA asks:
+
+"Is this execution still legitimate under the current runtime reality?"
+```
+
+## Why Runtime Legitimacy Emerges Now
+
+Modern autonomous systems increasingly execute across:
+
+- delayed execution windows
+- mutable runtimes
+- dependency drift
+- replayable authority contexts
+- continuously changing system state
+
+Under these conditions, historical approval alone becomes insufficient.
+
 ## Start Here
 
-| Experience | Open |
-|---|---|
-| Interactive Runtime Legitimacy Demo | [Launch Demo](https://determaai.github.io/DETERMA-v0.1-Governed-Runtime-Proof-Baseline/) |
-| Demo Walkthrough | [Read Walkthrough](docs/notebooklm_public/FIRST_DEMO_WALKTHROUGH.md) |
-| Executive Overview | [Read Overview](docs/notebooklm_public/EXECUTIVE_FIELD_OVERVIEW.md) |
-| Contradiction Flow | [View Flow](docs/notebooklm_public/CONTRADICTION_DEMO_FLOW.md) |
-| Investor Fast Path | [Open Path](INVESTOR_FAST_PATH.md) |
+1. [Launch the live contradiction demo](https://determaai.github.io/DETERMA-v0.1-Governed-Runtime-Proof-Baseline/)
+2. [Read the walkthrough](docs/notebooklm_public/FIRST_DEMO_WALKTHROUGH.md)
+3. [Open Why DETERMA Exists](docs/notebooklm_public/WHY_DETERMA_EXISTS.html)
+4. [Open Ontology Map](docs/notebooklm_public/ONTOLOGY_MAP.html)
+5. [Open Public NotebookLM](https://notebooklm.google.com/notebook/607349dd-c101-4675-8c94-377e9a585e2b?authuser=1)
 
-## What The Demo Shows
+## What DETERMA Demonstrates
 
-```text
-Approval Granted
-        ↓
-Runtime Changed
-        ↓
-Execution Resumed
-        ↓
-Legitimacy Failed
-```
+![What DETERMA Has Proven](assets/visuals/what_determa_has_proven.png)
 
-DETERMA demonstrates how historically valid authorization can become illegitimate under changing runtime conditions.
+- replay invalidation conditions
+- runtime divergence under delayed execution
+- stale authorization persistence
+- legitimacy collapse under changed runtime context
+- reconstructable execution evidence
 
-## Why This Matters
+## Compression Pages
 
-Traditional Systems:
-
-```text
-Approval
-↓
-Execution
-```
-
-Mutable Autonomous Systems:
-
-```text
-Approval
-↓
-Runtime Mutation
-↓
-Legitimacy Revalidation
-↓
-Execution Decision
-```
-
-Reference visual: [why_runtime_legitimacy_emerges.md](assets/visuals/why_runtime_legitimacy_emerges.md)
-
-## Runtime Divergence
-
-![Runtime Divergence](assets/demo_screenshots/runtime_divergence.png)
-
-## Legitimacy Collapse
-
-![Legitimacy Collapse](assets/demo_screenshots/legitimacy_collapse.png)
-
-## Execution Evidence
-
-![Execution Evidence](assets/demo_screenshots/execution_evidence.png)
+- [Board-Level One Pager](docs/notebooklm_public/BOARD_LEVEL_ONE_PAGER.html)
+- [Executive PDF Export Source](docs/notebooklm_public/EXECUTIVE_PDF_EXPORT_SOURCE.html)
+- [Why DETERMA Exists](docs/notebooklm_public/WHY_DETERMA_EXISTS.html)
+- [Field Compression](docs/notebooklm_public/FIELD_COMPRESSION.html)
+- [Field Evolution Timeline](docs/notebooklm_public/FIELD_EVOLUTION_TIMELINE.html)
+- [What Runtime Legitimacy Changes](docs/notebooklm_public/WHAT_RUNTIME_LEGITIMACY_CHANGES.html)
+- [Category Positioning Matrix](docs/notebooklm_public/CATEGORY_POSITIONING_MATRIX.html)
+- [Proof Progress Timeline](docs/notebooklm_public/PROOF_PROGRESS_TIMELINE.html)
+- [Deployment Integrity Matrix](docs/notebooklm_public/DEPLOYMENT_INTEGRITY_MATRIX.html)
+- [Ontology Map](docs/notebooklm_public/ONTOLOGY_MAP.html)
+- [Deployment Verification Protocol](DEPLOYMENT_VERIFICATION_PROTOCOL.md)
+- [Public Convergence Checklist](PUBLIC_CONVERGENCE_CHECKLIST.md)
 
 ## Investor Fast Path
 
-1. Launch the live contradiction demo.
-2. Observe runtime legitimacy failure.
-3. Review execution evidence.
-4. Read the executive overview.
-5. Explore the public NotebookLM.
-
-## Public NotebookLM
-
-[Open NotebookLM](https://notebooklm.google.com/notebook/607349dd-c101-4675-8c94-377e9a585e2b?authuser=1)
-
-## Live Demo Status
-
-GitHub Pages live walkthrough entrypoint:
-
-[https://determaai.github.io/DETERMA-v0.1-Governed-Runtime-Proof-Baseline/](https://determaai.github.io/DETERMA-v0.1-Governed-Runtime-Proof-Baseline/)
-
-## Current Maturity
-
-DETERMA currently demonstrates:
-
-- runtime legitimacy contradiction modeling
-- replay legitimacy invalidation
-- runtime divergence reasoning
-- execution evidence generation
-- legitimacy revalidation semantics
-
-The framework does not yet claim hyperscale deployment maturity or distributed legitimacy consensus infrastructure.
+Use [INVESTOR_FAST_PATH.md](INVESTOR_FAST_PATH.md) for a 5-minute flow.
 
 ## Disclosure Boundary
 

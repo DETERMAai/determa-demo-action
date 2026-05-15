@@ -15,7 +15,7 @@ The system changed.
 
 # Try The Demo Now
 
-👉 https://determaai.github.io/DETERMA-v0.1-Governed-Runtime-Proof-Baseline/
+👉 [https://determaai.github.io/DETERMA-v0.1-Governed-Runtime-Proof-Baseline/](https://determaai.github.io/DETERMA-v0.1-Governed-Runtime-Proof-Baseline/)
 
 # Start Here
 
@@ -44,6 +44,18 @@ DETERMA demonstrates how historically valid authorization can become illegitimat
 ## Runtime Legitimacy Contradiction
 
 ![Runtime Legitimacy Demo](assets/demo_screenshots/runtime_divergence.png)
+
+## Runtime Divergence
+
+![Runtime Divergence](assets/demo_screenshots/runtime_divergence.png)
+
+## Legitimacy Collapse
+
+![Legitimacy Collapse](assets/demo_screenshots/legitimacy_collapse.png)
+
+## Execution Evidence
+
+![Execution Evidence](assets/demo_screenshots/execution_evidence.png)
 
 ## Live Demo Status
 

@@ -21,16 +21,16 @@ Core claim:
 Historical authorization does not guarantee present execution legitimacy.
 
 ## Public Demo
-- Open [`demo/index.html`](demo/index.html) for the runtime contradiction walkthrough.
+- Open [`docs/demo/index.html`](docs/demo/index.html) for the runtime contradiction walkthrough.
 
 ## Public Documentation
 - [`docs/notebooklm/INDEX.md`](docs/notebooklm/INDEX.md)
-- [`canonical/governed_execution.md`](canonical/governed_execution.md)
-- [`canonical/runtime_legitimacy.md`](canonical/runtime_legitimacy.md)
-- [`canonical/authorization_continuity.md`](canonical/authorization_continuity.md)
-- [`canonical/mutation_legitimacy.md`](canonical/mutation_legitimacy.md)
-- [`assets`](assets/README.md)
-- [`examples`](examples/README.md)
+- [`docs/canonical/governed_execution.md`](docs/canonical/governed_execution.md)
+- [`docs/canonical/runtime_legitimacy.md`](docs/canonical/runtime_legitimacy.md)
+- [`docs/canonical/authorization_continuity.md`](docs/canonical/authorization_continuity.md)
+- [`docs/canonical/mutation_legitimacy.md`](docs/canonical/mutation_legitimacy.md)
+- [`docs/demo/DEMO_SCRIPT_90_SECONDS.md`](docs/demo/DEMO_SCRIPT_90_SECONDS.md)
+- [`docs/positioning/governed_execution_category.md`](docs/positioning/governed_execution_category.md)
 
 ## Public/Private Boundary
 Certain operational enforcement details are intentionally excluded from this repository.

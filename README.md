@@ -1,150 +1,114 @@
-﻿# DETERMA
+﻿# DETERMA — Runtime Legitimacy Infrastructure
 
-> DETERMA Attribution: This document is part of the DETERMA Runtime Legitimacy Framework.
+## Live Interactive Contradiction Demo
 
+👉 [Open the Live Demo](https://determaai.github.io/DETERMA-v0.1-Governed-Runtime-Proof-Baseline/)
 
-## Runtime Legitimacy Field Publication Surface
+👉 [Read Before Starting](docs/notebooklm_public/FIRST_DEMO_WALKTHROUGH.md)
 
-> The approval remained.  
-> The system changed.
->
-> Public NotebookLM Available  
-> https://notebooklm.google.com/notebook/607349dd-c101-4675-8c94-377e9a585e2b?authuser=1
+👉 [Explore the Public NotebookLM](https://notebooklm.google.com/notebook/607349dd-c101-4675-8c94-377e9a585e2b?authuser=1)
 
-This repository is the public publication surface of the DETERMA Runtime Legitimacy Framework.
+---
 
-DETERMA defines and formalizes the runtime legitimacy category: how historical authorization can diverge from present execution legitimacy as runtime reality evolves.
+The approval remained.  
+The system changed.
 
-## Experience the Runtime Legitimacy Contradiction
+# Try The Demo Now
 
-The DETERMA demo environment illustrates how historically valid authorization can become illegitimate under changing runtime conditions.
+👉 https://determaai.github.io/DETERMA-v0.1-Governed-Runtime-Proof-Baseline/
 
-This is the operational contradiction underlying the runtime legitimacy category.
+# Start Here
 
-## Start Here
-
-| Entry Point | Purpose |
+| Experience | Open |
 |---|---|
-| `demo/index.html` | Interactive contradiction walkthrough |
-| `docs/notebooklm_public/CONTRADICTION_DEMO_FLOW.md` | Narrative legitimacy collapse walkthrough |
-| `docs/notebooklm_public/canonical_examples/` | Minimal legitimacy contradiction examples |
-| Public NotebookLM | Interactive legitimacy reasoning environment |
+| Interactive Runtime Legitimacy Demo | [Launch Demo](https://determaai.github.io/DETERMA-v0.1-Governed-Runtime-Proof-Baseline/) |
+| Demo Walkthrough | [Read Walkthrough](docs/notebooklm_public/FIRST_DEMO_WALKTHROUGH.md) |
+| Executive Overview | [Read Overview](docs/notebooklm_public/EXECUTIVE_FIELD_OVERVIEW.md) |
+| Contradiction Flow | [View Flow](docs/notebooklm_public/CONTRADICTION_DEMO_FLOW.md) |
+| Public NotebookLM | [Open NotebookLM](https://notebooklm.google.com/notebook/607349dd-c101-4675-8c94-377e9a585e2b?authuser=1) |
 
-## Recommended Demo Flow
-
-1. Open the contradiction walkthrough
-2. Observe runtime divergence emerge
-3. Explore legitimacy collapse examples
-4. Read the executive field overview
-5. Explore the ontology using NotebookLM
-
-## Core Contradictions Demonstrated
-
-- stale approval collapse
-- runtime drift
-- replay invalidation
-- delayed execution divergence
-- authority continuity failure
-- mutation legitimacy breakdown
-- legitimacy revalidation necessity
-
-## Public NotebookLM
-
-https://notebooklm.google.com/notebook/607349dd-c101-4675-8c94-377e9a585e2b?authuser=1
-
-## Public Legitimacy Notebook
-
-DETERMA maintains a dedicated public NotebookLM cognition surface for exploring:
-
-- runtime legitimacy
-- distributed authority
-- mutation legitimacy
-- temporal authorization
-- runtime divergence
-- legitimacy revalidation
-- infrastructure governance theory
-
-The notebook is built from the curated `docs/notebooklm_ingestion/` ontology surface and is intended as the primary public reasoning environment for the legitimacy field.
-
-### Recommended exploration prompts
-
-- What is runtime legitimacy?
-- Why is historical authorization insufficient?
-- What is mutation legitimacy?
-- How does runtime divergence emerge?
-- Why is replayability not equivalent to legitimacy?
-- What problem category is DETERMA defining?
-
-### Public NotebookLM
-
-https://notebooklm.google.com/notebook/607349dd-c101-4675-8c94-377e9a585e2b?authuser=1
-
-## Live Interactive Demo
-
-GitHub Pages deployment coming soon.
-
-Current local demo:
+## What The Demo Shows
 
 ```text
-/demo/index.html
+Approval Granted
+        ↓
+Runtime Changed
+        ↓
+Execution Resumed
+        ↓
+Legitimacy Failed
 ```
 
-## Public Navigation
+DETERMA demonstrates how historically valid authorization can become illegitimate under changing runtime conditions.
 
-Primary ontology surface:
+## Runtime Legitimacy Contradiction
 
-```text
-docs/notebooklm_public/
-```
+![Runtime Legitimacy Demo](assets/demo_screenshots/runtime_divergence.png)
 
-Public contradiction demo:
+## Live Demo Status
 
-```text
-demo/index.html
-```
+GitHub Pages deployment is prepared.
 
-Public conceptual examples:
+To activate the live public walkthrough:
 
-```text
-examples/
-```
+Repository Settings -> Pages -> Deploy from `main` branch.
 
-## Core Concept
+## Real Operational Failure Modes
 
-Traditional assumption:
+Modern autonomous execution systems already exhibit legitimacy contradictions such as:
 
-```text
-Approval -> Execution
-```
+- delayed CI/CD execution after runtime drift
+- stale deployment approvals
+- replayed runtime actions under changed environments
+- dependency mutation after authorization
+- long-running execution chains
+- execution/runtime mismatch
+- authority continuity breakdown
 
-Runtime legitimacy model:
+These contradictions emerge even without malicious behavior.
 
-```text
-Approval -> Runtime Revalidation -> Execution Decision
-```
+## Why Existing Governance Systems Are Insufficient
 
-## Public Repository Scope
+Traditional governance systems generally validate approval history.
 
-- legitimacy field theory
-- runtime governance conceptual framing
-- distributed authority conceptual models
-- ontology-governed NotebookLM ingestion materials
+DETERMA evaluates whether execution remains legitimate after runtime mutation, delayed execution, dependency drift, and environment divergence.
 
-## What DETERMA Demonstrates Today
+This distinction becomes increasingly important in autonomous execution systems.
 
-The current public framework and demos already demonstrate:
+## Current Maturity
 
-- runtime divergence detection
-- stale authorization contradiction modeling
-- replay legitimacy failure conditions
-- legitimacy invalidation flows
-- runtime evidence generation
-- legitimacy revalidation reasoning
-- authority continuity breakdown scenarios
+DETERMA currently demonstrates:
 
-The framework is still early and does not claim complete production maturity.
+- runtime legitimacy contradiction modeling
+- replay legitimacy invalidation
+- runtime divergence reasoning
+- execution evidence generation
+- legitimacy revalidation semantics
 
-However, the contradiction itself is already operationally real in modern autonomous execution systems.
+The framework does not yet claim hyperscale deployment maturity or distributed legitimacy consensus infrastructure.
+
+## What DETERMA Is Not
+
+DETERMA is not:
+
+- an AI model
+- an observability platform
+- a workflow orchestration framework
+- a policy engine
+- a monitoring wrapper
+- a generic AI governance dashboard
+
+DETERMA defines a separate category:
+
+runtime legitimacy infrastructure.
+
+## Additional Entry Surfaces
+
+- [Demo Quickstart](DEMO_QUICKSTART.md)
+- [Investor Fast Path](INVESTOR_FAST_PATH.md)
+- [Public Entrypoint](PUBLIC_ENTRYPOINT.md)
+- [Demo Entrypoint Doc](docs/notebooklm_public/DEMO_ENTRYPOINT.md)
+- [Operational Validation Layer](docs/notebooklm_public/WHAT_DETERMA_HAS_PROVEN.md)
 
 ## Disclosure Boundary
 

@@ -17,13 +17,15 @@ A historically valid authorization can persist while runtime conditions diverge,
 Operational systems that rely only on historical approval can execute mutations under stale runtime assumptions.
 
 ## Recommended Navigation Sequence
-1. Open `demo/index.html`
-2. Read `CONTRADICTION_DEMO_FLOW.md`
-3. Review `canonical_examples/`
-4. Read `EXECUTIVE_FIELD_OVERVIEW.md`
-5. Explore the public NotebookLM
+1. Read `FIRST_DEMO_WALKTHROUGH.md`
+2. Open `demo/index.html`
+3. Read `CONTRADICTION_DEMO_FLOW.md`
+4. Review `canonical_examples/`
+5. Read `EXECUTIVE_FIELD_OVERVIEW.md`
+6. Explore the public NotebookLM
 
 ## Links
+- `docs/notebooklm_public/FIRST_DEMO_WALKTHROUGH.md`
 - `demo/index.html`
 - `docs/notebooklm_public/canonical_examples/`
 - `docs/notebooklm_public/CONTRADICTION_DEMO_FLOW.md`

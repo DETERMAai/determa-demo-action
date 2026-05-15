@@ -27,16 +27,35 @@
       margin: 0;
       padding: 16px;
     }
+    .top-nav {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-bottom: 12px;
+      padding: 8px;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      background: var(--surface);
+    }
+    .top-nav a {
+      color: var(--accent);
+      text-decoration: none;
+      font-size: 12px;
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      padding: 6px 8px;
+      background: var(--surface-soft);
+    }
     .hero {
       border: 1px solid var(--border);
       border-radius: 8px;
       background: var(--surface);
-      padding: 14px;
+      padding: 18px;
       margin-bottom: 14px;
     }
     .hero h1 {
       margin: 0 0 8px 0;
-      font-size: 24px;
+      font-size: 32px;
       font-weight: 600;
       letter-spacing: 0.01em;
     }
@@ -44,6 +63,19 @@
       margin: 0;
       color: var(--text-secondary);
       font-size: 14px;
+    }
+    .first-time {
+      margin-top: 12px;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 10px;
+      background: rgba(125, 211, 252, 0.04);
+    }
+    .first-time h2 {
+      margin: 0 0 8px 0;
+      font-size: 16px;
+      font-weight: 600;
+      color: var(--text-primary);
     }
     .cta-row {
       display: flex;
@@ -65,6 +97,9 @@
       color: var(--text-primary);
       border-color: rgba(125, 211, 252, 0.45);
       background: rgba(125, 211, 252, 0.08);
+      font-size: 14px;
+      padding: 10px 14px;
+      font-weight: 600;
     }
     .stage {
       display: none;
@@ -98,6 +133,48 @@
       font-size: 13px;
     }
     .stage li { margin: 3px 0; }
+    .details-card {
+      margin-top: 12px;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      background: var(--surface);
+      padding: 10px;
+    }
+    .details-card summary {
+      cursor: pointer;
+      color: var(--text-primary);
+      font-size: 13px;
+      font-weight: 500;
+    }
+    .evidence-pre {
+      margin: 8px 0 0 0;
+      white-space: pre-wrap;
+      font-size: 12px;
+      color: var(--text-secondary);
+      font-family: "IBM Plex Mono", "JetBrains Mono", Consolas, monospace;
+      line-height: 1.5;
+    }
+    .nav-card {
+      margin-top: 12px;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      background: var(--surface);
+      padding: 10px;
+    }
+    .nav-card h3 {
+      margin: 0 0 8px 0;
+      font-size: 13px;
+      color: var(--text-primary);
+    }
+    .nav-links {
+      display: grid;
+      gap: 6px;
+    }
+    .nav-links a {
+      color: var(--accent);
+      text-decoration: none;
+      font-size: 12px;
+    }
     .footer-note {
       margin-top: 12px;
       padding: 10px;
@@ -111,9 +188,23 @@
 </head>
 <body>
   <main class="wrap">
+    <nav class="top-nav" aria-label="Top Navigation">
+      <a href="https://determaai.github.io/DETERMA-v0.1-Governed-Runtime-Proof-Baseline/">Live Demo</a>
+      <a href="../docs/notebooklm_public/FIRST_DEMO_WALKTHROUGH.md">Walkthrough</a>
+      <a href="../docs/notebooklm_public/EXECUTIVE_FIELD_OVERVIEW.md">Executive Overview</a>
+      <a href="https://notebooklm.google.com/notebook/607349dd-c101-4675-8c94-377e9a585e2b?authuser=1" target="_blank" rel="noreferrer">NotebookLM</a>
+    </nav>
     <section class="hero">
-      <h1>Runtime Legitimacy Contradiction Walkthrough</h1>
-      <p>How historically valid authorization becomes illegitimate under changing runtime conditions.</p>
+      <h1>Runtime Legitimacy Contradiction</h1>
+      <p>The approval remained. The system changed.</p>
+      <p style="margin-top: 6px;">This walkthrough demonstrates why historical authorization may no longer remain legitimate after runtime mutation.</p>
+      <section class="first-time">
+        <h2>First Time Here?</h2>
+        <div class="cta-row" style="margin-top: 0;">
+          <a class="btn" href="../docs/notebooklm_public/FIRST_DEMO_WALKTHROUGH.md">Read Before Starting</a>
+          <a class="btn" href="https://notebooklm.google.com/notebook/607349dd-c101-4675-8c94-377e9a585e2b?authuser=1" target="_blank" rel="noreferrer">Explore the Public Runtime Legitimacy Notebook</a>
+        </div>
+      </section>
       <div class="cta-row">
         <button id="startFlow" class="btn primary" type="button">Start Contradiction Walkthrough</button>
         <a class="btn" href="https://notebooklm.google.com/notebook/607349dd-c101-4675-8c94-377e9a585e2b?authuser=1" target="_blank" rel="noreferrer">Open Public NotebookLM</a>
@@ -162,6 +253,28 @@
         <li>legitimacy must be re-evaluated</li>
         <li>authority continuity must be re-established</li>
       </ul>
+    </section>
+
+    <details class="details-card">
+      <summary>View Execution Evidence</summary>
+      <pre class="evidence-pre">Approval Timestamp: 2026-05-15T14:01:22Z
+Runtime Epoch: runtime_epoch_47
+Dependency Drift: detected
+Mutation State: changed
+Replay Context: historical
+Legitimacy Status: invalidated
+Reason:
+Authorization context no longer valid for current runtime.</pre>
+    </details>
+
+    <section class="nav-card">
+      <h3>Navigation</h3>
+      <div class="nav-links">
+        <a href="../docs/notebooklm_public/EXECUTIVE_FIELD_OVERVIEW.md">Executive Overview</a>
+        <a href="../docs/notebooklm_public/CONTRADICTION_DEMO_FLOW.md">Contradiction Demo Flow</a>
+        <a href="../docs/notebooklm_public/canonical_examples/">Canonical Examples</a>
+        <a href="https://notebooklm.google.com/notebook/607349dd-c101-4675-8c94-377e9a585e2b?authuser=1" target="_blank" rel="noreferrer">Public NotebookLM</a>
+      </div>
     </section>
 
     <section class="footer-note">

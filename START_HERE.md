@@ -8,11 +8,12 @@ The fastest way to understand DETERMA is to experience the runtime legitimacy co
 
 Recommended order:
 
-1. Open the contradiction walkthrough
-2. Observe runtime divergence emerge
-3. Read the executive overview
-4. Explore the legitimacy ontology
-5. Use the public NotebookLM
+1. Read `docs/notebooklm_public/FIRST_DEMO_WALKTHROUGH.md`
+2. Open the contradiction walkthrough
+3. Observe runtime divergence emerge
+4. Read the executive overview
+5. Explore the legitimacy ontology
+6. Use the public NotebookLM
 
 1. Read `README.md`.
 2. Open `docs/notebooklm_public/START_HERE.md`.

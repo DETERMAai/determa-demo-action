@@ -1,9 +1,5 @@
-﻿# Runtime Legitimacy Primer
+# Runtime Legitimacy Primer
 
-Execution legitimacy depends on current runtime state.
+Runtime legitimacy asks whether an approved action still belongs to the current runtime reality at execution time.
 
-Public principle:
-- authorization history is informative but not sufficient for mutation authority.
-
-Operational implication:
-- runtime-time re-evaluation is required before mutation is applied.
+An approval can remain historically true while runtime context evolves.

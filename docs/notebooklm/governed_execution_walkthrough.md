@@ -1,8 +1,8 @@
-﻿# Governed Execution Walkthrough (Public)
+# Governed Execution Walkthrough
 
-1. Mutation intent is proposed.
-2. Approval is granted under current runtime conditions.
-3. Runtime conditions evolve.
-4. Execution is resumed.
-5. Legitimacy is re-evaluated against current runtime state.
-6. Mutation proceeds only when runtime legitimacy remains coherent.
+1. Authorization is granted.
+2. Runtime evolves over time.
+3. Execution is resumed.
+4. Legitimacy is checked against current runtime state.
+
+Governed execution exists to keep mutation legitimacy aligned with present runtime conditions.

@@ -1,0 +1,182 @@
+﻿<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Runtime Contradiction Demo</title>
+  <style>
+    :root {
+      --bg: #f6f8fb;
+      --card: #ffffff;
+      --text: #0f172a;
+      --muted: #3a475a;
+      --border: #d7dde7;
+    }
+    body {
+      margin: 0;
+      background: var(--bg);
+      color: var(--text);
+      font-family: "Segoe UI", Tahoma, sans-serif;
+    }
+    .wrap {
+      max-width: 760px;
+      margin: 0 auto;
+      padding: 20px;
+    }
+    button {
+      border: 0;
+      border-radius: 10px;
+      padding: 10px 14px;
+      background: #111827;
+      color: #fff;
+      font-weight: 700;
+      cursor: pointer;
+      margin-bottom: 10px;
+    }
+    button:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+    }
+    .card {
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      background: var(--card);
+      padding: 14px;
+      margin-bottom: 10px;
+      opacity: 0.28;
+      transition: opacity 180ms ease;
+    }
+    .card.show {
+      opacity: 1;
+    }
+    .line {
+      margin: 4px 0;
+      color: var(--muted);
+      line-height: 1.35;
+    }
+    .mono {
+      font-family: "Consolas", "Menlo", monospace;
+      font-size: 12px;
+      line-height: 1.45;
+      color: #0f172a;
+      white-space: pre-wrap;
+      margin: 0;
+    }
+    .split {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+    }
+    .subcard {
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      background: #fff;
+      padding: 10px;
+    }
+    .final {
+      font-weight: 700;
+      color: #0f172a;
+    }
+    @media (max-width: 720px) {
+      .split {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+  <main class="wrap">
+    <button id="runBtn" type="button">Run demonstration</button>
+
+    <section class="card show" id="scene1">
+      <p class="line">AI proposes mutation</p>
+      <p class="line">Human approval granted</p>
+      <p class="line">Execution authorized</p>
+    </section>
+
+    <section class="card" id="scene2">
+      <p class="mono">AUTHORIZATION CONTEXT
+
+repo_state          A17F
+dependency_graph    D44C
+runtime_epoch       1021</p>
+    </section>
+
+    <section class="card" id="scene3">
+      <p class="mono">CURRENT RUNTIME
+
+repo_state          B92K
+dependency_graph    E11X
+runtime_epoch       1048</p>
+    </section>
+
+    <section class="card" id="scene4">
+      <p class="line">Execution resumed using historical authorization</p>
+    </section>
+
+    <section class="card" id="scene5">
+      <div class="split">
+        <div class="subcard">
+          <p class="line">Mutation applied</p>
+        </div>
+        <div class="subcard">
+          <p class="line">Authorization context no longer valid for current runtime</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="card" id="scene6">
+      <p class="line">The approval remained.</p>
+      <p class="line">The system changed.</p>
+    </section>
+
+    <section class="card final" id="scene7">
+      <p class="line">DETERMA re-evaluates legitimacy at execution time.</p>
+    </section>
+  </main>
+
+  <script>
+    const sceneIds = ["scene2", "scene3", "scene4", "scene5", "scene6", "scene7"];
+    const delays = [1300, 1400, 1300, 1400, 1500, 1200];
+    let running = false;
+
+    function sleep(ms) {
+      return new Promise((resolve) => window.setTimeout(resolve, ms));
+    }
+
+    function resetScenes() {
+      sceneIds.forEach((id) => {
+        document.getElementById(id).classList.remove("show");
+      });
+    }
+
+    async function runProofFlow() {
+      try {
+        await fetch("/demo/proof/run", { method: "POST" });
+      } catch (_) {
+      }
+    }
+
+    async function play() {
+      if (running) return;
+      running = true;
+      const runBtn = document.getElementById("runBtn");
+      runBtn.disabled = true;
+      resetScenes();
+
+      const runtimeRun = runProofFlow();
+      for (let i = 0; i < sceneIds.length; i += 1) {
+        await sleep(delays[i]);
+        document.getElementById(sceneIds[i]).classList.add("show");
+      }
+      await runtimeRun;
+
+      runBtn.disabled = false;
+      running = false;
+    }
+
+    document.getElementById("runBtn").addEventListener("click", play);
+    window.addEventListener("load", resetScenes);
+  </script>
+</body>
+</html>

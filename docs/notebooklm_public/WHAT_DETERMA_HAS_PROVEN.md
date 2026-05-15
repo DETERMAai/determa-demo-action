@@ -1,5 +1,7 @@
 # What DETERMA Has Proven
 
+![What DETERMA Has Proven](../../assets/visuals/what_determa_has_proven.png)
+
 DETERMA is an early runtime legitimacy framework focused on execution legitimacy under changing runtime conditions.
 
 The framework does not claim complete production maturity.

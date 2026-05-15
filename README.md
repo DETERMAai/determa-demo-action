@@ -14,6 +14,8 @@ Evidence Export: VERIFIED
 NotebookLM Surface: ONLINE
 ```
 
+Public runtime integrity is continuously verified against deployed Pages state.
+
 ## Recent Public Runtime Updates
 
 - deployment timestamp: 2026-05-15T00:00:00Z

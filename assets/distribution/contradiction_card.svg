@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="675" viewBox="0 0 1200 675">
+  <rect width="1200" height="675" fill="#0f1115"/>
+  <rect x="60" y="70" width="1080" height="535" rx="16" fill="#161a22" stroke="rgba(255,255,255,0.12)"/>
+  <text x="100" y="140" fill="#7dd3fc" font-family="Inter,Segoe UI" font-size="38" font-weight="600">Runtime Legitimacy Contradiction</text>
+  <text x="100" y="190" fill="#9ca3af" font-family="Inter,Segoe UI" font-size="24">The approval remained. The runtime changed.</text>
+  <rect x="100" y="250" width="300" height="70" rx="8" fill="#121720" stroke="#7dd3fc"/>
+  <text x="120" y="295" fill="#f3f4f6" font-family="IBM Plex Mono,monospace" font-size="24">Approval Granted</text>
+  <text x="440" y="297" fill="#7dd3fc" font-family="IBM Plex Mono,monospace" font-size="30">→</text>
+  <rect x="490" y="250" width="300" height="70" rx="8" fill="#121720" stroke="#7dd3fc"/>
+  <text x="510" y="295" fill="#f3f4f6" font-family="IBM Plex Mono,monospace" font-size="24">Runtime Changed</text>
+  <text x="830" y="297" fill="#7dd3fc" font-family="IBM Plex Mono,monospace" font-size="30">→</text>
+  <rect x="880" y="250" width="220" height="70" rx="8" fill="#121720" stroke="#fca5a5"/>
+  <text x="900" y="295" fill="#f3f4f6" font-family="IBM Plex Mono,monospace" font-size="22">Legitimacy Failed</text>
+  <text x="100" y="385" fill="#9ca3af" font-family="Inter,Segoe UI" font-size="22">Historical authorization is not equivalent to current execution legitimacy.</text>
+  <text x="100" y="450" fill="#f3f4f6" font-family="Inter,Segoe UI" font-size="22">Live Demo: determaai.github.io/DETERMA-v0.1-Governed-Runtime-Proof-Baseline/</text>
+</svg>

@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1080" height="1080" viewBox="0 0 1080 1080">
+  <rect width="1080" height="1080" fill="#0f1115"/>
+  <rect x="80" y="120" width="920" height="840" rx="20" fill="#161a22" stroke="rgba(255,255,255,0.12)"/>
+  <text x="130" y="230" fill="#7dd3fc" font-family="Inter,Segoe UI" font-size="44" font-weight="600">DETERMA</text>
+  <text x="130" y="300" fill="#f3f4f6" font-family="Inter,Segoe UI" font-size="52" font-weight="500">"The approval remained."</text>
+  <text x="130" y="380" fill="#f3f4f6" font-family="Inter,Segoe UI" font-size="52" font-weight="500">"The system changed."</text>
+  <text x="130" y="510" fill="#9ca3af" font-family="Inter,Segoe UI" font-size="34">Runtime legitimacy asks:</text>
+  <text x="130" y="570" fill="#f3f4f6" font-family="IBM Plex Mono,monospace" font-size="30">Is execution still legitimate now?</text>
+  <text x="130" y="860" fill="#9ca3af" font-family="Inter,Segoe UI" font-size="22">Runtime legitimacy infrastructure for autonomous execution systems</text>
+</svg>

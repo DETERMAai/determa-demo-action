@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Executive PDF Export Source</title>
+  <style>
+    body{margin:0;background:#ffffff;color:#111827;font-family:Inter,"Segoe UI",sans-serif;line-height:1.45}
+    .wrap{max-width:960px;margin:0 auto;padding:28px}
+    h1{margin:0 0 8px 0;font-size:30px}h2{margin:22px 0 8px 0;font-size:18px}
+    p{margin:0 0 10px 0}ul{margin:0 0 10px 20px}
+    .card{border:1px solid #d1d5db;border-radius:10px;padding:14px;margin:12px 0}
+    .mono{font-family:"IBM Plex Mono",Consolas,monospace;font-size:12px;white-space:pre-line;color:#374151}
+    img{max-width:100%;border:1px solid #d1d5db;border-radius:8px}
+    a{color:#0f766e;text-decoration:none}
+    .small{font-size:12px;color:#6b7280}
+    @media print {.wrap{padding:0.5in} a{text-decoration:none;color:#111827}}
+  </style>
+</head>
+<body>
+  <main class="wrap">
+    <h1>DETERMA Executive Brief</h1>
+    <p class="small">Runtime legitimacy infrastructure for autonomous execution systems</p>
+
+    <div class="card">
+      <h2>Category Summary</h2>
+      <p>DETERMA addresses a governance gap: historical approval can persist while runtime reality changes, making execution legitimacy uncertain.</p>
+      <div class="mono">The approval remained.
+The runtime changed.
+Execution legitimacy diverged.</div>
+    </div>
+
+    <div class="card">
+      <h2>Core Contradiction</h2>
+      <img src="../../assets/runtime_legitimacy_contradiction.gif" alt="Runtime contradiction loop">
+      <div class="mono" style="margin-top:8px;">Approval Granted
+↓
+Runtime Mutated
+↓
+Replay Attempt
+↓
+Legitimacy Diverged
+↓
+Execution Blocked</div>
+    </div>
+
+    <div class="card">
+      <h2>Operational Evidence</h2>
+      <div class="mono">approval_epoch: approval_epoch_12
+runtime_epoch: runtime_epoch_47
+mutation_state: changed
+dependency_drift: detected
+legitimacy_status: invalidated
+reason: Authorization context no longer valid for current runtime.</div>
+    </div>
+
+    <div class="card">
+      <h2>Operational Validation</h2>
+      <img src="../../assets/visuals/what_determa_has_proven.png" alt="What DETERMA has proven">
+    </div>
+
+    <div class="card">
+      <h2>Why Now</h2>
+      <ul>
+        <li>Delayed execution windows</li>
+        <li>Mutable runtimes and dependency drift</li>
+        <li>Replayable authority contexts</li>
+        <li>Continuous state change under automation</li>
+      </ul>
+      <p>Static approval checks are increasingly insufficient under machine-speed execution.</p>
+    </div>
+
+    <div class="card">
+      <h2>Live Assets</h2>
+      <p><a href="https://determaai.github.io/DETERMA-v0.1-Governed-Runtime-Proof-Baseline/">Live Demo</a></p>
+      <p><a href="https://notebooklm.google.com/notebook/607349dd-c101-4675-8c94-377e9a585e2b?authuser=1">Public NotebookLM</a></p>
+      <p><a href="BOARD_LEVEL_ONE_PAGER.html">Board-Level One Pager</a></p>
+    </div>
+  </main>
+</body>
+</html>

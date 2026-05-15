@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="675" viewBox="0 0 1200 675">
+  <rect width="1200" height="675" fill="#0f1115"/>
+  <rect x="60" y="70" width="1080" height="535" rx="16" fill="#161a22" stroke="rgba(255,255,255,0.12)"/>
+  <text x="100" y="145" fill="#7dd3fc" font-family="Inter,Segoe UI" font-size="36" font-weight="600">Legitimacy Collapse</text>
+  <rect x="100" y="210" width="1000" height="260" rx="10" fill="#121720" stroke="#fca5a5"/>
+  <text x="130" y="265" fill="#f3f4f6" font-family="IBM Plex Mono,monospace" font-size="22">approval_epoch: approval_epoch_12</text>
+  <text x="130" y="310" fill="#f3f4f6" font-family="IBM Plex Mono,monospace" font-size="22">runtime_epoch: runtime_epoch_47</text>
+  <text x="130" y="355" fill="#f3f4f6" font-family="IBM Plex Mono,monospace" font-size="22">mutation_state: changed</text>
+  <text x="130" y="400" fill="#f3f4f6" font-family="IBM Plex Mono,monospace" font-size="22">legitimacy_status: invalidated</text>
+  <text x="130" y="445" fill="#fca5a5" font-family="IBM Plex Mono,monospace" font-size="21">reason: authorization context no longer valid for current runtime</text>
+  <text x="100" y="540" fill="#9ca3af" font-family="Inter,Segoe UI" font-size="22">Approval record persisted. Runtime continuity did not.</text>
+</svg>

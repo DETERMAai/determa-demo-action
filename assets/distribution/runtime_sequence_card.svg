@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="675" viewBox="0 0 1200 675">
+  <rect width="1200" height="675" fill="#0f1115"/>
+  <rect x="60" y="70" width="1080" height="535" rx="16" fill="#161a22" stroke="rgba(255,255,255,0.12)"/>
+  <text x="100" y="140" fill="#7dd3fc" font-family="Inter,Segoe UI" font-size="38" font-weight="600">Runtime Sequence</text>
+  <g font-family="IBM Plex Mono,monospace" font-size="24" fill="#f3f4f6">
+    <text x="100" y="230">Approval Granted</text>
+    <text x="100" y="290">↓</text>
+    <text x="100" y="340">Runtime Mutated</text>
+    <text x="100" y="400">↓</text>
+    <text x="100" y="450">Replay Attempt</text>
+    <text x="100" y="510">↓</text>
+    <text x="100" y="560">Legitimacy Diverged</text>
+  </g>
+  <text x="520" y="320" fill="#9ca3af" font-family="Inter,Segoe UI" font-size="24">Same approval artifact</text>
+  <text x="520" y="360" fill="#9ca3af" font-family="Inter,Segoe UI" font-size="24">Different runtime reality</text>
+  <text x="520" y="450" fill="#fca5a5" font-family="Inter,Segoe UI" font-size="26">Execution legitimacy failed</text>
+</svg>

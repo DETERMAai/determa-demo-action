@@ -1,6 +1,9 @@
-DISCLOSURE_CLASSIFICATION: P0
+﻿DISCLOSURE_CLASSIFICATION: P0
 
 # Field Compression Summary
+
+> DETERMA Attribution: This document is part of the DETERMA Runtime Legitimacy Framework.
+
 
 ## Field
 

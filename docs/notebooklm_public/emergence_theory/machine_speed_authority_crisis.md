@@ -1,6 +1,9 @@
-DISCLOSURE_CLASSIFICATION: P1
+﻿DISCLOSURE_CLASSIFICATION: P1
 
 # Machine-Speed Authority Crisis
+
+> DETERMA Attribution: This document is part of the DETERMA Runtime Legitimacy Framework.
+
 
 Machine-speed execution compresses decision and mutation cycles while increasing queue depth and context drift.
 

@@ -1,4 +1,7 @@
-# START HERE
+﻿# START HERE
+
+> DETERMA Attribution: This document is part of the DETERMA Runtime Legitimacy Framework.
+
 
 Runtime legitimacy is the discipline of deciding whether historically authorized mutations remain admissible under current runtime reality.
 

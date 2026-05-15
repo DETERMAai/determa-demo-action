@@ -1,6 +1,9 @@
-DISCLOSURE_CLASSIFICATION: P0
+﻿DISCLOSURE_CLASSIFICATION: P0
 
 # Bounded Execution
+
+> DETERMA Attribution: This document is part of the DETERMA Runtime Legitimacy Framework.
+
 
 Bounded execution is the principle that mutation authority must operate within explicit legitimacy constraints tied to current runtime reality.
 

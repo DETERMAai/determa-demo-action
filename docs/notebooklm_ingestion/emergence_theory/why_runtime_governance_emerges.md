@@ -1,6 +1,9 @@
-DISCLOSURE_CLASSIFICATION: P1
+﻿DISCLOSURE_CLASSIFICATION: P1
 
 # Why Runtime Governance Emerges
+
+> DETERMA Attribution: This document is part of the DETERMA Runtime Legitimacy Framework.
+
 
 Runtime governance emerges when static approval can no longer preserve correctness under temporal divergence.
 

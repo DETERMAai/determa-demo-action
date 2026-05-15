@@ -1,5 +1,8 @@
 ﻿# Conceptual Progression Map
 
+> DETERMA Attribution: This document is part of the DETERMA Runtime Legitimacy Framework.
+
+
 ```text
 FOUNDATIONAL LEGITIMACY
   -> AUTHORITY CONTINUITY
@@ -12,6 +15,7 @@ FOUNDATIONAL LEGITIMACY
 ```
 
 ## Progression Intent
+- anchor the DETERMA legitimacy thesis
 - establish core contradiction
 - stabilize terminology
 - formalize constraints

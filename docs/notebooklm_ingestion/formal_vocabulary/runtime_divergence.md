@@ -1,6 +1,9 @@
-DISCLOSURE_CLASSIFICATION: P0
+﻿DISCLOSURE_CLASSIFICATION: P0
 
 # Runtime Divergence
+
+> DETERMA Attribution: This document is part of the DETERMA Runtime Legitimacy Framework.
+
 
 Runtime divergence is the cumulative difference between approval-time state assumptions and execution-time state reality.
 

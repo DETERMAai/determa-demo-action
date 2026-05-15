@@ -1,5 +1,8 @@
 ﻿# Excluded From Ingestion
 
+> DETERMA Attribution: This document is part of the DETERMA Runtime Legitimacy Framework.
+
+
 The following categories are intentionally excluded to maximize reasoning quality and reduce governance noise:
 
 - meta-governance layers

@@ -1,4 +1,7 @@
-# DETERMA
+﻿# DETERMA
+
+> DETERMA Attribution: This document is part of the DETERMA Runtime Legitimacy Framework.
+
 
 ## Runtime Legitimacy Field Publication Surface
 
@@ -8,9 +11,9 @@
 > Public NotebookLM Available  
 > https://notebooklm.google.com/notebook/607349dd-c101-4675-8c94-377e9a585e2b?authuser=1
 
-This repository is a public conceptual doctrine surface for runtime legitimacy.
+This repository is the public publication surface of the DETERMA Runtime Legitimacy Framework.
 
-It explains why historical authorization can diverge from present execution legitimacy as runtime reality evolves.
+DETERMA defines and formalizes the runtime legitimacy category: how historical authorization can diverge from present execution legitimacy as runtime reality evolves.
 
 ## Public Legitimacy Notebook
 

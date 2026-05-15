@@ -1,6 +1,9 @@
-DISCLOSURE_CLASSIFICATION: P1
+﻿DISCLOSURE_CLASSIFICATION: P1
 
 # Authority Propagation Maps
+
+> DETERMA Attribution: This document is part of the DETERMA Runtime Legitimacy Framework.
+
 
 Authority propagates through context assumptions, not record existence alone.
 

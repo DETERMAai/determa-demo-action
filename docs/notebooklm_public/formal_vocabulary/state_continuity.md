@@ -1,6 +1,9 @@
-DISCLOSURE_CLASSIFICATION: P0
+﻿DISCLOSURE_CLASSIFICATION: P0
 
 # State Continuity
+
+> DETERMA Attribution: This document is part of the DETERMA Runtime Legitimacy Framework.
+
 
 State continuity is the degree to which execution-time state remains coherent with approval-time assumptions relevant to mutation legitimacy.
 

@@ -1,6 +1,9 @@
-DISCLOSURE_CLASSIFICATION: P1
+﻿DISCLOSURE_CLASSIFICATION: P1
 
 # Zero Trust Lineage
+
+> DETERMA Attribution: This document is part of the DETERMA Runtime Legitimacy Framework.
+
 
 Zero Trust reframed perimeter assumptions into continuous verification. Legitimacy theory parallels this move for mutation authority.
 

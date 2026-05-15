@@ -1,4 +1,7 @@
 ﻿# OPEN_LEGITIMACY_QUESTIONS
+
+> DETERMA Attribution: This document is part of the DETERMA Runtime Legitimacy Framework.
+
 DISCLOSURE_CLASSIFICATION: P1
 
 - How should authority continuity be measured across long delays?

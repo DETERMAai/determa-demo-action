@@ -1,6 +1,9 @@
-DISCLOSURE_CLASSIFICATION: P1
+﻿DISCLOSURE_CLASSIFICATION: P1
 
 # Static Authorization vs Runtime Authorization
+
+> DETERMA Attribution: This document is part of the DETERMA Runtime Legitimacy Framework.
+
 
 Static authorization assumes stable decision context. Runtime authorization adapts authority to current continuity conditions.
 

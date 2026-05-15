@@ -1,6 +1,9 @@
-DISCLOSURE_CLASSIFICATION: P1
+﻿DISCLOSURE_CLASSIFICATION: P1
 
 # Runtime Legitimacy vs IAM
+
+> DETERMA Attribution: This document is part of the DETERMA Runtime Legitimacy Framework.
+
 
 IAM governs identity and access scope. Runtime legitimacy governs context-bound execution admissibility.
 

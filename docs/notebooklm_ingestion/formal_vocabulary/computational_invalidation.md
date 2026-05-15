@@ -1,6 +1,9 @@
-DISCLOSURE_CLASSIFICATION: P0
+﻿DISCLOSURE_CLASSIFICATION: P0
 
 # Computational Invalidation
+
+> DETERMA Attribution: This document is part of the DETERMA Runtime Legitimacy Framework.
+
 
 Computational invalidation is the formal determination that a historically acceptable mutation is no longer admissible under current runtime continuity conditions.
 

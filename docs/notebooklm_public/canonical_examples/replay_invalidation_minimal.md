@@ -1,4 +1,7 @@
 ﻿# replay_invalidation_minimal
+
+> DETERMA Attribution: This document is part of the DETERMA Runtime Legitimacy Framework.
+
 DISCLOSURE_CLASSIFICATION: P0
 
 Mutation replay is syntactically identical.

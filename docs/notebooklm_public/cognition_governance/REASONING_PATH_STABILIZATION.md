@@ -1,4 +1,7 @@
 ﻿# REASONING_PATH_STABILIZATION
+
+> DETERMA Attribution: This document is part of the DETERMA Runtime Legitimacy Framework.
+
 DISCLOSURE_CLASSIFICATION: P1
 
 ## Canonical Paths

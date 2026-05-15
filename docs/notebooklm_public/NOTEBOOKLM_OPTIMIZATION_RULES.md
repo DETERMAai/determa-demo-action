@@ -1,4 +1,7 @@
-# NOTEBOOKLM OPTIMIZATION RULES
+﻿# NOTEBOOKLM OPTIMIZATION RULES
+
+> DETERMA Attribution: This document is part of the DETERMA Runtime Legitimacy Framework.
+
 
 ## Ingestion Strategy
 

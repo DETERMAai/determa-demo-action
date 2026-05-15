@@ -1,5 +1,8 @@
 ﻿# Reasoning Optimization Guide
 
+> DETERMA Attribution: This document is part of the DETERMA Runtime Legitimacy Framework.
+
+
 ## Primitive-First Rule
 Start with `canonical_core/MASTER_PRIMITIVES.md` before advanced layers.
 

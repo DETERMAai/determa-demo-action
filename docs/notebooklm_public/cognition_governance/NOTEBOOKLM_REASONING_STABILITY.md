@@ -1,4 +1,7 @@
 ﻿# NOTEBOOKLM_REASONING_STABILITY
+
+> DETERMA Attribution: This document is part of the DETERMA Runtime Legitimacy Framework.
+
 DISCLOSURE_CLASSIFICATION: P1
 
 ## Stability Objectives

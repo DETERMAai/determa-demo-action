@@ -1,6 +1,9 @@
-DISCLOSURE_CLASSIFICATION: P1
+﻿DISCLOSURE_CLASSIFICATION: P1
 
 # Temporal Correctness Lineage
+
+> DETERMA Attribution: This document is part of the DETERMA Runtime Legitimacy Framework.
+
 
 Temporal correctness appears across systems disciplines: leases expire, deadlines matter, stale reads invalidate writes. Legitimacy doctrine is a continuation of this tradition for execution authority.
 

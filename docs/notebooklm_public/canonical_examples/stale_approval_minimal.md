@@ -1,4 +1,7 @@
 ﻿# stale_approval_minimal
+
+> DETERMA Attribution: This document is part of the DETERMA Runtime Legitimacy Framework.
+
 DISCLOSURE_CLASSIFICATION: P0
 
 Approval granted at T+0 under state A.

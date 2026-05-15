@@ -1,4 +1,7 @@
 ﻿# CURRENT_THEORETICAL_BOUNDARIES
+
+> DETERMA Attribution: This document is part of the DETERMA Runtime Legitimacy Framework.
+
 DISCLOSURE_CLASSIFICATION: P1
 
 Current doctrine explains:

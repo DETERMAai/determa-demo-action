@@ -1,5 +1,8 @@
 ﻿# Advanced Research Path
 
+> DETERMA Attribution: This document is part of the DETERMA Runtime Legitimacy Framework.
+
+
 For distributed systems researchers, governance researchers, and infrastructure theorists:
 
 1. `intellectual_lineage/distributed_systems_lineage.md`

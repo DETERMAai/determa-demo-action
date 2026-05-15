@@ -1,6 +1,9 @@
-DISCLOSURE_CLASSIFICATION: P1
+﻿DISCLOSURE_CLASSIFICATION: P1
 
 # Monitoring vs Pre-Mutation Enforcement
+
+> DETERMA Attribution: This document is part of the DETERMA Runtime Legitimacy Framework.
+
 
 Monitoring detects and reports events. Pre-mutation enforcement constrains execution before state change.
 

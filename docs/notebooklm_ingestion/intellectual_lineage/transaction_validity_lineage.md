@@ -1,6 +1,9 @@
-DISCLOSURE_CLASSIFICATION: P1
+﻿DISCLOSURE_CLASSIFICATION: P1
 
 # Transaction Validity Lineage
+
+> DETERMA Attribution: This document is part of the DETERMA Runtime Legitimacy Framework.
+
 
 Transaction systems taught that correctness is validated at commit. Legitimacy doctrine borrows this directly: authorization at decision time does not remove need for execution-time validity.
 

@@ -1,4 +1,7 @@
 ﻿# UNRESOLVED_RUNTIME_GOVERNANCE_PROBLEMS
+
+> DETERMA Attribution: This document is part of the DETERMA Runtime Legitimacy Framework.
+
 DISCLOSURE_CLASSIFICATION: P1
 
 - legitimacy scaling across heterogeneous infrastructures

@@ -1,6 +1,9 @@
-DISCLOSURE_CLASSIFICATION: P1
+﻿DISCLOSURE_CLASSIFICATION: P1
 
 # Authority and Control Lineage
+
+> DETERMA Attribution: This document is part of the DETERMA Runtime Legitimacy Framework.
+
 
 Control theory and governance disciplines distinguish command from admissible action under system constraints. Legitimity theory extends this distinction into autonomous mutation systems.
 

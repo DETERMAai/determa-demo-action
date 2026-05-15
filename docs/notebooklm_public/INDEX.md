@@ -1,5 +1,8 @@
 ﻿# INDEX
 
+> DETERMA Attribution: This document is part of the DETERMA Runtime Legitimacy Framework.
+
+
 ## Disclosure Governance Summary
 
 - Public ingestion scope: `P0` and selected `P1` only
@@ -10,6 +13,7 @@
 ## Public NotebookLM
 
 The public NotebookLM is the live reasoning surface generated from the stabilized ingestion ontology.
+Within the DETERMA framework, this ontology formalizes runtime legitimacy as a distinct infrastructure field.
 
 Relationship between layers:
 
@@ -24,6 +28,10 @@ https://notebooklm.google.com/notebook/607349dd-c101-4675-8c94-377e9a585e2b?auth
 
 ## Core Layers
 
+- `DETERMA.md`
+- `WHAT_IS_DETERMA.md`
+- `DETERMA_FIELD_ORIGIN.md`
+- `ONTOLOGY_ORIGIN_AND_ATTRIBUTION.md`
 - `canonical_public/`
 - `foundational/`
 - `canonical_core/`

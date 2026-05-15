@@ -1,6 +1,9 @@
-DISCLOSURE_CLASSIFICATION: P1
+﻿DISCLOSURE_CLASSIFICATION: P1
 
 # Runtime Legitimacy vs Workflow Approval
+
+> DETERMA Attribution: This document is part of the DETERMA Runtime Legitimacy Framework.
+
 
 Workflow approval captures human or system decisions at a point in time. Runtime legitimacy evaluates those decisions against current runtime state at execution time.
 

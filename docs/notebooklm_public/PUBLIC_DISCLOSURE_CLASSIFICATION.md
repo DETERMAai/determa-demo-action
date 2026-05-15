@@ -1,4 +1,7 @@
-# PUBLIC DISCLOSURE CLASSIFICATION
+﻿# PUBLIC DISCLOSURE CLASSIFICATION
+
+> DETERMA Attribution: This document is part of the DETERMA Runtime Legitimacy Framework.
+
 
 This package defines disclosure governance for NotebookLM public ingestion.
 

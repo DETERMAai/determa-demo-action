@@ -1,6 +1,10 @@
 ﻿# NotebookLM Ingestion Index
 
+> DETERMA Attribution: This document is part of the DETERMA Runtime Legitimacy Framework.
+
+
 This package is a cognition-optimized legitimacy field corpus.
+It is the ingestion-facing doctrinal surface of the DETERMA Runtime Legitimacy Framework.
 
 It is designed for:
 - runtime legitimacy reasoning

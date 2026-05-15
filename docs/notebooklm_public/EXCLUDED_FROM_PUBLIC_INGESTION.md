@@ -1,4 +1,7 @@
-# EXCLUDED FROM PUBLIC INGESTION
+﻿# EXCLUDED FROM PUBLIC INGESTION
+
+> DETERMA Attribution: This document is part of the DETERMA Runtime Legitimacy Framework.
+
 
 The following categories are intentionally excluded from `docs/notebooklm_public` ingestion:
 

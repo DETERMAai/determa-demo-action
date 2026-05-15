@@ -1,6 +1,9 @@
-DISCLOSURE_CLASSIFICATION: P1
+﻿DISCLOSURE_CLASSIFICATION: P1
 
 # Runtime Legitimacy vs Agent Orchestration
+
+> DETERMA Attribution: This document is part of the DETERMA Runtime Legitimacy Framework.
+
 
 Agent orchestration coordinates task sequencing and tool usage. Runtime legitimacy governs whether mutations may execute under current continuity conditions.
 

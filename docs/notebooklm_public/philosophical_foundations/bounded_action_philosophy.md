@@ -1,6 +1,9 @@
-DISCLOSURE_CLASSIFICATION: P1
+﻿DISCLOSURE_CLASSIFICATION: P1
 
 # Bounded Action Philosophy
+
+> DETERMA Attribution: This document is part of the DETERMA Runtime Legitimacy Framework.
+
 
 Bounded action treats autonomous mutation as a constrained privilege under changing conditions, not as an unconditional extension of model output.
 

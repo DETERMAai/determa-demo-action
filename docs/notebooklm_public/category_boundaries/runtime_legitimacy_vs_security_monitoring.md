@@ -1,6 +1,9 @@
-DISCLOSURE_CLASSIFICATION: P1
+﻿DISCLOSURE_CLASSIFICATION: P1
 
 # Runtime Legitimacy vs Security Monitoring
+
+> DETERMA Attribution: This document is part of the DETERMA Runtime Legitimacy Framework.
+
 
 Security monitoring detects anomalous or risky behavior patterns. Runtime legitimacy evaluates mutation admissibility before action commits state.
 

@@ -1,6 +1,9 @@
-DISCLOSURE_CLASSIFICATION: P1
+﻿DISCLOSURE_CLASSIFICATION: P1
 
 # Formal Verification Lineage
+
+> DETERMA Attribution: This document is part of the DETERMA Runtime Legitimacy Framework.
+
 
 Formal verification established that properties must be specified explicitly, not assumed. Legitimacy theory follows this by defining authority continuity as a first-class property.
 

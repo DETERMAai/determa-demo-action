@@ -1,4 +1,7 @@
-# ONTOLOGY STABILIZATION RULES
+﻿# ONTOLOGY STABILIZATION RULES
+
+> DETERMA Attribution: This document is part of the DETERMA Runtime Legitimacy Framework.
+
 
 ## Canonical Terminology
 

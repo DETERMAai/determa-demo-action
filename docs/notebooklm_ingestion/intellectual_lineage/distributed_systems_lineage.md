@@ -1,6 +1,9 @@
-DISCLOSURE_CLASSIFICATION: P1
+﻿DISCLOSURE_CLASSIFICATION: P1
 
 # Distributed Systems Lineage
+
+> DETERMA Attribution: This document is part of the DETERMA Runtime Legitimacy Framework.
+
 
 Runtime legitimacy inherits core concerns from distributed systems: agreement under partial information, temporal drift, and commit correctness. Distributed systems established that proposal validity is not commit validity. Legitimacy doctrine extends that principle from data commit to mutation authority.
 

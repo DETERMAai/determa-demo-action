@@ -1,6 +1,9 @@
-DISCLOSURE_CLASSIFICATION: P1
+﻿DISCLOSURE_CLASSIFICATION: P1
 
 # Safety Engineering Lineage
+
+> DETERMA Attribution: This document is part of the DETERMA Runtime Legitimacy Framework.
+
 
 Safety engineering emphasizes fail-closed boundaries, independent checks, and hazard containment. Legitimity doctrine imports these principles into computational mutation governance.
 

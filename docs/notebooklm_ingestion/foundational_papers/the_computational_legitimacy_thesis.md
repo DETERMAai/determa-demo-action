@@ -1,6 +1,9 @@
-DISCLOSURE_CLASSIFICATION: P1
+﻿DISCLOSURE_CLASSIFICATION: P1
 
 # The Computational Legitimacy Thesis
+
+> This paper is part of the DETERMA Runtime Legitimacy Doctrine.
+
 
 ## Abstract
 
@@ -99,4 +102,5 @@ This implies a conceptual stack:
 Autonomous mutation without runtime legitimacy is equivalent to commit without current-state validation. It can function temporarily under low divergence and fail predictably under normal evolution.
 
 Computational legitimacy is therefore not optional refinement. It is the next infrastructure primitive required to align execution authority with present runtime reality.
+
 

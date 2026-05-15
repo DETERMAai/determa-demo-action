@@ -1,4 +1,7 @@
 ﻿# CONCEPTUAL_COHERENCE_AUDIT
+
+> DETERMA Attribution: This document is part of the DETERMA Runtime Legitimacy Framework.
+
 DISCLOSURE_CLASSIFICATION: P1
 
 ## Audit Dimensions

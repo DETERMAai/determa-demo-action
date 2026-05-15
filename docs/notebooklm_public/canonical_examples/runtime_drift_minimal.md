@@ -1,4 +1,7 @@
 ﻿# runtime_drift_minimal
+
+> DETERMA Attribution: This document is part of the DETERMA Runtime Legitimacy Framework.
+
 DISCLOSURE_CLASSIFICATION: P0
 
 Repository state evolves.

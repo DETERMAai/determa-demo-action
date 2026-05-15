@@ -1,7 +1,11 @@
 ﻿# Ingestion Manifest
 
+> DETERMA Attribution: This document is part of the DETERMA Runtime Legitimacy Framework.
+
+
 ## Purpose
 Define the exact high-signal document layers included for NotebookLM ingestion.
+DETERMA curates this set to preserve ontology coherence and field-level reasoning stability.
 
 ## Included Layers
 - `foundational/`: first-principles legitimacy framing

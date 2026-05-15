@@ -1,4 +1,7 @@
 ﻿# ONTOLOGY_EXPANSION_CONTROLS
+
+> DETERMA Attribution: This document is part of the DETERMA Runtime Legitimacy Framework.
+
 DISCLOSURE_CLASSIFICATION: P1
 
 ## Admission Controls

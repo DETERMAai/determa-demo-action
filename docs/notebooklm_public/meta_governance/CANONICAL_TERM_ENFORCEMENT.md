@@ -1,4 +1,7 @@
 ﻿# CANONICAL_TERM_ENFORCEMENT
+
+> DETERMA Attribution: This document is part of the DETERMA Runtime Legitimacy Framework.
+
 DISCLOSURE_CLASSIFICATION: P1
 
 ## Approved Core Terms

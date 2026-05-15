@@ -1,6 +1,9 @@
-DISCLOSURE_CLASSIFICATION: P1
+﻿DISCLOSURE_CLASSIFICATION: P1
 
 # Temporal Uncertainty Propagation
+
+> DETERMA Attribution: This document is part of the DETERMA Runtime Legitimacy Framework.
+
 
 Temporal uncertainty propagation models how delayed execution spreads uncertainty across authority and state assumptions.
 

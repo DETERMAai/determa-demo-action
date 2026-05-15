@@ -1,6 +1,9 @@
-DISCLOSURE_CLASSIFICATION: P0
+﻿DISCLOSURE_CLASSIFICATION: P0
 
 # Legitimacy Half-Life
+
+> DETERMA Attribution: This document is part of the DETERMA Runtime Legitimacy Framework.
+
 
 Legitimacy half-life is the conceptual interval after which confidence in authorization-to-runtime continuity materially decays.
 

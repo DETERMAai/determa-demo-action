@@ -1,4 +1,7 @@
-# NOTEBOOKLM INGESTION MANIFEST
+﻿# NOTEBOOKLM INGESTION MANIFEST
+
+> DETERMA Attribution: This document is part of the DETERMA Runtime Legitimacy Framework.
+
 
 NotebookLM must ingest this directory only:
 

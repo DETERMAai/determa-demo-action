@@ -1,4 +1,7 @@
 ﻿# canonical_public INDEX
+
+> DETERMA Attribution: This document is part of the DETERMA Runtime Legitimacy Framework.
+
 DISCLOSURE_CLASSIFICATION: P0
 
 Public-safe canonical doctrine for field-defining legitimacy concepts.

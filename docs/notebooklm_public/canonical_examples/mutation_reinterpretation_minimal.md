@@ -1,4 +1,7 @@
 ﻿# mutation_reinterpretation_minimal
+
+> DETERMA Attribution: This document is part of the DETERMA Runtime Legitimacy Framework.
+
 DISCLOSURE_CLASSIFICATION: P0
 
 A mutation text remains unchanged.

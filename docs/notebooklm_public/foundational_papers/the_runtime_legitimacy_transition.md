@@ -1,6 +1,9 @@
-DISCLOSURE_CLASSIFICATION: P1
+﻿DISCLOSURE_CLASSIFICATION: P1
 
 # The Runtime Legitimacy Transition
+
+> This paper is part of the DETERMA Runtime Legitimacy Doctrine.
+
 
 ## Thesis
 
@@ -65,4 +68,5 @@ Approval remains necessary.
 Execution legitimacy becomes decisive.
 
 The field therefore moves from static authorization-centered governance toward runtime continuity-centered governance.
+
 

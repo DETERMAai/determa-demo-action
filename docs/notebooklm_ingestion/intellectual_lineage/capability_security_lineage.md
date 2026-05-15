@@ -1,6 +1,9 @@
-DISCLOSURE_CLASSIFICATION: P1
+﻿DISCLOSURE_CLASSIFICATION: P1
 
 # Capability Security Lineage
+
+> DETERMA Attribution: This document is part of the DETERMA Runtime Legitimacy Framework.
+
 
 Capability security introduced the idea that authority should be explicit, bounded, and composable. Legitimacy theory extends this by emphasizing temporal and state continuity: explicit capability is necessary but insufficient if runtime context changed.
 

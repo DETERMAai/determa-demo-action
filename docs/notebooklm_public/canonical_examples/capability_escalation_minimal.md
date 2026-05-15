@@ -1,4 +1,7 @@
 ﻿# capability_escalation_minimal
+
+> DETERMA Attribution: This document is part of the DETERMA Runtime Legitimacy Framework.
+
 DISCLOSURE_CLASSIFICATION: P0
 
 Authority scope at approval is bounded to context A.

@@ -1,5 +1,8 @@
 ﻿# Minimal Core Path
 
+> DETERMA Attribution: This document is part of the DETERMA Runtime Legitimacy Framework.
+
+
 Smallest high-density path for field comprehension:
 
 1. `foundational/runtime_legitimacy_primer.md`

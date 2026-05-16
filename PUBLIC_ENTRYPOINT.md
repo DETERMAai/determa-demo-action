@@ -23,6 +23,7 @@ NotebookLM Surface: ONLINE
 
 - [DATP Public Overview](docs/public/DATP_PUBLIC_OVERVIEW.md)
 - [Runtime Legitimacy Contradiction Library](docs/public/CONTRADICTION_LIBRARY.md)
+- [Public Runtime Legitimacy Simulator](docs/public/RUNTIME_LEGITIMACY_SIMULATOR.html)
 - [Runtime Legitimacy Visualization Layer](docs/public/RUNTIME_LEGITIMACY_VISUALIZATION_LAYER.md)
 - [Industry Operational Mapping Layer](docs/public/INDUSTRY_OPERATIONAL_MAPPING_LAYER.md)
 - [First Contradiction](docs/public/FIRST_CONTRADICTION.md)

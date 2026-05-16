@@ -1,0 +1,446 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Runtime Legitimacy Simulator</title>
+  <link rel="stylesheet" href="../notebooklm_public/assets/global.css">
+  <style>
+    .controls {
+      display: grid;
+      gap: 10px;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    }
+    .control {
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 10px;
+      background: var(--surface-soft);
+    }
+    .label-row {
+      display: flex;
+      justify-content: space-between;
+      gap: 8px;
+      font-size: 12px;
+      color: var(--muted);
+      margin-bottom: 6px;
+    }
+    input[type="range"] {
+      width: 100%;
+      accent-color: var(--accent);
+    }
+    .switch-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      font-size: 12px;
+      color: var(--muted);
+    }
+    .btn-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+    .btn {
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 8px 12px;
+      background: var(--surface-soft);
+      color: var(--text);
+      cursor: pointer;
+      font-size: 12px;
+      transition: border-color 140ms ease, transform 140ms ease;
+    }
+    .btn:hover {
+      border-color: rgba(125, 211, 252, 0.45);
+      transform: translateY(-1px);
+    }
+    .btn.primary {
+      border-color: rgba(125, 211, 252, 0.45);
+      background: rgba(125, 211, 252, 0.08);
+      color: var(--accent);
+    }
+    .metric-grid {
+      display: grid;
+      gap: 10px;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    }
+    .metric {
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 10px;
+      background: var(--surface-soft);
+    }
+    .metric h3 {
+      margin: 0 0 6px 0;
+      font-size: 12px;
+      color: var(--accent);
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+    }
+    .metric .value {
+      font-family: "IBM Plex Mono", "JetBrains Mono", Consolas, monospace;
+      font-size: 13px;
+      color: var(--text);
+    }
+    .bar {
+      width: 100%;
+      height: 8px;
+      border-radius: 999px;
+      border: 1px solid var(--border);
+      background: #0d1017;
+      overflow: hidden;
+      margin-top: 8px;
+    }
+    .bar > span {
+      display: block;
+      height: 100%;
+      background: var(--accent);
+      transition: width 260ms ease;
+    }
+    .timeline {
+      display: grid;
+      gap: 8px;
+      grid-template-columns: repeat(5, minmax(0, 1fr));
+    }
+    .phase {
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 8px;
+      background: var(--surface-soft);
+      color: var(--muted);
+      font-size: 12px;
+      text-align: center;
+      transition: border-color 180ms ease, color 180ms ease, background 180ms ease;
+    }
+    .phase.active {
+      color: var(--text);
+      border-color: rgba(125, 211, 252, 0.6);
+      background: rgba(125, 211, 252, 0.08);
+    }
+    .phase.done {
+      color: #d1d5db;
+      border-color: rgba(125, 211, 252, 0.3);
+    }
+    .log {
+      margin: 0;
+      max-height: 200px;
+      overflow-y: auto;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 10px;
+      background: #121720;
+      color: #d1d5db;
+      font-family: "IBM Plex Mono", "JetBrains Mono", Consolas, monospace;
+      font-size: 12px;
+      line-height: 1.45;
+      white-space: pre-wrap;
+    }
+    .lineage {
+      margin: 0;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 10px;
+      background: var(--surface-soft);
+      font-family: "IBM Plex Mono", "JetBrains Mono", Consolas, monospace;
+      font-size: 12px;
+      line-height: 1.45;
+      white-space: pre-wrap;
+      color: #d1d5db;
+    }
+    @media (max-width: 760px) {
+      .timeline { grid-template-columns: 1fr 1fr; }
+    }
+  </style>
+</head>
+<body>
+  <main class="wrap">
+    <nav class="top-nav card">
+      <a class="nav-link" href="https://determaai.github.io/DETERMA-v0.1-Governed-Runtime-Proof-Baseline/">Live Demo</a>
+      <a class="nav-link" href="DATP_PUBLIC_OVERVIEW.md">DATP Overview</a>
+      <a class="nav-link" href="CONTRADICTION_LIBRARY.md">Contradiction Library</a>
+      <a class="nav-link" href="../notebooklm_public/ONTOLOGY_MAP.html">Ontology Map</a>
+    </nav>
+
+    <section class="card">
+      <div class="breadcrumb"><a href="../index.html">Home</a> <span>→</span> <span>Runtime Legitimacy Simulator</span></div>
+      <h1>Public Runtime Legitimacy Simulator</h1>
+      <p class="subtitle">Deterministic simulation of Runtime Divergence, Authority Continuity decay, and Mutation Admissibility transitions.</p>
+      <div class="tagline">The approval remained.
+The runtime changed.
+Mutation Admissibility transitioned.</div>
+    </section>
+
+    <section class="card">
+      <h2 class="section-title">Scenario Controls</h2>
+      <div class="controls">
+        <div class="control">
+          <div class="label-row"><span>Execution Delay (hours)</span><span id="delayVal">12</span></div>
+          <input id="delay" type="range" min="0" max="96" step="1" value="12">
+        </div>
+        <div class="control">
+          <div class="label-row"><span>Dependency Drift</span><span id="driftVal">35</span></div>
+          <input id="drift" type="range" min="0" max="100" step="1" value="35">
+        </div>
+        <div class="control">
+          <div class="label-row"><span>Runtime Patch Delta</span><span id="patchVal">20</span></div>
+          <input id="patch" type="range" min="0" max="100" step="1" value="20">
+        </div>
+        <div class="control">
+          <div class="label-row"><span>Capability Scope Shift</span><span id="capVal">15</span></div>
+          <input id="cap" type="range" min="0" max="100" step="1" value="15">
+        </div>
+        <div class="control">
+          <div class="switch-row">
+            <label for="replay">Replay Context Active</label>
+            <input id="replay" type="checkbox">
+          </div>
+        </div>
+      </div>
+      <div class="btn-row" style="margin-top:10px;">
+        <button id="run" class="btn primary" type="button">Run Deterministic Simulation</button>
+        <button id="reset" class="btn" type="button">Reset Scenario</button>
+      </div>
+    </section>
+
+    <section class="card">
+      <h2 class="section-title">Runtime Evolution Timeline</h2>
+      <div id="timeline" class="timeline">
+        <div class="phase" data-phase="0">T0 Approval</div>
+        <div class="phase" data-phase="1">T1 Drift</div>
+        <div class="phase" data-phase="2">T2 Replay</div>
+        <div class="phase" data-phase="3">T3 Legitimacy</div>
+        <div class="phase" data-phase="4">T4 Decision</div>
+      </div>
+    </section>
+
+    <section class="card">
+      <h2 class="section-title">Deterministic Runtime Metrics</h2>
+      <div class="metric-grid">
+        <div class="metric">
+          <h3>Runtime Divergence</h3>
+          <div id="divergenceText" class="value">0 / 100</div>
+          <div class="bar"><span id="divergenceBar" style="width:0%"></span></div>
+        </div>
+        <div class="metric">
+          <h3>Authority Continuity</h3>
+          <div id="continuityText" class="value">100 / 100</div>
+          <div class="bar"><span id="continuityBar" style="width:100%"></span></div>
+        </div>
+        <div class="metric">
+          <h3>Runtime Legitimacy</h3>
+          <div id="legitimacyText" class="value">VALID</div>
+        </div>
+        <div class="metric">
+          <h3>Mutation Admissibility</h3>
+          <div id="admissibilityText" class="value">ADMISSIBLE</div>
+        </div>
+        <div class="metric">
+          <h3>Execution Decision</h3>
+          <div id="decisionText" class="value">SCOPED_EXECUTION</div>
+        </div>
+      </div>
+    </section>
+
+    <section class="card">
+      <h2 class="section-title">Operational Event Stream</h2>
+      <pre id="log" class="log">[init] configure scenario and run simulation...</pre>
+    </section>
+
+    <section class="card">
+      <h2 class="section-title">Immutable Authority Lineage (Simulated)</h2>
+      <pre id="lineage" class="lineage">lineage pending simulation...</pre>
+    </section>
+  </main>
+
+  <script>
+    const controls = {
+      delay: document.getElementById("delay"),
+      drift: document.getElementById("drift"),
+      patch: document.getElementById("patch"),
+      cap: document.getElementById("cap"),
+      replay: document.getElementById("replay")
+    };
+
+    const labels = {
+      delay: document.getElementById("delayVal"),
+      drift: document.getElementById("driftVal"),
+      patch: document.getElementById("patchVal"),
+      cap: document.getElementById("capVal")
+    };
+
+    const metricNodes = {
+      divergenceText: document.getElementById("divergenceText"),
+      continuityText: document.getElementById("continuityText"),
+      legitimacyText: document.getElementById("legitimacyText"),
+      admissibilityText: document.getElementById("admissibilityText"),
+      decisionText: document.getElementById("decisionText"),
+      divergenceBar: document.getElementById("divergenceBar"),
+      continuityBar: document.getElementById("continuityBar")
+    };
+
+    const logNode = document.getElementById("log");
+    const lineageNode = document.getElementById("lineage");
+    const phaseNodes = Array.from(document.querySelectorAll(".phase"));
+    const runBtn = document.getElementById("run");
+    const resetBtn = document.getElementById("reset");
+
+    let timers = [];
+
+    function clearTimers() {
+      timers.forEach((t) => clearTimeout(t));
+      timers = [];
+    }
+
+    function updateControlLabels() {
+      labels.delay.textContent = controls.delay.value;
+      labels.drift.textContent = controls.drift.value;
+      labels.patch.textContent = controls.patch.value;
+      labels.cap.textContent = controls.cap.value;
+    }
+
+    function clamp(v, min, max) {
+      return Math.max(min, Math.min(max, v));
+    }
+
+    function computeScenario() {
+      const delay = Number(controls.delay.value);
+      const drift = Number(controls.drift.value);
+      const patch = Number(controls.patch.value);
+      const cap = Number(controls.cap.value);
+      const replay = controls.replay.checked ? 1 : 0;
+
+      const delayScore = clamp((delay / 96) * 100, 0, 100);
+      const divergence = clamp(
+        Math.round(delayScore * 0.25 + drift * 0.35 + patch * 0.20 + cap * 0.20 + replay * 10),
+        0,
+        100
+      );
+      const continuity = clamp(100 - divergence, 0, 100);
+
+      let legitimacy = "VALID";
+      let admissibility = "ADMISSIBLE";
+      let decision = "SCOPED_EXECUTION";
+
+      if (continuity < 70 || replay) {
+        legitimacy = "REVALIDATION_REQUIRED";
+        admissibility = "CONDITIONAL";
+        decision = "PAUSE_FOR_REVALIDATION";
+      }
+      if (continuity < 45 || divergence >= 65) {
+        legitimacy = "FAILED";
+        admissibility = "DENIED_FAIL_CLOSED";
+        decision = "BLOCK_EXECUTION";
+      }
+
+      return {
+        delay, drift, patch, cap, replay, divergence, continuity, legitimacy, admissibility, decision
+      };
+    }
+
+    function updateMetrics(s) {
+      metricNodes.divergenceText.textContent = `${s.divergence} / 100`;
+      metricNodes.continuityText.textContent = `${s.continuity} / 100`;
+      metricNodes.legitimacyText.textContent = s.legitimacy;
+      metricNodes.admissibilityText.textContent = s.admissibility;
+      metricNodes.decisionText.textContent = s.decision;
+      metricNodes.divergenceBar.style.width = `${s.divergence}%`;
+      metricNodes.continuityBar.style.width = `${s.continuity}%`;
+    }
+
+    function setPhase(activeIndex) {
+      phaseNodes.forEach((node, idx) => {
+        node.classList.remove("active", "done");
+        if (idx < activeIndex) node.classList.add("done");
+        if (idx === activeIndex) node.classList.add("active");
+      });
+    }
+
+    function appendLog(line) {
+      const now = new Date();
+      const stamp = now.toISOString().split("T")[1].replace("Z", "");
+      logNode.textContent += `\n[${stamp}] ${line}`;
+      logNode.scrollTop = logNode.scrollHeight;
+    }
+
+    function deterministicId(prefix, s) {
+      const seed = `${s.delay}-${s.drift}-${s.patch}-${s.cap}-${s.replay ? 1 : 0}-${s.divergence}-${s.continuity}`;
+      let hash = 0;
+      for (let i = 0; i < seed.length; i += 1) {
+        hash = ((hash << 5) - hash) + seed.charCodeAt(i);
+        hash |= 0;
+      }
+      return `${prefix}_${Math.abs(hash).toString(16).padStart(8, "0")}`;
+    }
+
+    function renderLineage(s) {
+      const ts = new Date().toISOString();
+      const execId = deterministicId("exec", s);
+      const evidenceId = deterministicId("evd", s);
+      lineageNode.textContent =
+`EXECUTION ID: ${execId}
+EVIDENCE ID: ${evidenceId}
+TIMESTAMP: ${ts}
+RUNTIME DIVERGENCE: ${s.divergence}
+AUTHORITY CONTINUITY: ${s.continuity}
+RUNTIME LEGITIMACY: ${s.legitimacy}
+MUTATION ADMISSIBILITY: ${s.admissibility}
+DECISION: ${s.decision}`;
+    }
+
+    function runSimulation() {
+      clearTimers();
+      logNode.textContent = "[start] deterministic runtime legitimacy simulation";
+      const s = computeScenario();
+      updateMetrics(s);
+
+      const events = [
+        { t: 0, p: 0, msg: "T0 approval recorded under baseline runtime state." },
+        { t: 850, p: 1, msg: `T1 runtime divergence accumulated (delay=${s.delay}h, drift=${s.drift}, patch=${s.patch}, cap=${s.cap}).` },
+        { t: 1700, p: 2, msg: `T2 historical authority replay context=${s.replay ? "active" : "inactive"}.` },
+        { t: 2550, p: 3, msg: `T3 runtime legitimacy=${s.legitimacy}, authority continuity=${s.continuity}.` },
+        { t: 3400, p: 4, msg: `T4 mutation admissibility=${s.admissibility}, decision=${s.decision}.` }
+      ];
+
+      events.forEach((e) => {
+        const timer = setTimeout(() => {
+          setPhase(e.p);
+          appendLog(e.msg);
+          if (e.p === 4) {
+            renderLineage(s);
+            appendLog("lineage finalized under deterministic public simulation.");
+          }
+        }, e.t);
+        timers.push(timer);
+      });
+    }
+
+    function resetScenario() {
+      clearTimers();
+      controls.delay.value = 12;
+      controls.drift.value = 35;
+      controls.patch.value = 20;
+      controls.cap.value = 15;
+      controls.replay.checked = false;
+      updateControlLabels();
+      const s = computeScenario();
+      updateMetrics(s);
+      setPhase(0);
+      logNode.textContent = "[init] configure scenario and run simulation...";
+      lineageNode.textContent = "lineage pending simulation...";
+    }
+
+    [controls.delay, controls.drift, controls.patch, controls.cap].forEach((el) => {
+      el.addEventListener("input", () => {
+        updateControlLabels();
+        updateMetrics(computeScenario());
+      });
+    });
+    controls.replay.addEventListener("change", () => updateMetrics(computeScenario()));
+    runBtn.addEventListener("click", runSimulation);
+    resetBtn.addEventListener("click", resetScenario);
+
+    resetScenario();
+  </script>
+</body>
+</html>

@@ -40,6 +40,7 @@ Operational scenarios are documented in:
 
 - [Runtime Legitimacy Visualization Layer](RUNTIME_LEGITIMACY_VISUALIZATION_LAYER.md)
 - [Industry Operational Mapping Layer](INDUSTRY_OPERATIONAL_MAPPING_LAYER.md)
+- [Public Runtime Legitimacy Simulator](RUNTIME_LEGITIMACY_SIMULATOR.html)
 
 ## Scope Boundary
 

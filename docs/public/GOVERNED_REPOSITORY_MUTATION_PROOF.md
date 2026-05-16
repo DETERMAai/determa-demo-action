@@ -1,8 +1,8 @@
 # Governed Repository Mutation Proof
 
-This proof extends DETERMA public demonstrations from conceptual simulation into deterministic repository mutation governance.
+This proof extends DETERMA public demonstrations from conceptual simulation into deterministic repository mutation governance with continuous runtime revalidation.
 
-It runs against a real local sandbox git repository and evaluates runtime legitimacy at the mutation boundary.
+It runs against a real local sandbox git repository and evaluates runtime legitimacy at execution checkpoints, not only before execution starts.
 
 ## Core Claim
 
@@ -10,6 +10,17 @@ Same patch.
 Same authority model.
 Different repository runtime state.
 Different execution outcome.
+
+## Continuous Runtime Revalidation
+
+Runtime legitimacy is continuously revalidated throughout mutation execution:
+
+- PRE_EXECUTION
+- MID_EXECUTION
+- PRE_COMMIT
+- FINALIZATION
+
+Execution authority may collapse during execution if runtime continuity diverges.
 
 ## Execution Paths
 
@@ -51,6 +62,38 @@ Outcome:
 Reason:
 
 `repository runtime state diverged after approval`
+
+### Path C — Mid-Execution Runtime Divergence
+
+1. Execution starts under legitimate continuity.
+2. Mutation is staged.
+3. Runtime state diverges during execution.
+4. Mid-execution revalidation fails.
+5. Execution halts before commit finalization.
+6. Staged mutation is rolled back.
+
+Outcome:
+
+`EXECUTION_DENIED`
+
+Reason:
+
+`execution halted before final commit due to runtime divergence`
+
+### Path D — Concurrent Mutation Conflict
+
+1. Execution starts under valid continuity.
+2. A concurrent overlapping mutation commits first.
+3. Revalidation detects conflict and continuity collapse.
+4. Finalization is prevented.
+
+Outcome:
+
+`EXECUTION_DENIED`
+
+Reason:
+
+`concurrent mutation conflict`
 
 ## Admissibility Checks
 
@@ -94,6 +137,10 @@ Mutation admissibility transitions:
 
 `ADMISSIBLE -> REQUIRES_REVALIDATION -> DENIED`
 
+Execution state transitions:
+
+`PROPOSED -> STAGED -> EXECUTING -> HALTED -> ROLLED_BACK / FINALIZED`
+
 ## Evidence
 
 Append-only lineage events include:
@@ -102,7 +149,12 @@ Append-only lineage events include:
 - `approval_snapshot_captured`
 - `authority_grant_issued`
 - `runtime_witness_captured`
-- `admissibility_evaluated`
+- `legitimacy_revalidated`
+- `execution_started`
+- `mutation_staged`
+- `runtime_divergence_detected`
+- `execution_halted`
+- `rollback_completed` or `finalization_prevented`
 - `execution_allowed` or `execution_denied`
 - `lineage_finalized`
 

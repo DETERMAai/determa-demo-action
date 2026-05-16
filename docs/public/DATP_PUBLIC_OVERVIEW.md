@@ -27,6 +27,7 @@ Intent Generation
 ## Public Operational Properties
 
 - Runtime Legitimacy is evaluated at execution time.
+- Runtime Legitimacy is continuously revalidated from pre-execution through finalization checkpoints.
 - Authority Continuity is required for mutation.
 - Mutation Admissibility is fail-closed when continuity fails.
 - Immutable Authority Lineage records execution decisions.

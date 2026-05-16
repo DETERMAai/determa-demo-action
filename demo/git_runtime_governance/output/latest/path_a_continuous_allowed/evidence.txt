@@ -1,0 +1,5 @@
+PATH: path_a_continuous_allowed
+FINAL_STATUS: EXECUTION_ALLOWED
+FINAL_REASON: authority continuity preserved through continuous runtime revalidation
+FINAL_DIVERGENCE: LOW (4)
+FINAL_AUTHORITY_CONTINUITY: VALID

@@ -1,34 +1,24 @@
-# Governed Repository Mutation Proof
+# Governed Repository Mutation Proof — Continuous Runtime Revalidation
 
-Same patch. Same authority model. Different repository runtime state. Different execution outcome.
+Execution legitimacy is continuously revalidated throughout mutation execution.
 
-## Path A — Patch Allowed
+## Continuous Legitimacy Timeline
+PRE_EXECUTION -> MID_EXECUTION -> PRE_COMMIT -> FINALIZATION
 
-- status: EXECUTION_ALLOWED
-- reason: authority continuity preserved
-
-## Path B — Patch Denied
-
-- status: EXECUTION_DENIED
-- reason: repository runtime state diverged after approval
-
-## Replay Invalidation
-
-- replay attempt status: DENIED
-- replay reason: repository HEAD diverged; target file hash diverged; runtime epoch changed; single-use authority grant replay detected
-
-## Runtime Divergence
-
-- path_a: LOW (0)
-- path_b: HIGH (64)
-
-## State Visualization
-
-Authority Continuity
+## Authority Continuity State
 VALID -> WEAKENING -> STALE -> INVALID
 
-Mutation Admissibility
-ADMISSIBLE -> REQUIRES_REVALIDATION -> DENIED
+## Execution State
+PROPOSED -> STAGED -> EXECUTING -> HALTED -> ROLLED_BACK / FINALIZED
 
-Runtime Divergence
+## Divergence Pressure
 LOW -> MEDIUM -> HIGH -> CRITICAL
+
+## Scenario Results
+- path_a_continuous_allowed: EXECUTION_ALLOWED (authority continuity preserved through continuous runtime revalidation)
+- path_b_denied_pre_execution: EXECUTION_DENIED (repository runtime state diverged after approval)
+- path_c_mid_execution_halt: EXECUTION_DENIED (execution halted before final commit due to runtime divergence)
+- path_d_concurrent_conflict: EXECUTION_DENIED (concurrent mutation conflict)
+
+## Core Observation
+Approval alone was not enough. Legitimacy had to survive runtime execution itself.

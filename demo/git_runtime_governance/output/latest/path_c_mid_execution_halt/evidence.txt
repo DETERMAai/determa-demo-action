@@ -1,0 +1,5 @@
+PATH: path_c_mid_execution_halt
+FINAL_STATUS: EXECUTION_DENIED
+FINAL_REASON: execution halted before final commit due to runtime divergence
+FINAL_DIVERGENCE: CRITICAL (90)
+FINAL_AUTHORITY_CONTINUITY: INVALID

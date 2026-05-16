@@ -1,0 +1,5 @@
+PATH: path_b_denied_pre_execution
+FINAL_STATUS: EXECUTION_DENIED
+FINAL_REASON: repository runtime state diverged after approval
+FINAL_DIVERGENCE: HIGH (66)
+FINAL_AUTHORITY_CONTINUITY: STALE

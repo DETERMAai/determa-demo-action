@@ -1,8 +1,8 @@
-GOVERNED REPOSITORY MUTATION PROOF
+GOVERNED REPOSITORY MUTATION PROOF — CONTINUOUS REVALIDATION
 
-run_id: git_proof_20260516_225059
-path_a_status: EXECUTION_ALLOWED
-path_a_reason: authority continuity preserved
-path_b_status: EXECUTION_DENIED
-path_b_reason: repository runtime state diverged after approval
+run_id: git_proof_20260516_232441
+path_a: EXECUTION_ALLOWED (authority continuity preserved through continuous runtime revalidation)
+path_b: EXECUTION_DENIED (repository runtime state diverged after approval)
+path_c: EXECUTION_DENIED (execution halted before final commit due to runtime divergence)
+path_d: EXECUTION_DENIED (concurrent mutation conflict)
 replay_status: DENIED

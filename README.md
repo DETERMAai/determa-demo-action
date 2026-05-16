@@ -48,7 +48,7 @@ DETERMA asks:
 "Is this execution still legitimate under the current runtime reality?"
 ```
 
-## Why Runtime Legitimacy Emerges Now
+## Why Existing Systems Fail
 
 Modern autonomous systems increasingly execute across:
 
@@ -59,6 +59,52 @@ Modern autonomous systems increasingly execute across:
 - continuously changing system state
 
 Under these conditions, historical approval alone becomes insufficient.
+
+## Runtime Legitimacy & DATP
+
+DETERMA treats runtime legitimacy as a first-class execution control surface.
+Historical approval remains important, but it is not sufficient once runtime reality changes.
+
+DATP (Deterministic Authority Transition Protocol) is the runtime authority model beneath DETERMA.
+It governs how execution authority can transition from intent to mutation without assuming that historical approval is still valid.
+
+DATP framing in public scope:
+- fail-closed mutation governance
+- bounded execution authority
+- authority continuity checks before mutation
+- immutable authority lineage after execution decisions
+
+Runtime authority flow:
+
+```text
+Intent Generation
+-> Authority Validation
+-> Runtime Legitimacy Evaluation
+-> Scoped Execution Grant
+-> Constrained Executor
+-> Verification
+-> Immutable Authority Lineage
+```
+
+Public DATP references:
+- [DATP Public Overview](docs/public/DATP_PUBLIC_OVERVIEW.md)
+- [First Contradiction](docs/public/FIRST_CONTRADICTION.md)
+- [Runtime Legitimacy](docs/public/RUNTIME_LEGITIMACY.md)
+- [Immutable Authority Lineage](docs/public/IMMUTABLE_AUTHORITY_LINEAGE.md)
+- [Governed Autonomous Execution](docs/public/GOVERNED_AUTONOMOUS_EXECUTION.md)
+- [Market Positioning](docs/public/MARKET_POSITIONING.md)
+
+## Architecture
+
+DETERMA governs mutation authority beneath probabilistic intelligence systems without replacing those systems.
+
+```text
+Probabilistic Intelligence Layer
+-> DATP Runtime Authority Layer
+-> Constrained Mutation Layer
+-> Verification Layer
+-> Immutable Lineage Layer
+```
 
 ## Start Here
 

@@ -19,6 +19,12 @@ NotebookLM Surface: ONLINE
 - evidence upgrade: historical archive + export paths enabled
 - deployment verification: public convergence checks integrated
 
+## DATP Public Docs
+
+- [DATP Public Overview](docs/public/DATP_PUBLIC_OVERVIEW.md)
+- [First Contradiction](docs/public/FIRST_CONTRADICTION.md)
+- [Runtime Legitimacy](docs/public/RUNTIME_LEGITIMACY.md)
+
 Canonical public onboarding sequence:
 
 1. Board-level overview

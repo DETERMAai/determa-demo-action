@@ -91,6 +91,7 @@ Public DATP references:
 - [Runtime Legitimacy Contradiction Library](docs/public/CONTRADICTION_LIBRARY.md)
 - [Public Runtime Legitimacy Simulator](docs/public/RUNTIME_LEGITIMACY_SIMULATOR.html)
 - [Controlled Real Mutation Proof](docs/public/CONTROLLED_REAL_MUTATION_PROOF.md)
+- [Governed Repository Mutation Proof](docs/public/GOVERNED_REPOSITORY_MUTATION_PROOF.md)
 - [Runtime Legitimacy Visualization Layer](docs/public/RUNTIME_LEGITIMACY_VISUALIZATION_LAYER.md)
 - [Industry Operational Mapping Layer](docs/public/INDUSTRY_OPERATIONAL_MAPPING_LAYER.md)
 - [First Contradiction](docs/public/FIRST_CONTRADICTION.md)
@@ -100,6 +101,7 @@ Public DATP references:
 - [Market Positioning](docs/public/MARKET_POSITIONING.md)
 
 This proof demonstrates that the same approved mutation can be allowed or denied depending on runtime state continuity.
+This repository proof demonstrates that identical repository mutations may be allowed or denied depending on runtime continuity and repository state legitimacy.
 
 ## Architecture
 

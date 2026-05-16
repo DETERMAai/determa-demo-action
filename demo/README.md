@@ -22,6 +22,16 @@ Proof overview:
 
 `../docs/public/CONTROLLED_REAL_MUTATION_PROOF.md`
 
+## Governed Repository Mutation Proof
+
+Run:
+
+`node demo/git_runtime_governance/run_git_proof.mjs`
+
+Proof overview:
+
+`../docs/public/GOVERNED_REPOSITORY_MUTATION_PROOF.md`
+
 ## Read Before Starting
 `../docs/notebooklm_public/FIRST_DEMO_WALKTHROUGH.md`
 

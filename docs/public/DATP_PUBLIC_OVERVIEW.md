@@ -42,6 +42,7 @@ Operational scenarios are documented in:
 - [Industry Operational Mapping Layer](INDUSTRY_OPERATIONAL_MAPPING_LAYER.md)
 - [Public Runtime Legitimacy Simulator](RUNTIME_LEGITIMACY_SIMULATOR.html)
 - [Controlled Real Mutation Proof](CONTROLLED_REAL_MUTATION_PROOF.md)
+- [Governed Repository Mutation Proof](GOVERNED_REPOSITORY_MUTATION_PROOF.md)
 
 ## Scope Boundary
 

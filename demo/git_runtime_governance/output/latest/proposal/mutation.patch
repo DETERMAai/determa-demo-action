@@ -1,0 +1,10 @@
+diff --git a/service_config.env b/service_config.env
+index b3882c7..d33fc77 100644
+--- a/service_config.env
++++ b/service_config.env
+@@ -1,4 +1,4 @@
+ SERVICE=worker
+-MAX_RETRIES=3
++MAX_RETRIES=5
+ TIMEOUT_SECONDS=45
+ RUNTIME_GUARD=true

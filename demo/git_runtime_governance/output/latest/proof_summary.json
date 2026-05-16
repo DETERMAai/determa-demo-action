@@ -1,0 +1,23 @@
+{
+  "run_id": "git_proof_20260516_225059",
+  "generated_at": "2026-05-16T22:51:01.605Z",
+  "proof_claim": "identical repository mutation proposals can be allowed or denied based on runtime continuity",
+  "path_a": {
+    "execution_status": "EXECUTION_ALLOWED",
+    "reason": "authority continuity preserved",
+    "divergence_level": "LOW",
+    "divergence_score": 0,
+    "replay_status": "DENIED",
+    "replay_reason": "repository HEAD diverged; target file hash diverged; runtime epoch changed; single-use authority grant replay detected"
+  },
+  "path_b": {
+    "execution_status": "EXECUTION_DENIED",
+    "reason": "repository runtime state diverged after approval",
+    "divergence_level": "HIGH",
+    "divergence_score": 64
+  },
+  "output_paths": {
+    "run_directory": "C:\\dev\\determa-demo-action\\demo\\git_runtime_governance\\output\\git_proof_20260516_225059",
+    "latest_directory": "C:\\dev\\determa-demo-action\\demo\\git_runtime_governance\\output\\latest"
+  }
+}

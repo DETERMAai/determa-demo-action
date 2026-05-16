@@ -1,0 +1,8 @@
+GOVERNED REPOSITORY MUTATION PROOF
+
+run_id: git_proof_20260516_225059
+path_a_status: EXECUTION_ALLOWED
+path_a_reason: authority continuity preserved
+path_b_status: EXECUTION_DENIED
+path_b_reason: repository runtime state diverged after approval
+replay_status: DENIED

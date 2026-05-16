@@ -1,0 +1,187 @@
+{
+  "path_id": "path_b_denied",
+  "proposal": {
+    "proposal_id": "proposal_38518f84e1b3",
+    "target_file": "service_config.env",
+    "patch_hash": "38518f84e1b3e6642d4542deb8672e40fe24a22d82d767efc4a83adbf5293ee1",
+    "patch_file": "C:\\dev\\determa-demo-action\\demo\\git_runtime_governance\\output\\git_proof_20260516_225059\\proposal\\mutation.patch",
+    "approval_head": "2a99f678d710ffb062b4faccce94453554edf0f0",
+    "runtime_epoch": 1,
+    "created_at": "2026-05-16T22:51:00.637Z",
+    "mutation_scope": "runtime.config.worker",
+    "patch_preview": "MAX_RETRIES=3 -> MAX_RETRIES=5"
+  },
+  "approval_snapshot": {
+    "approval_id": "approval_093b2cf9ddac",
+    "head": "2a99f678d710ffb062b4faccce94453554edf0f0",
+    "target_file": "service_config.env",
+    "target_hash": "b2864509df5f6cba3614b6e3dd6b60d2905d4cd8e4921c5d639e36151d152a93",
+    "dependency_hash": "b68c30132ed93fa9947e0a7b629a59be1ac854acecf82c897dc7078fde1dd48a",
+    "queue_hash": "ebc4b4671209b9362b5923c6049872d3f73af3567dd0f7b31f481f232868d15d",
+    "runtime_epoch": 1,
+    "approval_timestamp": "2026-05-16T22:51:00.640Z"
+  },
+  "authority_grant": {
+    "grant_id": "grant_0c97481588d1",
+    "issued_at": "2026-05-16T22:51:00.641Z",
+    "freshness_window_seconds": 900,
+    "single_use": true,
+    "consumed": false,
+    "scope": {
+      "target_file": "service_config.env",
+      "mutation_scope": "runtime.config.worker",
+      "patch_hash": "38518f84e1b3e6642d4542deb8672e40fe24a22d82d767efc4a83adbf5293ee1",
+      "approval_head": "2a99f678d710ffb062b4faccce94453554edf0f0"
+    }
+  },
+  "runtime_witness": {
+    "head": "deff7fb7577afe9f1d879bdbb30a211eaae5bd4f",
+    "target_file": "service_config.env",
+    "target_hash": "b2864509df5f6cba3614b6e3dd6b60d2905d4cd8e4921c5d639e36151d152a93",
+    "dependency_hash": "c66e7ab6edd386904d12008a42cc224824928586e5e1d41ca3e02a1349e5796b",
+    "queue_hash": "f417f0baac7c54a6888745f217351661c8d9e53db4ae7731d9b1fd9941ebe0cf",
+    "runtime_epoch": 2,
+    "queue_state": "mutated",
+    "runtime_timestamp": "2026-05-16T22:51:01.535Z"
+  },
+  "admissibility_result": {
+    "admissibility": "DENIED",
+    "divergence_score": 64,
+    "divergence_level": "HIGH",
+    "authority_continuity": "STALE",
+    "elapsed_seconds": 0,
+    "checks": {
+      "head_continuity": false,
+      "target_hash_continuity": true,
+      "freshness": true,
+      "replay_status": false,
+      "scope_continuity": true,
+      "dependency_continuity": false,
+      "runtime_epoch_continuity": false,
+      "queue_continuity": false
+    },
+    "reason": "repository HEAD diverged; dependency snapshot diverged; runtime epoch changed; mutation queue state changed"
+  },
+  "execution_outcome": {
+    "execution_status": "EXECUTION_DENIED",
+    "reason": "repository runtime state diverged after approval",
+    "patch_applied": false,
+    "target_hash_before_attempt": "b2864509df5f6cba3614b6e3dd6b60d2905d4cd8e4921c5d639e36151d152a93",
+    "target_hash_after_attempt": "b2864509df5f6cba3614b6e3dd6b60d2905d4cd8e4921c5d639e36151d152a93",
+    "runtime_head_after_attempt": "deff7fb7577afe9f1d879bdbb30a211eaae5bd4f",
+    "target_unchanged_by_attempt": true
+  },
+  "replay_result": null,
+  "evidence_chain": [
+    {
+      "event_id": "evt_0001_a2042941",
+      "previous_event_id": null,
+      "phase": "P1",
+      "timestamp": "2026-05-16T22:51:01.257Z",
+      "event_type": "proposal_created",
+      "payload": {
+        "proposal_id": "proposal_38518f84e1b3",
+        "patch_hash": "38518f84e1b3e6642d4542deb8672e40fe24a22d82d767efc4a83adbf5293ee1",
+        "target_file": "service_config.env"
+      }
+    },
+    {
+      "event_id": "evt_0002_7296a5d3",
+      "previous_event_id": "evt_0001_a2042941",
+      "phase": "P2",
+      "timestamp": "2026-05-16T22:51:01.257Z",
+      "event_type": "approval_snapshot_captured",
+      "payload": {
+        "approval_id": "approval_093b2cf9ddac",
+        "head": "2a99f678d710ffb062b4faccce94453554edf0f0",
+        "target_hash": "b2864509df5f6cba3614b6e3dd6b60d2905d4cd8e4921c5d639e36151d152a93",
+        "dependency_hash": "b68c30132ed93fa9947e0a7b629a59be1ac854acecf82c897dc7078fde1dd48a",
+        "runtime_epoch": 1
+      }
+    },
+    {
+      "event_id": "evt_0003_fb03aabc",
+      "previous_event_id": "evt_0002_7296a5d3",
+      "phase": "P3",
+      "timestamp": "2026-05-16T22:51:01.257Z",
+      "event_type": "authority_grant_issued",
+      "payload": {
+        "grant_id": "grant_0c97481588d1",
+        "single_use": true,
+        "freshness_window_seconds": 900,
+        "scope": {
+          "target_file": "service_config.env",
+          "mutation_scope": "runtime.config.worker",
+          "patch_hash": "38518f84e1b3e6642d4542deb8672e40fe24a22d82d767efc4a83adbf5293ee1",
+          "approval_head": "2a99f678d710ffb062b4faccce94453554edf0f0"
+        }
+      }
+    },
+    {
+      "event_id": "evt_0004_74c9a35e",
+      "previous_event_id": "evt_0003_fb03aabc",
+      "phase": "P4",
+      "timestamp": "2026-05-16T22:51:01.535Z",
+      "event_type": "runtime_witness_captured",
+      "payload": {
+        "head": "deff7fb7577afe9f1d879bdbb30a211eaae5bd4f",
+        "target_hash": "b2864509df5f6cba3614b6e3dd6b60d2905d4cd8e4921c5d639e36151d152a93",
+        "dependency_hash": "c66e7ab6edd386904d12008a42cc224824928586e5e1d41ca3e02a1349e5796b",
+        "runtime_epoch": 2,
+        "queue_hash": "f417f0baac7c54a6888745f217351661c8d9e53db4ae7731d9b1fd9941ebe0cf"
+      }
+    },
+    {
+      "event_id": "evt_0005_023997d8",
+      "previous_event_id": "evt_0004_74c9a35e",
+      "phase": "P5",
+      "timestamp": "2026-05-16T22:51:01.535Z",
+      "event_type": "admissibility_evaluated",
+      "payload": {
+        "admissibility": "DENIED",
+        "authority_continuity": "STALE",
+        "divergence_level": "HIGH",
+        "divergence_score": 64,
+        "reason": "repository HEAD diverged; dependency snapshot diverged; runtime epoch changed; mutation queue state changed",
+        "checks": {
+          "head_continuity": false,
+          "target_hash_continuity": true,
+          "freshness": true,
+          "replay_status": false,
+          "scope_continuity": true,
+          "dependency_continuity": false,
+          "runtime_epoch_continuity": false,
+          "queue_continuity": false
+        }
+      }
+    },
+    {
+      "event_id": "evt_0006_8cb741c1",
+      "previous_event_id": "evt_0005_023997d8",
+      "phase": "P6",
+      "timestamp": "2026-05-16T22:51:01.597Z",
+      "event_type": "execution_denied",
+      "payload": {
+        "execution_status": "EXECUTION_DENIED",
+        "reason": "repository runtime state diverged after approval",
+        "patch_applied": false,
+        "target_hash_before_attempt": "b2864509df5f6cba3614b6e3dd6b60d2905d4cd8e4921c5d639e36151d152a93",
+        "target_hash_after_attempt": "b2864509df5f6cba3614b6e3dd6b60d2905d4cd8e4921c5d639e36151d152a93",
+        "runtime_head_after_attempt": "deff7fb7577afe9f1d879bdbb30a211eaae5bd4f",
+        "target_unchanged_by_attempt": true
+      }
+    },
+    {
+      "event_id": "evt_0007_128f6375",
+      "previous_event_id": "evt_0006_8cb741c1",
+      "phase": "P7",
+      "timestamp": "2026-05-16T22:51:01.597Z",
+      "event_type": "lineage_finalized",
+      "payload": {
+        "path_id": "path_b_denied",
+        "final_execution_status": "EXECUTION_DENIED",
+        "final_reason": "repository runtime state diverged after approval"
+      }
+    }
+  ]
+}

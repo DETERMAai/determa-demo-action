@@ -36,6 +36,11 @@ Intent Generation
 Operational scenarios are documented in:
 - [Runtime Legitimacy Contradiction Library](CONTRADICTION_LIBRARY.md)
 
+## Visualization & Operational Mapping
+
+- [Runtime Legitimacy Visualization Layer](RUNTIME_LEGITIMACY_VISUALIZATION_LAYER.md)
+- [Industry Operational Mapping Layer](INDUSTRY_OPERATIONAL_MAPPING_LAYER.md)
+
 ## Scope Boundary
 
 This document intentionally omits protocol internals, formal authority semantics, and enforcement substrate details.

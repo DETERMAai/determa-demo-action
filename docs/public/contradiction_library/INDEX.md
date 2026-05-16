@@ -23,3 +23,9 @@ historical approval exists
 -> mutation admissibility fails-closed
 -> immutable authority lineage records decision
 ```
+
+## Enterprise Operation Mapping
+
+See:
+- [Industry Operational Mapping Layer](../INDUSTRY_OPERATIONAL_MAPPING_LAYER.md)
+- [Enterprise Scenario Matrix](../industry_mapping/ENTERPRISE_SCENARIO_MATRIX.md)

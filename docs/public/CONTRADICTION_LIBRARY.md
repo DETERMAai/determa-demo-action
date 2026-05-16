@@ -7,6 +7,8 @@ Each scenario is operational, public-safe, and mapped to DATP framing.
 ## Library Index
 
 - [Contradiction Library Index](contradiction_library/INDEX.md)
+- [Runtime Legitimacy Visualization Layer](RUNTIME_LEGITIMACY_VISUALIZATION_LAYER.md)
+- [Industry Operational Mapping Layer](INDUSTRY_OPERATIONAL_MAPPING_LAYER.md)
 
 ## Purpose
 

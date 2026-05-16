@@ -236,6 +236,7 @@ This is the central contradiction underlying the DETERMA runtime legitimacy fram
 # What DETERMA Actually Adds
 
 DETERMA introduces a legitimacy evaluation layer before execution.
+Within DATP framing, this is a Runtime Authority transition check that enforces Authority Continuity before mutation.
 
 The framework does not ask only:
 

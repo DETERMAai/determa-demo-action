@@ -15,3 +15,6 @@ The contradiction is that runtime reality changed before execution.
 
 ## Legitimacy Implication
 Execution legitimacy must be treated as a present-time continuity claim, not a permanent consequence of historical approval.
+
+## DATP Framing
+This demonstrates Runtime Legitimacy failure under DATP when Authority Continuity fails between approval-time and execution-time runtime state.

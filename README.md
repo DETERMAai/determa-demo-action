@@ -90,6 +90,7 @@ Public DATP references:
 - [DATP Public Overview](docs/public/DATP_PUBLIC_OVERVIEW.md)
 - [Runtime Legitimacy Contradiction Library](docs/public/CONTRADICTION_LIBRARY.md)
 - [Public Runtime Legitimacy Simulator](docs/public/RUNTIME_LEGITIMACY_SIMULATOR.html)
+- [Controlled Real Mutation Proof](docs/public/CONTROLLED_REAL_MUTATION_PROOF.md)
 - [Runtime Legitimacy Visualization Layer](docs/public/RUNTIME_LEGITIMACY_VISUALIZATION_LAYER.md)
 - [Industry Operational Mapping Layer](docs/public/INDUSTRY_OPERATIONAL_MAPPING_LAYER.md)
 - [First Contradiction](docs/public/FIRST_CONTRADICTION.md)
@@ -97,6 +98,8 @@ Public DATP references:
 - [Immutable Authority Lineage](docs/public/IMMUTABLE_AUTHORITY_LINEAGE.md)
 - [Governed Autonomous Execution](docs/public/GOVERNED_AUTONOMOUS_EXECUTION.md)
 - [Market Positioning](docs/public/MARKET_POSITIONING.md)
+
+This proof demonstrates that the same approved mutation can be allowed or denied depending on runtime state continuity.
 
 ## Architecture
 

@@ -1,0 +1,23 @@
+{
+  "run_id": "proof_20260516_222445",
+  "started_at": "2026-05-16T22:24:45.830Z",
+  "proof_claim": "same patch + same approval structure + different runtime state => different execution outcome",
+  "path_a": {
+    "execution_status": "EXECUTION_ALLOWED",
+    "reason": "authority continuity preserved",
+    "patch_applied": true,
+    "target_hash_changed": true,
+    "hash_continuity": true
+  },
+  "path_b": {
+    "execution_status": "EXECUTION_DENIED",
+    "reason": "runtime state diverged after approval",
+    "patch_applied": false,
+    "target_unchanged_by_attempt": true,
+    "hash_continuity": false
+  },
+  "outputs": {
+    "run_directory": "C:\\dev\\determa-demo-action\\demo\\controlled_mutation_proof\\output\\proof_20260516_222445",
+    "latest_directory": "C:\\dev\\determa-demo-action\\demo\\controlled_mutation_proof\\output\\latest"
+  }
+}

@@ -1,0 +1,4 @@
+service=worker
+max_retries=3
+timeout_seconds=45
+feature_flag_runtime_guard=true

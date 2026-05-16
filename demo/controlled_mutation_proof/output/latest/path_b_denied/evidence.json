@@ -1,0 +1,174 @@
+{
+  "proof_path": "path_b_denied",
+  "proposal": {
+    "proposal_id": "proposal_fdfa504dba54",
+    "target_file": "sandbox/target_config.txt",
+    "mutation_scope": "runtime.config.worker",
+    "patch": {
+      "operation": "line_replace",
+      "from": "max_retries=3",
+      "to": "max_retries=5"
+    }
+  },
+  "approval_snapshot": {
+    "approval_id": "approval_55066b6f9a97",
+    "target_file_hash": "fda42095bf493073bbb33e33fc98832cd32dc8bad54168accf10b6c651f01d4e",
+    "runtime_epoch": 2107,
+    "dependency_snapshot": {
+      "runtime-core": "2.4.1",
+      "mutation-engine": "1.7.3",
+      "queue-adapter": "0.9.8"
+    },
+    "approval_timestamp": "2026-05-16T22:24:45.849Z"
+  },
+  "authority_grant": {
+    "grant_id": "grant_3a82e1e9f672",
+    "issued_at": "2026-05-16T22:24:45.875Z",
+    "freshness_window_seconds": 600,
+    "scope": {
+      "target_file": "sandbox/target_config.txt",
+      "mutation_scope": "runtime.config.worker"
+    },
+    "single_use": true,
+    "consumed": false
+  },
+  "runtime_witness": {
+    "target_file_hash": "b4ea28c62c0bed680329336245d354e28fe57b8b7f111f6486c353c799d65c1f",
+    "runtime_epoch": 2108,
+    "dependency_snapshot": {
+      "runtime-core": "2.4.1",
+      "mutation-engine": "1.7.3",
+      "queue-adapter": "0.9.8"
+    },
+    "runtime_timestamp": "2026-05-16T22:24:45.878Z",
+    "patch_scope": "runtime.config.worker"
+  },
+  "admissibility_result": {
+    "admissibility": "DENIED",
+    "checks": {
+      "target_file_hash_continuity": false,
+      "runtime_epoch_continuity": false,
+      "grant_freshness": true,
+      "single_use_grant_status": true,
+      "patch_scope_validity": true,
+      "replay_status": false
+    },
+    "reason": "target file hash mismatch; runtime epoch drifted",
+    "elapsed_seconds_from_approval": 0
+  },
+  "execution_outcome": {
+    "execution_status": "EXECUTION_DENIED",
+    "reason": "runtime state diverged after approval",
+    "patch_applied": false,
+    "admissibility": "DENIED",
+    "pre_attempt_hash": "b4ea28c62c0bed680329336245d354e28fe57b8b7f111f6486c353c799d65c1f",
+    "post_attempt_hash": "b4ea28c62c0bed680329336245d354e28fe57b8b7f111f6486c353c799d65c1f",
+    "unchanged_by_attempt": true
+  },
+  "final_target_hash": "b4ea28c62c0bed680329336245d354e28fe57b8b7f111f6486c353c799d65c1f",
+  "evidence_chain": [
+    {
+      "event_id": "evt_0001_71adfba2",
+      "previous_event_id": null,
+      "phase": "P1",
+      "timestamp": "2026-05-16T22:24:45.876Z",
+      "event_type": "proposal_created",
+      "payload": {
+        "proposal_id": "proposal_fdfa504dba54",
+        "target_file": "sandbox/target_config.txt",
+        "patch": {
+          "operation": "line_replace",
+          "from": "max_retries=3",
+          "to": "max_retries=5"
+        }
+      }
+    },
+    {
+      "event_id": "evt_0002_f45e70af",
+      "previous_event_id": "evt_0001_71adfba2",
+      "phase": "P2",
+      "timestamp": "2026-05-16T22:24:45.876Z",
+      "event_type": "approval_snapshot_captured",
+      "payload": {
+        "approval_id": "approval_55066b6f9a97",
+        "target_file_hash": "fda42095bf493073bbb33e33fc98832cd32dc8bad54168accf10b6c651f01d4e",
+        "runtime_epoch": 2107,
+        "approval_timestamp": "2026-05-16T22:24:45.849Z"
+      }
+    },
+    {
+      "event_id": "evt_0003_c1946165",
+      "previous_event_id": "evt_0002_f45e70af",
+      "phase": "P3",
+      "timestamp": "2026-05-16T22:24:45.876Z",
+      "event_type": "authority_grant_issued",
+      "payload": {
+        "grant_id": "grant_3a82e1e9f672",
+        "freshness_window_seconds": 600,
+        "single_use": true,
+        "scope": {
+          "target_file": "sandbox/target_config.txt",
+          "mutation_scope": "runtime.config.worker"
+        }
+      }
+    },
+    {
+      "event_id": "evt_0004_378c7e23",
+      "previous_event_id": "evt_0003_c1946165",
+      "phase": "P4",
+      "timestamp": "2026-05-16T22:24:45.878Z",
+      "event_type": "runtime_witness_captured",
+      "payload": {
+        "target_file_hash": "b4ea28c62c0bed680329336245d354e28fe57b8b7f111f6486c353c799d65c1f",
+        "runtime_epoch": 2108,
+        "runtime_timestamp": "2026-05-16T22:24:45.878Z"
+      }
+    },
+    {
+      "event_id": "evt_0005_d02b8f31",
+      "previous_event_id": "evt_0004_378c7e23",
+      "phase": "P5",
+      "timestamp": "2026-05-16T22:24:45.878Z",
+      "event_type": "admissibility_evaluated",
+      "payload": {
+        "admissibility": "DENIED",
+        "reason": "target file hash mismatch; runtime epoch drifted",
+        "checks": {
+          "target_file_hash_continuity": false,
+          "runtime_epoch_continuity": false,
+          "grant_freshness": true,
+          "single_use_grant_status": true,
+          "patch_scope_validity": true,
+          "replay_status": false
+        }
+      }
+    },
+    {
+      "event_id": "evt_0006_f0428f14",
+      "previous_event_id": "evt_0005_d02b8f31",
+      "phase": "P6",
+      "timestamp": "2026-05-16T22:24:45.880Z",
+      "event_type": "execution_denied",
+      "payload": {
+        "status": "EXECUTION_DENIED",
+        "reason": "runtime state diverged after approval",
+        "admissibility": "DENIED",
+        "pre_attempt_hash": "b4ea28c62c0bed680329336245d354e28fe57b8b7f111f6486c353c799d65c1f",
+        "post_attempt_hash": "b4ea28c62c0bed680329336245d354e28fe57b8b7f111f6486c353c799d65c1f",
+        "unchanged_by_attempt": true
+      }
+    },
+    {
+      "event_id": "evt_0007_d3d0bdd5",
+      "previous_event_id": "evt_0006_f0428f14",
+      "phase": "P7",
+      "timestamp": "2026-05-16T22:24:45.880Z",
+      "event_type": "proof_finalized",
+      "payload": {
+        "path_id": "path_b_denied",
+        "final_status": "EXECUTION_DENIED",
+        "final_reason": "runtime state diverged after approval"
+      }
+    }
+  ]
+}

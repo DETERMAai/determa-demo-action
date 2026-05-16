@@ -88,6 +88,7 @@ Intent Generation
 
 Public DATP references:
 - [DATP Public Overview](docs/public/DATP_PUBLIC_OVERVIEW.md)
+- [Runtime Legitimacy Contradiction Library](docs/public/CONTRADICTION_LIBRARY.md)
 - [First Contradiction](docs/public/FIRST_CONTRADICTION.md)
 - [Runtime Legitimacy](docs/public/RUNTIME_LEGITIMACY.md)
 - [Immutable Authority Lineage](docs/public/IMMUTABLE_AUTHORITY_LINEAGE.md)

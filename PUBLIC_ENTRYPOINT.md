@@ -22,6 +22,7 @@ NotebookLM Surface: ONLINE
 ## DATP Public Docs
 
 - [DATP Public Overview](docs/public/DATP_PUBLIC_OVERVIEW.md)
+- [Runtime Legitimacy Contradiction Library](docs/public/CONTRADICTION_LIBRARY.md)
 - [First Contradiction](docs/public/FIRST_CONTRADICTION.md)
 - [Runtime Legitimacy](docs/public/RUNTIME_LEGITIMACY.md)
 

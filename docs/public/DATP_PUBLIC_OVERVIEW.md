@@ -31,6 +31,11 @@ Intent Generation
 - Mutation Admissibility is fail-closed when continuity fails.
 - Immutable Authority Lineage records execution decisions.
 
+## Contradiction Library
+
+Operational scenarios are documented in:
+- [Runtime Legitimacy Contradiction Library](CONTRADICTION_LIBRARY.md)
+
 ## Scope Boundary
 
 This document intentionally omits protocol internals, formal authority semantics, and enforcement substrate details.

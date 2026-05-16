@@ -104,6 +104,8 @@ This proof demonstrates that the same approved mutation can be allowed or denied
 This repository proof demonstrates that identical repository mutations may be allowed or denied depending on runtime continuity and repository state legitimacy.
 Runtime legitimacy is continuously revalidated throughout mutation execution, including mid-execution and pre-finalization checkpoints.
 Runtime legitimacy may also decay during asynchronous queue delays and retry windows before finalization.
+Runtime legitimacy must survive environment transition before mutation promotion may finalize.
+Approval continuity across environments requires runtime witness continuity, not historical authorization persistence.
 
 ## Architecture
 

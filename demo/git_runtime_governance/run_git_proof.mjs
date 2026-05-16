@@ -14,6 +14,7 @@ const LATEST_DIR = path.join(OUTPUT_DIR, "latest");
 const TARGET_FILE = "service_config.env";
 const DEPENDENCY_FILE = "dependencies.lock.json";
 const QUEUE_FILE = "mutation_queue.json";
+const ENVIRONMENT_PROFILE_FILE = "environment_profile.json";
 const APPROVAL_RUNTIME_EPOCH = 1;
 const GRANT_FRESHNESS_SECONDS = 900;
 
@@ -173,9 +174,22 @@ async function setupSandboxRepo() {
     2
   ) + "\n";
 
+  const baselineEnvironmentProfile = JSON.stringify(
+    {
+      environment_id: "staging",
+      runtime_profile: "staging-default",
+      feature_gate: "stable",
+      region: "us-east-1",
+      branch_track: "main"
+    },
+    null,
+    2
+  ) + "\n";
+
   await writeFileUtf8(path.join(SANDBOX_REPO_DIR, TARGET_FILE), baselineTarget);
   await writeFileUtf8(path.join(SANDBOX_REPO_DIR, DEPENDENCY_FILE), baselineDeps);
   await writeFileUtf8(path.join(SANDBOX_REPO_DIR, QUEUE_FILE), baselineQueue);
+  await writeFileUtf8(path.join(SANDBOX_REPO_DIR, ENVIRONMENT_PROFILE_FILE), baselineEnvironmentProfile);
 
   runGit(["add", "."], SANDBOX_REPO_DIR);
   runGit(["commit", "-m", "baseline runtime state"], SANDBOX_REPO_DIR);
@@ -228,9 +242,11 @@ async function captureApprovalSnapshot(proposal, baselineHead) {
   const targetContent = await fs.readFile(path.join(SANDBOX_REPO_DIR, TARGET_FILE), "utf8");
   const dependencyContent = await fs.readFile(path.join(SANDBOX_REPO_DIR, DEPENDENCY_FILE), "utf8");
   const queueContent = await fs.readFile(path.join(SANDBOX_REPO_DIR, QUEUE_FILE), "utf8");
+  const environmentProfileContent = await fs.readFile(path.join(SANDBOX_REPO_DIR, ENVIRONMENT_PROFILE_FILE), "utf8");
   const targetHash = hashText(targetContent);
   const dependencyHash = hashText(dependencyContent);
   const queueHash = hashText(queueContent);
+  const environment_profile_hash = hashText(environmentProfileContent);
   const stagedExpectedContent = targetContent.replace(proposal.patch.from, proposal.patch.to);
 
   return {
@@ -241,8 +257,10 @@ async function captureApprovalSnapshot(proposal, baselineHead) {
     target_content: targetContent,
     dependency_content: dependencyContent,
     queue_content: queueContent,
+    environment_profile_content: environmentProfileContent,
     dependency_hash: dependencyHash,
     queue_hash: queueHash,
+    environment_profile_hash,
     runtime_epoch: APPROVAL_RUNTIME_EPOCH,
     approval_timestamp: nowIso(),
     expected_staged_target_hash: hashText(stagedExpectedContent)
@@ -253,6 +271,7 @@ async function restoreRuntimeBaseline(approvalSnapshot) {
   await fs.writeFile(path.join(SANDBOX_REPO_DIR, TARGET_FILE), approvalSnapshot.target_content, "utf8");
   await fs.writeFile(path.join(SANDBOX_REPO_DIR, DEPENDENCY_FILE), approvalSnapshot.dependency_content, "utf8");
   await fs.writeFile(path.join(SANDBOX_REPO_DIR, QUEUE_FILE), approvalSnapshot.queue_content, "utf8");
+  await fs.writeFile(path.join(SANDBOX_REPO_DIR, ENVIRONMENT_PROFILE_FILE), approvalSnapshot.environment_profile_content, "utf8");
 }
 
 function issueAuthorityGrant(proposal, approvalSnapshot) {
@@ -304,6 +323,184 @@ async function captureRuntimeWitness(runtimeEpoch, queueState, concurrentMutatio
     execution_latency_ms: normalizedQueueState.execution_latency_ms,
     queued_mutations: normalizedQueueState.queued_mutations,
     runtime_timestamp: options.runtime_timestamp ?? nowIso()
+  };
+}
+
+async function captureEnvironmentWitness({
+  environmentId,
+  runtimeEpoch,
+  queueState,
+  delegatedFrom = null,
+  runtimeTimestamp,
+  queueDepth = 0,
+  retryCount = 0,
+  executionPriority = "normal",
+  queuedMutations = []
+}) {
+  const head = runGit(["rev-parse", "HEAD"], SANDBOX_REPO_DIR);
+  const dependencyHash = await hashFile(path.join(SANDBOX_REPO_DIR, DEPENDENCY_FILE));
+  const queueHash = await hashFile(path.join(SANDBOX_REPO_DIR, QUEUE_FILE));
+  const targetHash = await hashFile(path.join(SANDBOX_REPO_DIR, TARGET_FILE));
+  const profilePath = path.join(SANDBOX_REPO_DIR, ENVIRONMENT_PROFILE_FILE);
+  const profile = JSON.parse(await fs.readFile(profilePath, "utf8"));
+  const normalizedQueueState =
+    typeof queueState === "string"
+      ? makeQueueState({
+          phase: queueState,
+          depth: queueDepth,
+          latencyMs: 0,
+          retryCount,
+          priority: executionPriority,
+          queuedMutations
+        })
+      : queueState;
+
+  const configHash = hashText(
+    JSON.stringify({
+      runtime_profile: profile.runtime_profile,
+      feature_gate: profile.feature_gate,
+      region: profile.region,
+      branch_track: profile.branch_track
+    })
+  );
+
+  const branchHash = head;
+  const environmentWitness = {
+    environment_id: environmentId,
+    runtime_epoch: runtimeEpoch,
+    dependency_hash: dependencyHash,
+    config_hash: configHash,
+    queue_hash: queueHash,
+    branch_hash: branchHash,
+    queue_witness_hash: normalizedQueueState.queue_witness_hash,
+    target_hash: targetHash,
+    delegated_from: delegatedFrom,
+    runtime_timestamp: runtimeTimestamp ?? nowIso()
+  };
+
+  environmentWitness.environment_witness_hash = hashText(JSON.stringify(environmentWitness));
+  return environmentWitness;
+}
+
+function issueEnvironmentAuthorityGrant({
+  proposal,
+  sourceEnvironmentWitness,
+  targetEnvironmentId,
+  delegated = false
+}) {
+  return {
+    grant_id: `xenv_grant_${hashText(`${proposal.patch_hash}_${sourceEnvironmentWitness.environment_id}_${targetEnvironmentId}`).slice(0, 12)}`,
+    issued_at: nowIso(),
+    freshness_window_seconds: GRANT_FRESHNESS_SECONDS,
+    single_use: true,
+    consumed: false,
+    source_environment: sourceEnvironmentWitness.environment_id,
+    target_environment: targetEnvironmentId,
+    delegated,
+    scope: {
+      target_file: proposal.target_file,
+      patch_hash: proposal.patch_hash,
+      branch_hash: sourceEnvironmentWitness.branch_hash,
+      dependency_hash: sourceEnvironmentWitness.dependency_hash
+    }
+  };
+}
+
+function crossEnvironmentContinuityState(score) {
+  if (score >= 80) return "INVALID";
+  if (score >= 55) return "STALE";
+  if (score >= 30) return "WEAKENING";
+  return "CONTINUOUS";
+}
+
+function revalidateLegitimacyAcrossEnvironments({
+  proposal,
+  authorityGrant,
+  sourceEnvironment,
+  targetEnvironment,
+  runtimeWitness,
+  divergenceInputs = {}
+}) {
+  const grantMs = new Date(authorityGrant.issued_at).getTime();
+  const witnessMs = new Date(runtimeWitness.runtime_timestamp).getTime();
+  const elapsedSeconds = Math.max(0, Math.floor((witnessMs - grantMs) / 1000));
+
+  const checks = {
+    runtime_epoch_continuity: targetEnvironment.runtime_epoch === sourceEnvironment.runtime_epoch,
+    dependency_continuity: targetEnvironment.dependency_hash === sourceEnvironment.dependency_hash,
+    configuration_continuity: targetEnvironment.config_hash === sourceEnvironment.config_hash,
+    branch_continuity: targetEnvironment.branch_hash === sourceEnvironment.branch_hash,
+    queue_continuity: targetEnvironment.queue_hash === sourceEnvironment.queue_hash,
+    environment_witness_continuity:
+      targetEnvironment.environment_witness_hash === sourceEnvironment.environment_witness_hash,
+    delegated_authority_continuity: authorityGrant.delegated
+      ? targetEnvironment.delegated_from === authorityGrant.source_environment
+      : targetEnvironment.environment_id === authorityGrant.target_environment,
+    freshness: elapsedSeconds <= authorityGrant.freshness_window_seconds,
+    scope_continuity:
+      proposal.patch_hash === authorityGrant.scope.patch_hash &&
+      proposal.target_file === authorityGrant.scope.target_file
+  };
+
+  const penalties = {
+    runtime_epoch_continuity: checks.runtime_epoch_continuity ? 0 : 14,
+    dependency_continuity: checks.dependency_continuity ? 0 : 18,
+    configuration_continuity: checks.configuration_continuity ? 0 : 18,
+    branch_continuity: checks.branch_continuity ? 0 : 16,
+    queue_continuity: checks.queue_continuity ? 0 : 12,
+    environment_witness_continuity: checks.environment_witness_continuity ? 0 : 20,
+    delegated_authority_continuity: checks.delegated_authority_continuity ? 0 : 20,
+    freshness: checks.freshness ? 0 : 10,
+    scope_continuity: checks.scope_continuity ? 0 : 28,
+    dependency_drift_pressure: divergenceInputs.dependency_drift_pressure || 0,
+    branch_advancement_pressure: divergenceInputs.branch_advancement_pressure || 0,
+    config_drift_pressure: divergenceInputs.config_drift_pressure || 0,
+    queue_drift_pressure: divergenceInputs.queue_drift_pressure || 0,
+    delegated_runtime_aging: divergenceInputs.delegated_runtime_aging || 0
+  };
+
+  const divergenceScore = Math.min(100, Object.values(penalties).reduce((sum, p) => sum + p, 0));
+  const divergenceLevelValue = divergenceLevel(divergenceScore);
+  const continuity = crossEnvironmentContinuityState(divergenceScore);
+
+  let admissibility = "ADMISSIBLE";
+  if (
+    !checks.scope_continuity ||
+    !checks.delegated_authority_continuity ||
+    !checks.branch_continuity ||
+    !checks.runtime_epoch_continuity
+  ) {
+    admissibility = "DENIED";
+  } else if (
+    !checks.dependency_continuity ||
+    !checks.configuration_continuity ||
+    !checks.queue_continuity ||
+    !checks.environment_witness_continuity ||
+    !checks.freshness
+  ) {
+    admissibility = "DENIED";
+  }
+
+  const reasons = [];
+  if (!checks.runtime_epoch_continuity) reasons.push("runtime epoch mismatch across environments");
+  if (!checks.dependency_continuity) reasons.push("dependency continuity mismatch");
+  if (!checks.configuration_continuity) reasons.push("configuration continuity mismatch");
+  if (!checks.branch_continuity) reasons.push("branch continuity mismatch");
+  if (!checks.queue_continuity) reasons.push("queue witness continuity mismatch");
+  if (!checks.environment_witness_continuity) reasons.push("environment witness mismatch");
+  if (!checks.delegated_authority_continuity) reasons.push("delegated authority continuity failed");
+  if (!checks.freshness) reasons.push("cross-environment authority freshness expired");
+  if (!checks.scope_continuity) reasons.push("cross-environment scope continuity failed");
+  if (!reasons.length) reasons.push("cross-environment continuity preserved");
+
+  return {
+    admissibility,
+    divergence_score: divergenceScore,
+    divergence_level: divergenceLevelValue,
+    cross_environment_legitimacy: continuity,
+    elapsed_seconds: elapsedSeconds,
+    checks,
+    reason: reasons.join("; ")
   };
 }
 
@@ -575,6 +772,64 @@ async function mutateForRetryDrift() {
   runGit(["commit", "-m", "runtime drift during retry waiting window"], SANDBOX_REPO_DIR);
 }
 
+async function setEnvironmentProfile(profileUpdates) {
+  const profilePath = path.join(SANDBOX_REPO_DIR, ENVIRONMENT_PROFILE_FILE);
+  const current = JSON.parse(await fs.readFile(profilePath, "utf8"));
+  const updated = {
+    ...current,
+    ...profileUpdates
+  };
+  await fs.writeFile(profilePath, JSON.stringify(updated, null, 2) + "\n", "utf8");
+}
+
+async function mutateForProductionDivergence() {
+  const depsPath = path.join(SANDBOX_REPO_DIR, DEPENDENCY_FILE);
+  const deps = JSON.parse(await fs.readFile(depsPath, "utf8"));
+  deps["runtime-core"] = "2.6.0";
+  deps["mutation-engine"] = "1.8.2";
+  await fs.writeFile(depsPath, JSON.stringify(deps, null, 2) + "\n", "utf8");
+
+  await setEnvironmentProfile({
+    environment_id: "production",
+    runtime_profile: "prod-hardened",
+    feature_gate: "canary-enabled",
+    region: "us-west-2"
+  });
+
+  await applyQueueUpdate({
+    mutationId: "prod_hotfix_contention",
+    queueEpochIncrement: 1,
+    status: "promotion-contention",
+    priority: "critical"
+  });
+
+  runGit(["add", DEPENDENCY_FILE, QUEUE_FILE, ENVIRONMENT_PROFILE_FILE], SANDBOX_REPO_DIR);
+  runGit(["commit", "-m", "production runtime divergence before promotion"], SANDBOX_REPO_DIR);
+}
+
+async function mutateForDelegatedRuntimeDivergence() {
+  const targetPath = path.join(SANDBOX_REPO_DIR, TARGET_FILE);
+  const target = await fs.readFile(targetPath, "utf8");
+  await fs.writeFile(targetPath, target.replace("RUNTIME_GUARD=true", "RUNTIME_GUARD=delegated"), "utf8");
+
+  await setEnvironmentProfile({
+    environment_id: "delegated_runtime",
+    runtime_profile: "delegated-executor",
+    feature_gate: "delegated",
+    region: "eu-central-1"
+  });
+
+  await applyQueueUpdate({
+    mutationId: "delegated_runtime_shift",
+    queueEpochIncrement: 1,
+    status: "delegated-transfer",
+    priority: "high"
+  });
+
+  runGit(["add", TARGET_FILE, QUEUE_FILE, ENVIRONMENT_PROFILE_FILE], SANDBOX_REPO_DIR);
+  runGit(["commit", "-m", "delegated runtime environment drift"], SANDBOX_REPO_DIR);
+}
+
 async function commitPatchFinalization(commitMessage) {
   runGit(["add", TARGET_FILE], SANDBOX_REPO_DIR);
   runGit(["commit", "-m", commitMessage], SANDBOX_REPO_DIR);
@@ -588,14 +843,24 @@ function stateTransition(nextState) {
 }
 
 async function writeEvidenceFormats(pathDir, evidence) {
+  const horizonState = evidence.final_revalidation.runtime_horizon_state || "N/A";
+  const horizonSeconds =
+    evidence.final_revalidation.runtime_horizon_seconds === undefined
+      ? "N/A"
+      : `${evidence.final_revalidation.runtime_horizon_seconds}s`;
+  const continuityState =
+    evidence.final_revalidation.authority_continuity ||
+    evidence.final_revalidation.cross_environment_legitimacy ||
+    "N/A";
+
   await fs.writeFile(path.join(pathDir, "evidence.json"), JSON.stringify(evidence, null, 2), "utf8");
   const txt = [
     `PATH: ${evidence.path_id}`,
     `FINAL_STATUS: ${evidence.execution_outcome.execution_status}`,
     `FINAL_REASON: ${evidence.execution_outcome.reason}`,
     `FINAL_DIVERGENCE: ${evidence.final_revalidation.divergence_level} (${evidence.final_revalidation.divergence_score})`,
-    `FINAL_AUTHORITY_CONTINUITY: ${evidence.final_revalidation.authority_continuity}`,
-    `RUNTIME_HORIZON: ${evidence.final_revalidation.runtime_horizon_state} (${evidence.final_revalidation.runtime_horizon_seconds}s)`
+    `FINAL_AUTHORITY_CONTINUITY: ${continuityState}`,
+    `RUNTIME_HORIZON: ${horizonState} (${horizonSeconds})`
   ].join("\n");
   await fs.writeFile(path.join(pathDir, "evidence.txt"), txt, "utf8");
 
@@ -622,7 +887,7 @@ async function writeEvidenceFormats(pathDir, evidence) {
     "QUEUED -> WAITING -> RETRY_PENDING -> EXECUTING -> REVALIDATING -> HALTED",
     "",
     "## Runtime Horizon",
-    `state: ${evidence.final_revalidation.runtime_horizon_state} (${evidence.final_revalidation.runtime_horizon_seconds}s)`,
+    `state: ${horizonState} (${horizonSeconds})`,
     "",
     "## Divergence Pressure",
     "LOW -> MEDIUM -> HIGH -> CRITICAL",
@@ -1405,6 +1670,299 @@ async function runPathRetryUnderDivergedRuntime({ runDir, proposal, approvalSnap
   return evidence;
 }
 
+async function runPathStagingToProductionDivergence({
+  runDir,
+  proposal,
+  approvalSnapshot,
+  baselineHead
+}) {
+  runGit(["checkout", "-B", "path_g_staging_to_production_divergence", baselineHead], SANDBOX_REPO_DIR);
+  await restoreRuntimeBaseline(approvalSnapshot);
+  const chain = [];
+  const prev = { value: null };
+  const checkpointResults = [];
+  const approvalTime = approvalSnapshot.approval_timestamp;
+  const sourceEpoch = 12;
+
+  appendEvent(chain, prev, "proposal_created", "T0", { proposal_id: proposal.proposal_id });
+  appendEvent(chain, prev, "approval_snapshot_captured", "T1", { approval_id: approvalSnapshot.approval_id });
+
+  const stagingQueue = makeQueueState({
+    phase: "APPROVED_IN_STAGING",
+    depth: 1,
+    latencyMs: 8000,
+    retryCount: 0,
+    priority: "normal",
+    queuedMutations: [proposal.proposal_id]
+  });
+  const stagingWitness = await captureEnvironmentWitness({
+    environmentId: "staging",
+    runtimeEpoch: sourceEpoch,
+    queueState: stagingQueue,
+    runtimeTimestamp: isoWithOffset(approvalTime, 8),
+    queueDepth: stagingQueue.queue_depth,
+    executionPriority: stagingQueue.execution_priority,
+    queuedMutations: stagingQueue.queued_mutations
+  });
+  appendEvent(chain, prev, "environment_snapshot_captured", "T1B", {
+    source_environment: "staging",
+    target_environment: "staging",
+    environment_witness: stagingWitness
+  });
+
+  const grant = issueEnvironmentAuthorityGrant({
+    proposal,
+    sourceEnvironmentWitness: stagingWitness,
+    targetEnvironmentId: "production",
+    delegated: false
+  });
+  appendEvent(chain, prev, "authority_grant_issued", "T2", {
+    source_environment: grant.source_environment,
+    target_environment: grant.target_environment,
+    grant_id: grant.grant_id
+  });
+
+  appendEvent(chain, prev, "promotion_queued", "T3", {
+    source_environment: "staging",
+    target_environment: "production",
+    promotion_state: "QUEUED_FOR_PROMOTION",
+    queue_witness_hash: stagingQueue.queue_witness_hash
+  });
+
+  await mutateForProductionDivergence();
+
+  const productionQueue = makeQueueState({
+    phase: "REVALIDATING_IN_PRODUCTION",
+    depth: 4,
+    latencyMs: 240000,
+    retryCount: 0,
+    priority: "critical",
+    queuedMutations: [proposal.proposal_id, "prod_hotfix_contention"]
+  });
+  const productionWitness = await captureEnvironmentWitness({
+    environmentId: "production",
+    runtimeEpoch: sourceEpoch + 3,
+    queueState: productionQueue,
+    runtimeTimestamp: isoWithOffset(approvalTime, 980),
+    queueDepth: productionQueue.queue_depth,
+    executionPriority: productionQueue.execution_priority,
+    queuedMutations: productionQueue.queued_mutations
+  });
+  appendEvent(chain, prev, "promotion_revalidation_started", "T6", {
+    source_environment: "staging",
+    target_environment: "production",
+    environment_witness: productionWitness
+  });
+
+  const promotionEval = revalidateLegitimacyAcrossEnvironments({
+    proposal,
+    authorityGrant: grant,
+    sourceEnvironment: stagingWitness,
+    targetEnvironment: productionWitness,
+    runtimeWitness: productionWitness,
+    divergenceInputs: {
+      dependency_drift_pressure: 14,
+      branch_advancement_pressure: 12,
+      config_drift_pressure: 14,
+      queue_drift_pressure: 10
+    }
+  });
+  checkpointResults.push(promotionEval);
+  appendEvent(chain, prev, "environment_divergence_detected", "T7", {
+    source_environment: "staging",
+    target_environment: "production",
+    authority_continuity_state: promotionEval.cross_environment_legitimacy,
+    admissibility_state: promotionEval.admissibility,
+    divergence_level: promotionEval.divergence_level,
+    decision_reason: promotionEval.reason
+  });
+
+  appendEvent(chain, prev, "promotion_denied", "T8", {
+    source_environment: "staging",
+    target_environment: "production",
+    admissibility_state: promotionEval.admissibility,
+    decision_reason: promotionEval.reason
+  });
+  appendEvent(chain, prev, "cross_environment_lineage_finalized", "T9", {
+    source_environment: "staging",
+    target_environment: "production",
+    final_status: "PROMOTION_DENIED",
+    final_reason: "runtime continuity diverged across environment transition"
+  });
+
+  const evidence = {
+    path_id: "path_g_staging_to_production_divergence",
+    proposal,
+    approval_snapshot: approvalSnapshot,
+    source_environment: stagingWitness,
+    target_environment: productionWitness,
+    authority_grant: grant,
+    checkpoint_results: checkpointResults,
+    final_revalidation: promotionEval,
+    execution_outcome: {
+      execution_status: "EXECUTION_DENIED",
+      reason: "runtime continuity diverged across environment transition"
+    },
+    execution_phase_timeline:
+      "PROPOSED -> APPROVED_IN_STAGING -> QUEUED_FOR_PROMOTION -> REVALIDATING_IN_PRODUCTION -> PROMOTION_DENIED",
+    evidence_chain: chain
+  };
+
+  const outDir = path.join(runDir, "path_g_staging_to_production_divergence");
+  await fs.mkdir(outDir, { recursive: true });
+  await writeEvidenceFormats(outDir, evidence);
+  await fs.writeFile(path.join(outDir, "target_before_attempt.txt"), approvalSnapshot.target_content, "utf8");
+  await fs.writeFile(path.join(outDir, "target_after_attempt.txt"), await fs.readFile(path.join(SANDBOX_REPO_DIR, TARGET_FILE), "utf8"), "utf8");
+  return evidence;
+}
+
+async function runPathDelegatedEnvironmentTransfer({
+  runDir,
+  proposal,
+  approvalSnapshot,
+  baselineHead
+}) {
+  runGit(["checkout", "-B", "path_h_delegated_environment_transfer", baselineHead], SANDBOX_REPO_DIR);
+  await restoreRuntimeBaseline(approvalSnapshot);
+  const chain = [];
+  const prev = { value: null };
+  const checkpointResults = [];
+  const approvalTime = approvalSnapshot.approval_timestamp;
+  const sourceEpoch = 12;
+
+  appendEvent(chain, prev, "proposal_created", "T0", { proposal_id: proposal.proposal_id });
+  appendEvent(chain, prev, "approval_snapshot_captured", "T1", { approval_id: approvalSnapshot.approval_id });
+
+  const sourceQueue = makeQueueState({
+    phase: "LOCAL",
+    depth: 1,
+    latencyMs: 2000,
+    retryCount: 0,
+    priority: "normal",
+    queuedMutations: [proposal.proposal_id]
+  });
+  const sourceWitness = await captureEnvironmentWitness({
+    environmentId: "staging",
+    runtimeEpoch: sourceEpoch,
+    queueState: sourceQueue,
+    runtimeTimestamp: isoWithOffset(approvalTime, 6),
+    queueDepth: sourceQueue.queue_depth,
+    executionPriority: sourceQueue.execution_priority,
+    queuedMutations: sourceQueue.queued_mutations
+  });
+  appendEvent(chain, prev, "environment_snapshot_captured", "T1B", {
+    source_environment: "staging",
+    target_environment: "staging",
+    environment_witness: sourceWitness
+  });
+
+  const delegatedGrant = issueEnvironmentAuthorityGrant({
+    proposal,
+    sourceEnvironmentWitness: sourceWitness,
+    targetEnvironmentId: "delegated_runtime",
+    delegated: true
+  });
+  appendEvent(chain, prev, "authority_grant_issued", "T2", {
+    source_environment: delegatedGrant.source_environment,
+    target_environment: delegatedGrant.target_environment,
+    grant_id: delegatedGrant.grant_id
+  });
+
+  appendEvent(chain, prev, "delegated_execution_started", "T3", {
+    source_environment: "staging",
+    target_environment: "delegated_runtime",
+    delegated_authority_state: "TRANSFERRED"
+  });
+
+  await mutateForDelegatedRuntimeDivergence();
+
+  const delegatedQueue = makeQueueState({
+    phase: "REVALIDATING",
+    depth: 3,
+    latencyMs: 180000,
+    retryCount: 1,
+    priority: "high",
+    queuedMutations: [proposal.proposal_id, "delegated_runtime_shift"]
+  });
+  const delegatedWitness = await captureEnvironmentWitness({
+    environmentId: "delegated_runtime",
+    runtimeEpoch: sourceEpoch + 2,
+    queueState: delegatedQueue,
+    delegatedFrom: "queue_router",
+    runtimeTimestamp: isoWithOffset(approvalTime, 860),
+    queueDepth: delegatedQueue.queue_depth,
+    retryCount: delegatedQueue.retry_count,
+    executionPriority: delegatedQueue.execution_priority,
+    queuedMutations: delegatedQueue.queued_mutations
+  });
+  appendEvent(chain, prev, "environment_snapshot_captured", "T3B", {
+    source_environment: "staging",
+    target_environment: "delegated_runtime",
+    environment_witness: delegatedWitness
+  });
+
+  const delegatedEval = revalidateLegitimacyAcrossEnvironments({
+    proposal,
+    authorityGrant: delegatedGrant,
+    sourceEnvironment: sourceWitness,
+    targetEnvironment: delegatedWitness,
+    runtimeWitness: delegatedWitness,
+    divergenceInputs: {
+      dependency_drift_pressure: 10,
+      branch_advancement_pressure: 10,
+      config_drift_pressure: 12,
+      queue_drift_pressure: 8,
+      delegated_runtime_aging: 12
+    }
+  });
+  checkpointResults.push(delegatedEval);
+  appendEvent(chain, prev, "delegated_continuity_failed", "T4", {
+    source_environment: "staging",
+    target_environment: "delegated_runtime",
+    authority_continuity_state: delegatedEval.cross_environment_legitimacy,
+    admissibility_state: delegatedEval.admissibility,
+    divergence_level: delegatedEval.divergence_level,
+    decision_reason: delegatedEval.reason
+  });
+
+  appendEvent(chain, prev, "execution_denied", "T5", {
+    source_environment: "staging",
+    target_environment: "delegated_runtime",
+    admissibility_state: delegatedEval.admissibility,
+    decision_reason: delegatedEval.reason
+  });
+  appendEvent(chain, prev, "cross_environment_lineage_finalized", "T6", {
+    source_environment: "staging",
+    target_environment: "delegated_runtime",
+    final_status: "EXECUTION_DENIED",
+    final_reason: "delegated runtime continuity mismatch"
+  });
+
+  const evidence = {
+    path_id: "path_h_delegated_environment_transfer",
+    proposal,
+    approval_snapshot: approvalSnapshot,
+    source_environment: sourceWitness,
+    target_environment: delegatedWitness,
+    authority_grant: delegatedGrant,
+    checkpoint_results: checkpointResults,
+    final_revalidation: delegatedEval,
+    execution_outcome: {
+      execution_status: "EXECUTION_DENIED",
+      reason: "delegated runtime continuity mismatch"
+    },
+    execution_phase_timeline: "LOCAL -> TRANSFERRED -> REVALIDATING -> INVALIDATED",
+    evidence_chain: chain
+  };
+
+  const outDir = path.join(runDir, "path_h_delegated_environment_transfer");
+  await fs.mkdir(outDir, { recursive: true });
+  await writeEvidenceFormats(outDir, evidence);
+  await fs.writeFile(path.join(outDir, "target_before_attempt.txt"), approvalSnapshot.target_content, "utf8");
+  await fs.writeFile(path.join(outDir, "target_after_attempt.txt"), await fs.readFile(path.join(SANDBOX_REPO_DIR, TARGET_FILE), "utf8"), "utf8");
+  return evidence;
+}
+
 async function writeSummaryArtifacts(runDir, summary) {
   await fs.writeFile(path.join(runDir, "proof_summary.json"), JSON.stringify(summary, null, 2), "utf8");
 
@@ -1418,6 +1976,8 @@ async function writeSummaryArtifacts(runDir, summary) {
     `path_d: ${summary.path_d.execution_status} (${summary.path_d.reason})`,
     `path_e: ${summary.path_e.execution_status} (${summary.path_e.reason})`,
     `path_f: ${summary.path_f.execution_status} (${summary.path_f.reason})`,
+    `path_g: ${summary.path_g.execution_status} (${summary.path_g.reason})`,
+    `path_h: ${summary.path_h.execution_status} (${summary.path_h.reason})`,
     `replay_status: ${summary.path_a.replay_status}`
   ].join("\n");
   await fs.writeFile(path.join(runDir, "proof_summary.txt"), txt, "utf8");
@@ -1436,6 +1996,12 @@ async function writeSummaryArtifacts(runDir, summary) {
     "## Runtime Horizon",
     "SHORT -> EXTENDED -> LONG -> EXCEEDED",
     "",
+    "## Environment Continuity Map",
+    "STAGING -> PROMOTION -> PRODUCTION",
+    "",
+    "## Delegated Authority State",
+    "LOCAL -> TRANSFERRED -> REVALIDATING -> INVALIDATED",
+    "",
     "## Authority Continuity State",
     "VALID -> WEAKENING -> STALE -> INVALID",
     "",
@@ -1452,9 +2018,11 @@ async function writeSummaryArtifacts(runDir, summary) {
     `- path_d_concurrent_conflict: ${summary.path_d.execution_status} (${summary.path_d.reason})`,
     `- path_e_delayed_execution_decay: ${summary.path_e.execution_status} (${summary.path_e.reason})`,
     `- path_f_retry_under_diverged_runtime: ${summary.path_f.execution_status} (${summary.path_f.reason})`,
+    `- path_g_staging_to_production_divergence: ${summary.path_g.execution_status} (${summary.path_g.reason})`,
+    `- path_h_delegated_environment_transfer: ${summary.path_h.execution_status} (${summary.path_h.reason})`,
     "",
     "## Core Observation",
-    "Approval alone was not enough. Legitimacy had to survive runtime execution itself and asynchronous delay horizons.",
+    "Approval alone was not enough. Legitimacy had to survive runtime execution itself, asynchronous delay horizons, and environment transitions.",
     ""
   ].join("\n");
   await fs.writeFile(path.join(runDir, "proof_summary.md"), md, "utf8");
@@ -1525,6 +2093,20 @@ async function main() {
     baselineHead: baseline.baseline_head
   });
 
+  const pathG = await runPathStagingToProductionDivergence({
+    runDir,
+    proposal,
+    approvalSnapshot,
+    baselineHead: baseline.baseline_head
+  });
+
+  const pathH = await runPathDelegatedEnvironmentTransfer({
+    runDir,
+    proposal,
+    approvalSnapshot,
+    baselineHead: baseline.baseline_head
+  });
+
   const summary = {
     run_id: runId,
     generated_at: nowIso(),
@@ -1562,6 +2144,16 @@ async function main() {
       reason: pathF.execution_outcome.reason,
       final_divergence: `${pathF.final_revalidation.divergence_level} (${pathF.final_revalidation.divergence_score})`
     },
+    path_g: {
+      execution_status: pathG.execution_outcome.execution_status,
+      reason: pathG.execution_outcome.reason,
+      final_divergence: `${pathG.final_revalidation.divergence_level} (${pathG.final_revalidation.divergence_score})`
+    },
+    path_h: {
+      execution_status: pathH.execution_outcome.execution_status,
+      reason: pathH.execution_outcome.reason,
+      final_divergence: `${pathH.final_revalidation.divergence_level} (${pathH.final_revalidation.divergence_score})`
+    },
     output_paths: {
       run_directory: runDir,
       latest_directory: LATEST_DIR
@@ -1580,6 +2172,8 @@ async function main() {
   console.log(`Path D: ${summary.path_d.execution_status} (${summary.path_d.reason})`);
   console.log(`Path E: ${summary.path_e.execution_status} (${summary.path_e.reason})`);
   console.log(`Path F: ${summary.path_f.execution_status} (${summary.path_f.reason})`);
+  console.log(`Path G: ${summary.path_g.execution_status} (${summary.path_g.reason})`);
+  console.log(`Path H: ${summary.path_h.execution_status} (${summary.path_h.reason})`);
   console.log(`Replay check: ${summary.path_a.replay_status}`);
 }
 

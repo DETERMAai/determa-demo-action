@@ -4,10 +4,10 @@
     "proposal_id": "proposal_38518f84e1b3",
     "target_file": "service_config.env",
     "patch_hash": "38518f84e1b3e6642d4542deb8672e40fe24a22d82d767efc4a83adbf5293ee1",
-    "patch_file": "C:\\dev\\determa-demo-action\\demo\\git_runtime_governance\\output\\git_proof_20260516_234444\\proposal\\mutation.patch",
-    "approval_head": "616b5ca3c1fac02bcc427eab96de5b68c48100d0",
+    "patch_file": "C:\\dev\\determa-demo-action\\demo\\git_runtime_governance\\output\\git_proof_20260516_235702\\proposal\\mutation.patch",
+    "approval_head": "099c2a5f7a27f0621be2cc5d4ec61a004e4b6a80",
     "runtime_epoch": 1,
-    "created_at": "2026-05-16T23:44:45.534Z",
+    "created_at": "2026-05-16T23:57:03.551Z",
     "mutation_scope": "runtime.config.worker",
     "patch": {
       "operation": "line_replace",
@@ -17,22 +17,24 @@
     "patch_preview": "MAX_RETRIES=3 -> MAX_RETRIES=5"
   },
   "approval_snapshot": {
-    "approval_id": "approval_26960bea0c08",
-    "head": "616b5ca3c1fac02bcc427eab96de5b68c48100d0",
+    "approval_id": "approval_132fc2c6aea2",
+    "head": "099c2a5f7a27f0621be2cc5d4ec61a004e4b6a80",
     "target_file": "service_config.env",
     "target_hash": "8f175d7fd3af6dacc35aedd2e9e87a713e5c938d2adf24082285ae294eaca762",
     "target_content": "SERVICE=worker\nMAX_RETRIES=3\nTIMEOUT_SECONDS=45\nRUNTIME_GUARD=true\n",
     "dependency_content": "{\n  \"runtime-core\": \"2.4.1\",\n  \"mutation-engine\": \"1.7.3\",\n  \"queue-adapter\": \"0.9.8\"\n}\n",
     "queue_content": "{\n  \"pending_mutations\": [],\n  \"queue_epoch\": 1\n}\n",
+    "environment_profile_content": "{\n  \"environment_id\": \"staging\",\n  \"runtime_profile\": \"staging-default\",\n  \"feature_gate\": \"stable\",\n  \"region\": \"us-east-1\",\n  \"branch_track\": \"main\"\n}\n",
     "dependency_hash": "b68c30132ed93fa9947e0a7b629a59be1ac854acecf82c897dc7078fde1dd48a",
     "queue_hash": "ebc4b4671209b9362b5923c6049872d3f73af3567dd0f7b31f481f232868d15d",
+    "environment_profile_hash": "b2ca3a130498099b5458e05a06efa79a37c16bf5a16b744aafdc081641d3232c",
     "runtime_epoch": 1,
-    "approval_timestamp": "2026-05-16T23:44:45.550Z",
+    "approval_timestamp": "2026-05-16T23:57:03.565Z",
     "expected_staged_target_hash": "b55ab635417d899b20d32f0e9d99dd6ba4397a5dd65049628d2c7ad843e2d3d4"
   },
   "authority_grant": {
-    "grant_id": "grant_c48520f85624",
-    "issued_at": "2026-05-16T23:44:45.551Z",
+    "grant_id": "grant_5259c747a70d",
+    "issued_at": "2026-05-16T23:57:03.565Z",
     "freshness_window_seconds": 900,
     "single_use": true,
     "consumed": false,
@@ -40,7 +42,7 @@
       "target_file": "service_config.env",
       "mutation_scope": "runtime.config.worker",
       "patch_hash": "38518f84e1b3e6642d4542deb8672e40fe24a22d82d767efc4a83adbf5293ee1",
-      "approval_head": "616b5ca3c1fac02bcc427eab96de5b68c48100d0"
+      "approval_head": "099c2a5f7a27f0621be2cc5d4ec61a004e4b6a80"
     }
   },
   "checkpoint_results": [
@@ -163,7 +165,7 @@
       "event_id": "evt_0001_d7791286",
       "previous_event_id": null,
       "phase": "T0",
-      "timestamp": "2026-05-16T23:44:47.371Z",
+      "timestamp": "2026-05-16T23:57:05.431Z",
       "event_type": "proposal_created",
       "payload": {
         "proposal_id": "proposal_38518f84e1b3"
@@ -173,30 +175,30 @@
       "event_id": "evt_0002_7a7a7a49",
       "previous_event_id": "evt_0001_d7791286",
       "phase": "T1",
-      "timestamp": "2026-05-16T23:44:47.371Z",
+      "timestamp": "2026-05-16T23:57:05.431Z",
       "event_type": "approval_snapshot_captured",
       "payload": {
-        "approval_id": "approval_26960bea0c08"
+        "approval_id": "approval_132fc2c6aea2"
       }
     },
     {
       "event_id": "evt_0003_f210b903",
       "previous_event_id": "evt_0002_7a7a7a49",
       "phase": "T2",
-      "timestamp": "2026-05-16T23:44:47.371Z",
+      "timestamp": "2026-05-16T23:57:05.431Z",
       "event_type": "authority_grant_issued",
       "payload": {
-        "grant_id": "grant_c48520f85624"
+        "grant_id": "grant_5259c747a70d"
       }
     },
     {
       "event_id": "evt_0004_e30cac37",
       "previous_event_id": "evt_0003_f210b903",
       "phase": "PRE_EXECUTION",
-      "timestamp": "2026-05-16T23:44:47.431Z",
+      "timestamp": "2026-05-16T23:57:05.497Z",
       "event_type": "runtime_witness_captured",
       "payload": {
-        "head": "616b5ca3c1fac02bcc427eab96de5b68c48100d0",
+        "head": "099c2a5f7a27f0621be2cc5d4ec61a004e4b6a80",
         "target_file": "service_config.env",
         "target_hash": "8f175d7fd3af6dacc35aedd2e9e87a713e5c938d2adf24082285ae294eaca762",
         "dependency_hash": "b68c30132ed93fa9947e0a7b629a59be1ac854acecf82c897dc7078fde1dd48a",
@@ -212,14 +214,14 @@
         "queued_mutations": [
           "proposal_38518f84e1b3"
         ],
-        "runtime_timestamp": "2026-05-16T23:44:49.550Z"
+        "runtime_timestamp": "2026-05-16T23:57:07.565Z"
       }
     },
     {
       "event_id": "evt_0005_887b262e",
       "previous_event_id": "evt_0004_e30cac37",
       "phase": "PRE_EXECUTION",
-      "timestamp": "2026-05-16T23:44:47.431Z",
+      "timestamp": "2026-05-16T23:57:05.497Z",
       "event_type": "legitimacy_revalidated",
       "payload": {
         "checkpoint": "PRE_EXECUTION",
@@ -253,7 +255,7 @@
       "event_id": "evt_0006_a6066a4b",
       "previous_event_id": "evt_0005_887b262e",
       "phase": "T3",
-      "timestamp": "2026-05-16T23:44:47.431Z",
+      "timestamp": "2026-05-16T23:57:05.497Z",
       "event_type": "execution_queued",
       "payload": {
         "execution_state": "QUEUED",
@@ -264,7 +266,7 @@
       "event_id": "evt_0007_cf8773e2",
       "previous_event_id": "evt_0006_a6066a4b",
       "phase": "T4",
-      "timestamp": "2026-05-16T23:44:47.433Z",
+      "timestamp": "2026-05-16T23:57:05.499Z",
       "event_type": "queue_state_updated",
       "payload": {
         "phase": "WAITING",
@@ -284,7 +286,7 @@
       "event_id": "evt_0008_95d1ecfa",
       "previous_event_id": "evt_0007_cf8773e2",
       "phase": "T4B",
-      "timestamp": "2026-05-16T23:44:47.433Z",
+      "timestamp": "2026-05-16T23:57:05.499Z",
       "event_type": "execution_delayed",
       "payload": {
         "execution_state": "WAITING",
@@ -295,10 +297,10 @@
       "event_id": "evt_0009_8ef9727f",
       "previous_event_id": "evt_0008_95d1ecfa",
       "phase": "MID_EXECUTION",
-      "timestamp": "2026-05-16T23:44:47.490Z",
+      "timestamp": "2026-05-16T23:57:05.553Z",
       "event_type": "runtime_witness_captured",
       "payload": {
-        "head": "616b5ca3c1fac02bcc427eab96de5b68c48100d0",
+        "head": "099c2a5f7a27f0621be2cc5d4ec61a004e4b6a80",
         "target_file": "service_config.env",
         "target_hash": "8f175d7fd3af6dacc35aedd2e9e87a713e5c938d2adf24082285ae294eaca762",
         "dependency_hash": "b68c30132ed93fa9947e0a7b629a59be1ac854acecf82c897dc7078fde1dd48a",
@@ -316,14 +318,14 @@
           "queued_infra_patch",
           "queued_policy_sync"
         ],
-        "runtime_timestamp": "2026-05-16T23:51:45.550Z"
+        "runtime_timestamp": "2026-05-17T00:04:03.565Z"
       }
     },
     {
       "event_id": "evt_0010_c862256c",
       "previous_event_id": "evt_0009_8ef9727f",
       "phase": "MID_EXECUTION",
-      "timestamp": "2026-05-16T23:44:47.490Z",
+      "timestamp": "2026-05-16T23:57:05.553Z",
       "event_type": "legitimacy_revalidated",
       "payload": {
         "checkpoint": "MID_EXECUTION",
@@ -357,7 +359,7 @@
       "event_id": "evt_0011_1cff8459",
       "previous_event_id": "evt_0010_c862256c",
       "phase": "T5",
-      "timestamp": "2026-05-16T23:44:47.690Z",
+      "timestamp": "2026-05-16T23:57:05.728Z",
       "event_type": "queue_state_updated",
       "payload": {
         "phase": "EXECUTING",
@@ -378,10 +380,10 @@
       "event_id": "evt_0012_7e556d75",
       "previous_event_id": "evt_0011_1cff8459",
       "phase": "PRE_COMMIT",
-      "timestamp": "2026-05-16T23:44:47.751Z",
+      "timestamp": "2026-05-16T23:57:05.793Z",
       "event_type": "runtime_witness_captured",
       "payload": {
-        "head": "0d4ea215ab0bfdd77acf93de6329c09931e1c1e1",
+        "head": "104664a551f10ff492763e8ed87025dac4797840",
         "target_file": "service_config.env",
         "target_hash": "0fd37b0fde112cde229126d05d4f56163d4720d8d9573ff6f826173d6e07a899",
         "dependency_hash": "77c721ccdac8de378b7cd789a287773dd056ea8b18e54028ebc80ca448e2358a",
@@ -400,14 +402,14 @@
           "queued_policy_sync",
           "async_contention_patch_01"
         ],
-        "runtime_timestamp": "2026-05-17T00:04:25.550Z"
+        "runtime_timestamp": "2026-05-17T00:16:43.565Z"
       }
     },
     {
       "event_id": "evt_0013_fe5ce31c",
       "previous_event_id": "evt_0012_7e556d75",
       "phase": "PRE_COMMIT",
-      "timestamp": "2026-05-16T23:44:47.751Z",
+      "timestamp": "2026-05-16T23:57:05.794Z",
       "event_type": "legitimacy_revalidated",
       "payload": {
         "checkpoint": "PRE_COMMIT",
@@ -441,7 +443,7 @@
       "event_id": "evt_0014_9bb13a1c",
       "previous_event_id": "evt_0013_fe5ce31c",
       "phase": "T7",
-      "timestamp": "2026-05-16T23:44:47.751Z",
+      "timestamp": "2026-05-16T23:57:05.794Z",
       "event_type": "authority_decay_detected",
       "payload": {
         "authority_continuity": "INVALID",
@@ -452,7 +454,7 @@
       "event_id": "evt_0015_f79ea64e",
       "previous_event_id": "evt_0014_9bb13a1c",
       "phase": "T8",
-      "timestamp": "2026-05-16T23:44:47.751Z",
+      "timestamp": "2026-05-16T23:57:05.794Z",
       "event_type": "runtime_horizon_exceeded",
       "payload": {
         "runtime_horizon_seconds": 1180,
@@ -463,7 +465,7 @@
       "event_id": "evt_0016_1bf87868",
       "previous_event_id": "evt_0015_f79ea64e",
       "phase": "T9",
-      "timestamp": "2026-05-16T23:44:47.751Z",
+      "timestamp": "2026-05-16T23:57:05.794Z",
       "event_type": "execution_halted",
       "payload": {
         "reason": "authority continuity collapsed during deferred execution horizon"
@@ -473,7 +475,7 @@
       "event_id": "evt_0017_eedb18e1",
       "previous_event_id": "evt_0016_1bf87868",
       "phase": "T9B",
-      "timestamp": "2026-05-16T23:44:47.751Z",
+      "timestamp": "2026-05-16T23:57:05.794Z",
       "event_type": "finalization_prevented",
       "payload": {
         "execution_state": "HALTED",
@@ -484,7 +486,7 @@
       "event_id": "evt_0018_d3b131d5",
       "previous_event_id": "evt_0017_eedb18e1",
       "phase": "T10",
-      "timestamp": "2026-05-16T23:44:47.751Z",
+      "timestamp": "2026-05-16T23:57:05.794Z",
       "event_type": "lineage_finalized",
       "payload": {
         "final_status": "EXECUTION_DENIED",

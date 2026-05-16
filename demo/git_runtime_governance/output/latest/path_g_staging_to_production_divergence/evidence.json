@@ -1,0 +1,258 @@
+{
+  "path_id": "path_g_staging_to_production_divergence",
+  "proposal": {
+    "proposal_id": "proposal_38518f84e1b3",
+    "target_file": "service_config.env",
+    "patch_hash": "38518f84e1b3e6642d4542deb8672e40fe24a22d82d767efc4a83adbf5293ee1",
+    "patch_file": "C:\\dev\\determa-demo-action\\demo\\git_runtime_governance\\output\\git_proof_20260516_235702\\proposal\\mutation.patch",
+    "approval_head": "099c2a5f7a27f0621be2cc5d4ec61a004e4b6a80",
+    "runtime_epoch": 1,
+    "created_at": "2026-05-16T23:57:03.551Z",
+    "mutation_scope": "runtime.config.worker",
+    "patch": {
+      "operation": "line_replace",
+      "from": "MAX_RETRIES=3",
+      "to": "MAX_RETRIES=5"
+    },
+    "patch_preview": "MAX_RETRIES=3 -> MAX_RETRIES=5"
+  },
+  "approval_snapshot": {
+    "approval_id": "approval_132fc2c6aea2",
+    "head": "099c2a5f7a27f0621be2cc5d4ec61a004e4b6a80",
+    "target_file": "service_config.env",
+    "target_hash": "8f175d7fd3af6dacc35aedd2e9e87a713e5c938d2adf24082285ae294eaca762",
+    "target_content": "SERVICE=worker\nMAX_RETRIES=3\nTIMEOUT_SECONDS=45\nRUNTIME_GUARD=true\n",
+    "dependency_content": "{\n  \"runtime-core\": \"2.4.1\",\n  \"mutation-engine\": \"1.7.3\",\n  \"queue-adapter\": \"0.9.8\"\n}\n",
+    "queue_content": "{\n  \"pending_mutations\": [],\n  \"queue_epoch\": 1\n}\n",
+    "environment_profile_content": "{\n  \"environment_id\": \"staging\",\n  \"runtime_profile\": \"staging-default\",\n  \"feature_gate\": \"stable\",\n  \"region\": \"us-east-1\",\n  \"branch_track\": \"main\"\n}\n",
+    "dependency_hash": "b68c30132ed93fa9947e0a7b629a59be1ac854acecf82c897dc7078fde1dd48a",
+    "queue_hash": "ebc4b4671209b9362b5923c6049872d3f73af3567dd0f7b31f481f232868d15d",
+    "environment_profile_hash": "b2ca3a130498099b5458e05a06efa79a37c16bf5a16b744aafdc081641d3232c",
+    "runtime_epoch": 1,
+    "approval_timestamp": "2026-05-16T23:57:03.565Z",
+    "expected_staged_target_hash": "b55ab635417d899b20d32f0e9d99dd6ba4397a5dd65049628d2c7ad843e2d3d4"
+  },
+  "source_environment": {
+    "environment_id": "staging",
+    "runtime_epoch": 12,
+    "dependency_hash": "b68c30132ed93fa9947e0a7b629a59be1ac854acecf82c897dc7078fde1dd48a",
+    "config_hash": "30454f38d41128b1bb000d89ce4a56056fa4348a68d173afd4ae1264ee6a2dee",
+    "queue_hash": "ebc4b4671209b9362b5923c6049872d3f73af3567dd0f7b31f481f232868d15d",
+    "branch_hash": "099c2a5f7a27f0621be2cc5d4ec61a004e4b6a80",
+    "queue_witness_hash": "b846729635b63683bab2e45d9eac6f746ab2c20878f55f85ece523c339f87f6e",
+    "target_hash": "8f175d7fd3af6dacc35aedd2e9e87a713e5c938d2adf24082285ae294eaca762",
+    "delegated_from": null,
+    "runtime_timestamp": "2026-05-16T23:57:11.565Z",
+    "environment_witness_hash": "d7eadc983b9339fddbee69b29c571b89fc1009c3fe35deda9b8cc7313bc00cb1"
+  },
+  "target_environment": {
+    "environment_id": "production",
+    "runtime_epoch": 15,
+    "dependency_hash": "bf7ce8aecc34b183ad1973fe53effba5c21fa8a027c839642b174e4ae0aa87b5",
+    "config_hash": "5eb93b7bb1071f3955f88e99b3501c8cc1ce457a6c39c6b73f152a2f4ea58d58",
+    "queue_hash": "2573e9634703dfc698d1474dbaa01826e7dd2c556e807577ca0c3bc587c696c6",
+    "branch_hash": "e917e40ac4ccba84204abec7892373d7f5fab104",
+    "queue_witness_hash": "4dd916a94143b8402ae5b72498eed0d002e20b5586f05d8219833078321769a1",
+    "target_hash": "8f175d7fd3af6dacc35aedd2e9e87a713e5c938d2adf24082285ae294eaca762",
+    "delegated_from": null,
+    "runtime_timestamp": "2026-05-17T00:13:23.565Z",
+    "environment_witness_hash": "bd72bd6c60c32bde81a20a4ab6fb8d3f40534815788b2352e8d2d320b0f3cfde"
+  },
+  "authority_grant": {
+    "grant_id": "xenv_grant_c7d6da3dc7c8",
+    "issued_at": "2026-05-16T23:57:06.433Z",
+    "freshness_window_seconds": 900,
+    "single_use": true,
+    "consumed": false,
+    "source_environment": "staging",
+    "target_environment": "production",
+    "delegated": false,
+    "scope": {
+      "target_file": "service_config.env",
+      "patch_hash": "38518f84e1b3e6642d4542deb8672e40fe24a22d82d767efc4a83adbf5293ee1",
+      "branch_hash": "099c2a5f7a27f0621be2cc5d4ec61a004e4b6a80",
+      "dependency_hash": "b68c30132ed93fa9947e0a7b629a59be1ac854acecf82c897dc7078fde1dd48a"
+    }
+  },
+  "checkpoint_results": [
+    {
+      "admissibility": "DENIED",
+      "divergence_score": 100,
+      "divergence_level": "CRITICAL",
+      "cross_environment_legitimacy": "INVALID",
+      "elapsed_seconds": 977,
+      "checks": {
+        "runtime_epoch_continuity": false,
+        "dependency_continuity": false,
+        "configuration_continuity": false,
+        "branch_continuity": false,
+        "queue_continuity": false,
+        "environment_witness_continuity": false,
+        "delegated_authority_continuity": true,
+        "freshness": false,
+        "scope_continuity": true
+      },
+      "reason": "runtime epoch mismatch across environments; dependency continuity mismatch; configuration continuity mismatch; branch continuity mismatch; queue witness continuity mismatch; environment witness mismatch; cross-environment authority freshness expired"
+    }
+  ],
+  "final_revalidation": {
+    "admissibility": "DENIED",
+    "divergence_score": 100,
+    "divergence_level": "CRITICAL",
+    "cross_environment_legitimacy": "INVALID",
+    "elapsed_seconds": 977,
+    "checks": {
+      "runtime_epoch_continuity": false,
+      "dependency_continuity": false,
+      "configuration_continuity": false,
+      "branch_continuity": false,
+      "queue_continuity": false,
+      "environment_witness_continuity": false,
+      "delegated_authority_continuity": true,
+      "freshness": false,
+      "scope_continuity": true
+    },
+    "reason": "runtime epoch mismatch across environments; dependency continuity mismatch; configuration continuity mismatch; branch continuity mismatch; queue witness continuity mismatch; environment witness mismatch; cross-environment authority freshness expired"
+  },
+  "execution_outcome": {
+    "execution_status": "EXECUTION_DENIED",
+    "reason": "runtime continuity diverged across environment transition"
+  },
+  "execution_phase_timeline": "PROPOSED -> APPROVED_IN_STAGING -> QUEUED_FOR_PROMOTION -> REVALIDATING_IN_PRODUCTION -> PROMOTION_DENIED",
+  "evidence_chain": [
+    {
+      "event_id": "evt_0001_d7791286",
+      "previous_event_id": null,
+      "phase": "T0",
+      "timestamp": "2026-05-16T23:57:06.375Z",
+      "event_type": "proposal_created",
+      "payload": {
+        "proposal_id": "proposal_38518f84e1b3"
+      }
+    },
+    {
+      "event_id": "evt_0002_7a7a7a49",
+      "previous_event_id": "evt_0001_d7791286",
+      "phase": "T1",
+      "timestamp": "2026-05-16T23:57:06.375Z",
+      "event_type": "approval_snapshot_captured",
+      "payload": {
+        "approval_id": "approval_132fc2c6aea2"
+      }
+    },
+    {
+      "event_id": "evt_0003_e8ded68b",
+      "previous_event_id": "evt_0002_7a7a7a49",
+      "phase": "T1B",
+      "timestamp": "2026-05-16T23:57:06.433Z",
+      "event_type": "environment_snapshot_captured",
+      "payload": {
+        "source_environment": "staging",
+        "target_environment": "staging",
+        "environment_witness": {
+          "environment_id": "staging",
+          "runtime_epoch": 12,
+          "dependency_hash": "b68c30132ed93fa9947e0a7b629a59be1ac854acecf82c897dc7078fde1dd48a",
+          "config_hash": "30454f38d41128b1bb000d89ce4a56056fa4348a68d173afd4ae1264ee6a2dee",
+          "queue_hash": "ebc4b4671209b9362b5923c6049872d3f73af3567dd0f7b31f481f232868d15d",
+          "branch_hash": "099c2a5f7a27f0621be2cc5d4ec61a004e4b6a80",
+          "queue_witness_hash": "b846729635b63683bab2e45d9eac6f746ab2c20878f55f85ece523c339f87f6e",
+          "target_hash": "8f175d7fd3af6dacc35aedd2e9e87a713e5c938d2adf24082285ae294eaca762",
+          "delegated_from": null,
+          "runtime_timestamp": "2026-05-16T23:57:11.565Z",
+          "environment_witness_hash": "d7eadc983b9339fddbee69b29c571b89fc1009c3fe35deda9b8cc7313bc00cb1"
+        }
+      }
+    },
+    {
+      "event_id": "evt_0004_13405ff5",
+      "previous_event_id": "evt_0003_e8ded68b",
+      "phase": "T2",
+      "timestamp": "2026-05-16T23:57:06.433Z",
+      "event_type": "authority_grant_issued",
+      "payload": {
+        "source_environment": "staging",
+        "target_environment": "production",
+        "grant_id": "xenv_grant_c7d6da3dc7c8"
+      }
+    },
+    {
+      "event_id": "evt_0005_334d7de7",
+      "previous_event_id": "evt_0004_13405ff5",
+      "phase": "T3",
+      "timestamp": "2026-05-16T23:57:06.433Z",
+      "event_type": "promotion_queued",
+      "payload": {
+        "source_environment": "staging",
+        "target_environment": "production",
+        "promotion_state": "QUEUED_FOR_PROMOTION",
+        "queue_witness_hash": "b846729635b63683bab2e45d9eac6f746ab2c20878f55f85ece523c339f87f6e"
+      }
+    },
+    {
+      "event_id": "evt_0006_dd9de2c9",
+      "previous_event_id": "evt_0005_334d7de7",
+      "phase": "T6",
+      "timestamp": "2026-05-16T23:57:06.679Z",
+      "event_type": "promotion_revalidation_started",
+      "payload": {
+        "source_environment": "staging",
+        "target_environment": "production",
+        "environment_witness": {
+          "environment_id": "production",
+          "runtime_epoch": 15,
+          "dependency_hash": "bf7ce8aecc34b183ad1973fe53effba5c21fa8a027c839642b174e4ae0aa87b5",
+          "config_hash": "5eb93b7bb1071f3955f88e99b3501c8cc1ce457a6c39c6b73f152a2f4ea58d58",
+          "queue_hash": "2573e9634703dfc698d1474dbaa01826e7dd2c556e807577ca0c3bc587c696c6",
+          "branch_hash": "e917e40ac4ccba84204abec7892373d7f5fab104",
+          "queue_witness_hash": "4dd916a94143b8402ae5b72498eed0d002e20b5586f05d8219833078321769a1",
+          "target_hash": "8f175d7fd3af6dacc35aedd2e9e87a713e5c938d2adf24082285ae294eaca762",
+          "delegated_from": null,
+          "runtime_timestamp": "2026-05-17T00:13:23.565Z",
+          "environment_witness_hash": "bd72bd6c60c32bde81a20a4ab6fb8d3f40534815788b2352e8d2d320b0f3cfde"
+        }
+      }
+    },
+    {
+      "event_id": "evt_0007_ee724dea",
+      "previous_event_id": "evt_0006_dd9de2c9",
+      "phase": "T7",
+      "timestamp": "2026-05-16T23:57:06.680Z",
+      "event_type": "environment_divergence_detected",
+      "payload": {
+        "source_environment": "staging",
+        "target_environment": "production",
+        "authority_continuity_state": "INVALID",
+        "admissibility_state": "DENIED",
+        "divergence_level": "CRITICAL",
+        "decision_reason": "runtime epoch mismatch across environments; dependency continuity mismatch; configuration continuity mismatch; branch continuity mismatch; queue witness continuity mismatch; environment witness mismatch; cross-environment authority freshness expired"
+      }
+    },
+    {
+      "event_id": "evt_0008_df2fe585",
+      "previous_event_id": "evt_0007_ee724dea",
+      "phase": "T8",
+      "timestamp": "2026-05-16T23:57:06.680Z",
+      "event_type": "promotion_denied",
+      "payload": {
+        "source_environment": "staging",
+        "target_environment": "production",
+        "admissibility_state": "DENIED",
+        "decision_reason": "runtime epoch mismatch across environments; dependency continuity mismatch; configuration continuity mismatch; branch continuity mismatch; queue witness continuity mismatch; environment witness mismatch; cross-environment authority freshness expired"
+      }
+    },
+    {
+      "event_id": "evt_0009_c6aa0e73",
+      "previous_event_id": "evt_0008_df2fe585",
+      "phase": "T9",
+      "timestamp": "2026-05-16T23:57:06.680Z",
+      "event_type": "cross_environment_lineage_finalized",
+      "payload": {
+        "source_environment": "staging",
+        "target_environment": "production",
+        "final_status": "PROMOTION_DENIED",
+        "final_reason": "runtime continuity diverged across environment transition"
+      }
+    }
+  ]
+}

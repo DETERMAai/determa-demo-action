@@ -29,6 +29,7 @@ Intent Generation
 - Runtime Legitimacy is evaluated at execution time.
 - Runtime Legitimacy is continuously revalidated from pre-execution through finalization checkpoints.
 - Deferred execution and retry paths require the same runtime continuity as immediate execution.
+- Promotion and delegated execution across environments require environment witness continuity.
 - Authority Continuity is required for mutation.
 - Mutation Admissibility is fail-closed when continuity fails.
 - Immutable Authority Lineage records execution decisions.

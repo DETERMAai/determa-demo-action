@@ -1,0 +1,6 @@
+PATH: path_g_staging_to_production_divergence
+FINAL_STATUS: EXECUTION_DENIED
+FINAL_REASON: runtime continuity diverged across environment transition
+FINAL_DIVERGENCE: CRITICAL (100)
+FINAL_AUTHORITY_CONTINUITY: INVALID
+RUNTIME_HORIZON: N/A (N/A)

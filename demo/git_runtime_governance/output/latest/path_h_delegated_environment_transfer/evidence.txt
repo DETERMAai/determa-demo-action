@@ -1,0 +1,6 @@
+PATH: path_h_delegated_environment_transfer
+FINAL_STATUS: EXECUTION_DENIED
+FINAL_REASON: delegated runtime continuity mismatch
+FINAL_DIVERGENCE: CRITICAL (100)
+FINAL_AUTHORITY_CONTINUITY: INVALID
+RUNTIME_HORIZON: N/A (N/A)

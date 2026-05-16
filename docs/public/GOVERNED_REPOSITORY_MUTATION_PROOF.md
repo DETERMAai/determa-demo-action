@@ -23,6 +23,7 @@ Runtime legitimacy is continuously revalidated throughout mutation execution:
 
 Execution authority may collapse during execution if runtime continuity diverges.
 Execution authority may also decay during asynchronous queue delay before execution finalization.
+Runtime legitimacy must also survive environment transition before promotion finalization.
 
 ## Execution Paths
 
@@ -130,6 +131,39 @@ Reason:
 
 `retry denied after runtime continuity drift`
 
+### Path G — Staging To Production Divergence
+
+1. Approval is captured in staging.
+2. Promotion is queued.
+3. Production runtime diverges before promotion.
+4. Cross-environment revalidation starts.
+5. Environment continuity mismatch is detected.
+6. Promotion is denied.
+
+Outcome:
+
+`EXECUTION_DENIED`
+
+Reason:
+
+`runtime continuity diverged across environment transition`
+
+### Path H — Delegated Environment Transfer
+
+1. Authority is issued under source environment A.
+2. Execution is delegated to environment B.
+3. Delegated runtime witness evolves under different assumptions.
+4. Cross-context admissibility fails continuity checks.
+5. Delegated execution is denied.
+
+Outcome:
+
+`EXECUTION_DENIED`
+
+Reason:
+
+`delegated runtime continuity mismatch`
+
 ## Admissibility Checks
 
 Deterministic evaluator checks:
@@ -145,6 +179,9 @@ Deterministic evaluator checks:
 - queue witness continuity
 - retry continuity
 - authority aging across runtime horizon
+- configuration continuity across environments
+- branch continuity across environments
+- delegated authority continuity
 
 Outcomes:
 
@@ -183,6 +220,10 @@ Runtime horizon transitions:
 
 `SHORT -> EXTENDED -> LONG -> EXCEEDED`
 
+Cross-environment legitimacy transitions:
+
+`CONTINUOUS -> WEAKENING -> STALE -> INVALID`
+
 ## Evidence
 
 Append-only lineage events include:
@@ -207,6 +248,14 @@ Append-only lineage events include:
 - `runtime_horizon_exceeded`
 - `retry_revalidation_started`
 - `retry_denied`
+- `environment_snapshot_captured`
+- `promotion_queued`
+- `promotion_revalidation_started`
+- `environment_divergence_detected`
+- `delegated_execution_started`
+- `delegated_continuity_failed`
+- `promotion_denied`
+- `cross_environment_lineage_finalized`
 
 Evidence is exported as:
 

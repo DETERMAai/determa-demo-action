@@ -80,6 +80,22 @@ Replay is denied with authority continuity invalidation.
 - retry revalidation fails continuity checks
 - retry is denied
 
+### Path G — Staging To Production Divergence
+
+- approval is captured in staging
+- promotion is queued for production
+- production runtime diverges before promotion
+- cross-environment revalidation fails
+- promotion is denied
+
+### Path H — Delegated Environment Transfer
+
+- authority is issued under environment A
+- execution is delegated to environment B
+- delegated runtime witness diverges
+- delegated continuity fails revalidation
+- execution is denied
+
 ## State Model
 
 Authority Continuity:
@@ -102,6 +118,10 @@ Runtime Horizon:
 
 `SHORT -> EXTENDED -> LONG -> EXCEEDED`
 
+Cross-Environment Legitimacy:
+
+`CONTINUOUS -> WEAKENING -> STALE -> INVALID`
+
 ## Outputs
 
 Generated under:
@@ -120,5 +140,7 @@ Key artifacts:
 - `path_d_concurrent_conflict/evidence.json|md|txt`
 - `path_e_delayed_execution_decay/evidence.json|md|txt`
 - `path_f_retry_under_diverged_runtime/evidence.json|md|txt`
+- `path_g_staging_to_production_divergence/evidence.json|md|txt`
+- `path_h_delegated_environment_transfer/evidence.json|md|txt`
 - `path_*/target_before_attempt.txt`
 - `path_*/target_after_attempt.txt`

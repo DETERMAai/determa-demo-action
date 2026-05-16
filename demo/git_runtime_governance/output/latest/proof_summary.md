@@ -11,6 +11,12 @@ QUEUED -> WAITING -> RETRY_PENDING -> EXECUTING -> REVALIDATING -> HALTED
 ## Runtime Horizon
 SHORT -> EXTENDED -> LONG -> EXCEEDED
 
+## Environment Continuity Map
+STAGING -> PROMOTION -> PRODUCTION
+
+## Delegated Authority State
+LOCAL -> TRANSFERRED -> REVALIDATING -> INVALIDATED
+
 ## Authority Continuity State
 VALID -> WEAKENING -> STALE -> INVALID
 
@@ -27,6 +33,8 @@ LOW -> MEDIUM -> HIGH -> CRITICAL
 - path_d_concurrent_conflict: EXECUTION_DENIED (concurrent mutation conflict)
 - path_e_delayed_execution_decay: EXECUTION_DENIED (runtime continuity decayed during async execution delay)
 - path_f_retry_under_diverged_runtime: EXECUTION_DENIED (retry denied after runtime continuity drift)
+- path_g_staging_to_production_divergence: EXECUTION_DENIED (runtime continuity diverged across environment transition)
+- path_h_delegated_environment_transfer: EXECUTION_DENIED (delegated runtime continuity mismatch)
 
 ## Core Observation
-Approval alone was not enough. Legitimacy had to survive runtime execution itself and asynchronous delay horizons.
+Approval alone was not enough. Legitimacy had to survive runtime execution itself, asynchronous delay horizons, and environment transitions.

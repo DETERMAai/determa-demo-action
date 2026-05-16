@@ -4,10 +4,10 @@
     "proposal_id": "proposal_38518f84e1b3",
     "target_file": "service_config.env",
     "patch_hash": "38518f84e1b3e6642d4542deb8672e40fe24a22d82d767efc4a83adbf5293ee1",
-    "patch_file": "C:\\dev\\determa-demo-action\\demo\\git_runtime_governance\\output\\git_proof_20260516_232441\\proposal\\mutation.patch",
-    "approval_head": "e7f333a6b6b7968dc556ba9e636232b978232b75",
+    "patch_file": "C:\\dev\\determa-demo-action\\demo\\git_runtime_governance\\output\\git_proof_20260516_234444\\proposal\\mutation.patch",
+    "approval_head": "616b5ca3c1fac02bcc427eab96de5b68c48100d0",
     "runtime_epoch": 1,
-    "created_at": "2026-05-16T23:24:41.861Z",
+    "created_at": "2026-05-16T23:44:45.534Z",
     "mutation_scope": "runtime.config.worker",
     "patch": {
       "operation": "line_replace",
@@ -17,8 +17,8 @@
     "patch_preview": "MAX_RETRIES=3 -> MAX_RETRIES=5"
   },
   "approval_snapshot": {
-    "approval_id": "approval_a9e6d16f8a18",
-    "head": "e7f333a6b6b7968dc556ba9e636232b978232b75",
+    "approval_id": "approval_26960bea0c08",
+    "head": "616b5ca3c1fac02bcc427eab96de5b68c48100d0",
     "target_file": "service_config.env",
     "target_hash": "8f175d7fd3af6dacc35aedd2e9e87a713e5c938d2adf24082285ae294eaca762",
     "target_content": "SERVICE=worker\nMAX_RETRIES=3\nTIMEOUT_SECONDS=45\nRUNTIME_GUARD=true\n",
@@ -27,12 +27,12 @@
     "dependency_hash": "b68c30132ed93fa9947e0a7b629a59be1ac854acecf82c897dc7078fde1dd48a",
     "queue_hash": "ebc4b4671209b9362b5923c6049872d3f73af3567dd0f7b31f481f232868d15d",
     "runtime_epoch": 1,
-    "approval_timestamp": "2026-05-16T23:24:41.869Z",
+    "approval_timestamp": "2026-05-16T23:44:45.550Z",
     "expected_staged_target_hash": "b55ab635417d899b20d32f0e9d99dd6ba4397a5dd65049628d2c7ad843e2d3d4"
   },
   "authority_grant": {
-    "grant_id": "grant_945c2c0325bb",
-    "issued_at": "2026-05-16T23:24:41.869Z",
+    "grant_id": "grant_c48520f85624",
+    "issued_at": "2026-05-16T23:44:45.551Z",
     "freshness_window_seconds": 900,
     "single_use": true,
     "consumed": false,
@@ -40,7 +40,7 @@
       "target_file": "service_config.env",
       "mutation_scope": "runtime.config.worker",
       "patch_hash": "38518f84e1b3e6642d4542deb8672e40fe24a22d82d767efc4a83adbf5293ee1",
-      "approval_head": "e7f333a6b6b7968dc556ba9e636232b978232b75"
+      "approval_head": "616b5ca3c1fac02bcc427eab96de5b68c48100d0"
     }
   },
   "checkpoint_results": [
@@ -50,7 +50,11 @@
       "divergence_score": 66,
       "divergence_level": "HIGH",
       "authority_continuity": "STALE",
-      "elapsed_seconds": 0,
+      "runtime_horizon_seconds": 1,
+      "runtime_horizon_state": "SHORT",
+      "retry_count": 0,
+      "queue_depth": 0,
+      "elapsed_seconds": 1,
       "checks": {
         "head_continuity": false,
         "target_hash_continuity": true,
@@ -60,7 +64,10 @@
         "dependency_continuity": false,
         "runtime_epoch_continuity": false,
         "queue_continuity": false,
-        "concurrent_mutation_detection": false
+        "concurrent_mutation_detection": false,
+        "retry_continuity": true,
+        "authority_aging": true,
+        "queue_witness_continuity": true
       },
       "reason": "repository HEAD diverged; dependency snapshot diverged; runtime epoch changed; mutation queue state changed"
     }
@@ -71,7 +78,11 @@
     "divergence_score": 66,
     "divergence_level": "HIGH",
     "authority_continuity": "STALE",
-    "elapsed_seconds": 0,
+    "runtime_horizon_seconds": 1,
+    "runtime_horizon_state": "SHORT",
+    "retry_count": 0,
+    "queue_depth": 0,
+    "elapsed_seconds": 1,
     "checks": {
       "head_continuity": false,
       "target_hash_continuity": true,
@@ -81,7 +92,10 @@
       "dependency_continuity": false,
       "runtime_epoch_continuity": false,
       "queue_continuity": false,
-      "concurrent_mutation_detection": false
+      "concurrent_mutation_detection": false,
+      "retry_continuity": true,
+      "authority_aging": true,
+      "queue_witness_continuity": true
     },
     "reason": "repository HEAD diverged; dependency snapshot diverged; runtime epoch changed; mutation queue state changed"
   },
@@ -97,7 +111,7 @@
       "event_id": "evt_0001_d7791286",
       "previous_event_id": null,
       "phase": "T0",
-      "timestamp": "2026-05-16T23:24:42.500Z",
+      "timestamp": "2026-05-16T23:44:46.342Z",
       "event_type": "proposal_created",
       "payload": {
         "proposal_id": "proposal_38518f84e1b3"
@@ -107,45 +121,51 @@
       "event_id": "evt_0002_7a7a7a49",
       "previous_event_id": "evt_0001_d7791286",
       "phase": "T1",
-      "timestamp": "2026-05-16T23:24:42.500Z",
+      "timestamp": "2026-05-16T23:44:46.342Z",
       "event_type": "approval_snapshot_captured",
       "payload": {
-        "approval_id": "approval_a9e6d16f8a18"
+        "approval_id": "approval_26960bea0c08"
       }
     },
     {
       "event_id": "evt_0003_f210b903",
       "previous_event_id": "evt_0002_7a7a7a49",
       "phase": "T2",
-      "timestamp": "2026-05-16T23:24:42.500Z",
+      "timestamp": "2026-05-16T23:44:46.342Z",
       "event_type": "authority_grant_issued",
       "payload": {
-        "grant_id": "grant_945c2c0325bb"
+        "grant_id": "grant_c48520f85624"
       }
     },
     {
       "event_id": "evt_0004_e30cac37",
       "previous_event_id": "evt_0003_f210b903",
       "phase": "PRE_EXECUTION",
-      "timestamp": "2026-05-16T23:24:42.711Z",
+      "timestamp": "2026-05-16T23:44:46.602Z",
       "event_type": "runtime_witness_captured",
       "payload": {
-        "head": "ce7a820422981e47ee65c20151be8a8eb1684fb8",
+        "head": "666b983f8ccea13a52d83cc5819b6349be3c75ff",
         "target_file": "service_config.env",
         "target_hash": "8f175d7fd3af6dacc35aedd2e9e87a713e5c938d2adf24082285ae294eaca762",
         "dependency_hash": "c66e7ab6edd386904d12008a42cc224824928586e5e1d41ca3e02a1349e5796b",
         "queue_hash": "f417f0baac7c54a6888745f217351661c8d9e53db4ae7731d9b1fd9941ebe0cf",
         "runtime_epoch": 2,
         "queue_state": "mutated",
+        "queue_witness_hash": "8d0324dd12681f1c8d2cf08482b2f51123b78dedc781e6d97ea9c2359a2ec0ed",
         "concurrent_mutation_detected": false,
-        "runtime_timestamp": "2026-05-16T23:24:42.711Z"
+        "queue_depth": 0,
+        "retry_count": 0,
+        "execution_priority": "normal",
+        "execution_latency_ms": 0,
+        "queued_mutations": [],
+        "runtime_timestamp": "2026-05-16T23:44:46.602Z"
       }
     },
     {
       "event_id": "evt_0005_887b262e",
       "previous_event_id": "evt_0004_e30cac37",
       "phase": "PRE_EXECUTION",
-      "timestamp": "2026-05-16T23:24:42.711Z",
+      "timestamp": "2026-05-16T23:44:46.603Z",
       "event_type": "legitimacy_revalidated",
       "payload": {
         "checkpoint": "PRE_EXECUTION",
@@ -153,7 +173,11 @@
         "divergence_score": 66,
         "divergence_level": "HIGH",
         "authority_continuity": "STALE",
-        "elapsed_seconds": 0,
+        "runtime_horizon_seconds": 1,
+        "runtime_horizon_state": "SHORT",
+        "retry_count": 0,
+        "queue_depth": 0,
+        "elapsed_seconds": 1,
         "checks": {
           "head_continuity": false,
           "target_hash_continuity": true,
@@ -163,7 +187,10 @@
           "dependency_continuity": false,
           "runtime_epoch_continuity": false,
           "queue_continuity": false,
-          "concurrent_mutation_detection": false
+          "concurrent_mutation_detection": false,
+          "retry_continuity": true,
+          "authority_aging": true,
+          "queue_witness_continuity": true
         },
         "reason": "repository HEAD diverged; dependency snapshot diverged; runtime epoch changed; mutation queue state changed"
       }
@@ -172,7 +199,7 @@
       "event_id": "evt_0006_6b3ef569",
       "previous_event_id": "evt_0005_887b262e",
       "phase": "T3",
-      "timestamp": "2026-05-16T23:24:42.711Z",
+      "timestamp": "2026-05-16T23:44:46.603Z",
       "event_type": "execution_denied",
       "payload": {
         "execution_status": "EXECUTION_DENIED",
@@ -184,17 +211,17 @@
       "event_id": "evt_0007_3ce1f838",
       "previous_event_id": "evt_0006_6b3ef569",
       "phase": "T4",
-      "timestamp": "2026-05-16T23:24:42.756Z",
+      "timestamp": "2026-05-16T23:44:46.658Z",
       "event_type": "finalization_prevented",
       "payload": {
-        "head": "ce7a820422981e47ee65c20151be8a8eb1684fb8"
+        "head": "666b983f8ccea13a52d83cc5819b6349be3c75ff"
       }
     },
     {
       "event_id": "evt_0008_1b04d0ea",
       "previous_event_id": "evt_0007_3ce1f838",
       "phase": "T5",
-      "timestamp": "2026-05-16T23:24:42.756Z",
+      "timestamp": "2026-05-16T23:44:46.658Z",
       "event_type": "lineage_finalized",
       "payload": {
         "final_status": "EXECUTION_DENIED",

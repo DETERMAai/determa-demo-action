@@ -1,6 +1,6 @@
 {
-  "run_id": "git_proof_20260516_232441",
-  "generated_at": "2026-05-16T23:24:43.265Z",
+  "run_id": "git_proof_20260516_234444",
+  "generated_at": "2026-05-16T23:44:48.174Z",
   "proof_claim": "runtime legitimacy remains continuously required from pre-execution through finalization",
   "path_a": {
     "execution_status": "EXECUTION_ALLOWED",
@@ -24,8 +24,18 @@
     "reason": "concurrent mutation conflict",
     "final_divergence": "CRITICAL (100)"
   },
+  "path_e": {
+    "execution_status": "EXECUTION_DENIED",
+    "reason": "runtime continuity decayed during async execution delay",
+    "final_divergence": "CRITICAL (100)"
+  },
+  "path_f": {
+    "execution_status": "EXECUTION_DENIED",
+    "reason": "retry denied after runtime continuity drift",
+    "final_divergence": "CRITICAL (100)"
+  },
   "output_paths": {
-    "run_directory": "C:\\dev\\determa-demo-action\\demo\\git_runtime_governance\\output\\git_proof_20260516_232441",
+    "run_directory": "C:\\dev\\determa-demo-action\\demo\\git_runtime_governance\\output\\git_proof_20260516_234444",
     "latest_directory": "C:\\dev\\determa-demo-action\\demo\\git_runtime_governance\\output\\latest"
   }
 }

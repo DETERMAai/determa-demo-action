@@ -12,6 +12,12 @@
 ## Execution State Progression
 PROPOSED -> STAGED -> EXECUTING -> HALTED/FINALIZED
 
+## Queue Timeline
+QUEUED -> WAITING -> RETRY_PENDING -> EXECUTING -> REVALIDATING -> HALTED
+
+## Runtime Horizon
+state: SHORT (0s)
+
 ## Divergence Pressure
 LOW -> MEDIUM -> HIGH -> CRITICAL
 

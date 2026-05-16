@@ -4,10 +4,10 @@
     "proposal_id": "proposal_38518f84e1b3",
     "target_file": "service_config.env",
     "patch_hash": "38518f84e1b3e6642d4542deb8672e40fe24a22d82d767efc4a83adbf5293ee1",
-    "patch_file": "C:\\dev\\determa-demo-action\\demo\\git_runtime_governance\\output\\git_proof_20260516_232441\\proposal\\mutation.patch",
-    "approval_head": "e7f333a6b6b7968dc556ba9e636232b978232b75",
+    "patch_file": "C:\\dev\\determa-demo-action\\demo\\git_runtime_governance\\output\\git_proof_20260516_234444\\proposal\\mutation.patch",
+    "approval_head": "616b5ca3c1fac02bcc427eab96de5b68c48100d0",
     "runtime_epoch": 1,
-    "created_at": "2026-05-16T23:24:41.861Z",
+    "created_at": "2026-05-16T23:44:45.534Z",
     "mutation_scope": "runtime.config.worker",
     "patch": {
       "operation": "line_replace",
@@ -17,8 +17,8 @@
     "patch_preview": "MAX_RETRIES=3 -> MAX_RETRIES=5"
   },
   "approval_snapshot": {
-    "approval_id": "approval_a9e6d16f8a18",
-    "head": "e7f333a6b6b7968dc556ba9e636232b978232b75",
+    "approval_id": "approval_26960bea0c08",
+    "head": "616b5ca3c1fac02bcc427eab96de5b68c48100d0",
     "target_file": "service_config.env",
     "target_hash": "8f175d7fd3af6dacc35aedd2e9e87a713e5c938d2adf24082285ae294eaca762",
     "target_content": "SERVICE=worker\nMAX_RETRIES=3\nTIMEOUT_SECONDS=45\nRUNTIME_GUARD=true\n",
@@ -27,12 +27,12 @@
     "dependency_hash": "b68c30132ed93fa9947e0a7b629a59be1ac854acecf82c897dc7078fde1dd48a",
     "queue_hash": "ebc4b4671209b9362b5923c6049872d3f73af3567dd0f7b31f481f232868d15d",
     "runtime_epoch": 1,
-    "approval_timestamp": "2026-05-16T23:24:41.869Z",
+    "approval_timestamp": "2026-05-16T23:44:45.550Z",
     "expected_staged_target_hash": "b55ab635417d899b20d32f0e9d99dd6ba4397a5dd65049628d2c7ad843e2d3d4"
   },
   "authority_grant": {
-    "grant_id": "grant_945c2c0325bb",
-    "issued_at": "2026-05-16T23:24:41.869Z",
+    "grant_id": "grant_c48520f85624",
+    "issued_at": "2026-05-16T23:44:45.551Z",
     "freshness_window_seconds": 900,
     "single_use": true,
     "consumed": true,
@@ -40,7 +40,7 @@
       "target_file": "service_config.env",
       "mutation_scope": "runtime.config.worker",
       "patch_hash": "38518f84e1b3e6642d4542deb8672e40fe24a22d82d767efc4a83adbf5293ee1",
-      "approval_head": "e7f333a6b6b7968dc556ba9e636232b978232b75"
+      "approval_head": "616b5ca3c1fac02bcc427eab96de5b68c48100d0"
     }
   },
   "checkpoint_results": [
@@ -50,6 +50,10 @@
       "divergence_score": 0,
       "divergence_level": "LOW",
       "authority_continuity": "VALID",
+      "runtime_horizon_seconds": 0,
+      "runtime_horizon_state": "SHORT",
+      "retry_count": 0,
+      "queue_depth": 0,
       "elapsed_seconds": 0,
       "checks": {
         "head_continuity": true,
@@ -60,7 +64,10 @@
         "dependency_continuity": true,
         "runtime_epoch_continuity": true,
         "queue_continuity": true,
-        "concurrent_mutation_detection": false
+        "concurrent_mutation_detection": false,
+        "retry_continuity": true,
+        "authority_aging": true,
+        "queue_witness_continuity": true
       },
       "reason": "authority continuity preserved"
     },
@@ -70,6 +77,10 @@
       "divergence_score": 2,
       "divergence_level": "LOW",
       "authority_continuity": "VALID",
+      "runtime_horizon_seconds": 0,
+      "runtime_horizon_state": "SHORT",
+      "retry_count": 0,
+      "queue_depth": 0,
       "elapsed_seconds": 0,
       "checks": {
         "head_continuity": true,
@@ -80,7 +91,10 @@
         "dependency_continuity": true,
         "runtime_epoch_continuity": true,
         "queue_continuity": true,
-        "concurrent_mutation_detection": false
+        "concurrent_mutation_detection": false,
+        "retry_continuity": true,
+        "authority_aging": true,
+        "queue_witness_continuity": true
       },
       "reason": "authority continuity preserved"
     },
@@ -90,6 +104,10 @@
       "divergence_score": 3,
       "divergence_level": "LOW",
       "authority_continuity": "VALID",
+      "runtime_horizon_seconds": 0,
+      "runtime_horizon_state": "SHORT",
+      "retry_count": 0,
+      "queue_depth": 0,
       "elapsed_seconds": 0,
       "checks": {
         "head_continuity": true,
@@ -100,7 +118,10 @@
         "dependency_continuity": true,
         "runtime_epoch_continuity": true,
         "queue_continuity": true,
-        "concurrent_mutation_detection": false
+        "concurrent_mutation_detection": false,
+        "retry_continuity": true,
+        "authority_aging": true,
+        "queue_witness_continuity": true
       },
       "reason": "authority continuity preserved"
     },
@@ -110,6 +131,10 @@
       "divergence_score": 4,
       "divergence_level": "LOW",
       "authority_continuity": "VALID",
+      "runtime_horizon_seconds": 0,
+      "runtime_horizon_state": "SHORT",
+      "retry_count": 0,
+      "queue_depth": 0,
       "elapsed_seconds": 0,
       "checks": {
         "head_continuity": true,
@@ -120,7 +145,10 @@
         "dependency_continuity": true,
         "runtime_epoch_continuity": true,
         "queue_continuity": true,
-        "concurrent_mutation_detection": false
+        "concurrent_mutation_detection": false,
+        "retry_continuity": true,
+        "authority_aging": true,
+        "queue_witness_continuity": true
       },
       "reason": "authority continuity preserved"
     }
@@ -131,6 +159,10 @@
     "divergence_score": 4,
     "divergence_level": "LOW",
     "authority_continuity": "VALID",
+    "runtime_horizon_seconds": 0,
+    "runtime_horizon_state": "SHORT",
+    "retry_count": 0,
+    "queue_depth": 0,
     "elapsed_seconds": 0,
     "checks": {
       "head_continuity": true,
@@ -141,7 +173,10 @@
       "dependency_continuity": true,
       "runtime_epoch_continuity": true,
       "queue_continuity": true,
-      "concurrent_mutation_detection": false
+      "concurrent_mutation_detection": false,
+      "retry_continuity": true,
+      "authority_aging": true,
+      "queue_witness_continuity": true
     },
     "reason": "authority continuity preserved"
   },
@@ -151,6 +186,10 @@
     "divergence_score": 94,
     "divergence_level": "CRITICAL",
     "authority_continuity": "INVALID",
+    "runtime_horizon_seconds": 0,
+    "runtime_horizon_state": "SHORT",
+    "retry_count": 0,
+    "queue_depth": 0,
     "elapsed_seconds": 0,
     "checks": {
       "head_continuity": false,
@@ -161,22 +200,25 @@
       "dependency_continuity": true,
       "runtime_epoch_continuity": false,
       "queue_continuity": true,
-      "concurrent_mutation_detection": false
+      "concurrent_mutation_detection": false,
+      "retry_continuity": true,
+      "authority_aging": true,
+      "queue_witness_continuity": true
     },
     "reason": "repository HEAD diverged; target file hash diverged; runtime epoch changed; single-use authority grant replay detected"
   },
   "execution_outcome": {
     "execution_status": "EXECUTION_ALLOWED",
     "reason": "authority continuity preserved through continuous runtime revalidation",
-    "head_before_commit": "e7f333a6b6b7968dc556ba9e636232b978232b75",
-    "head_after_commit": "d76ebbf7e046158211d557fab60b9b8c4e8d3ba1"
+    "head_before_commit": "616b5ca3c1fac02bcc427eab96de5b68c48100d0",
+    "head_after_commit": "2c477a71f5a81d3195982bc2bc6cb81ca478e97d"
   },
   "evidence_chain": [
     {
       "event_id": "evt_0001_d7791286",
       "previous_event_id": null,
       "phase": "T0",
-      "timestamp": "2026-05-16T23:24:41.937Z",
+      "timestamp": "2026-05-16T23:44:45.644Z",
       "event_type": "proposal_created",
       "payload": {
         "proposal_id": "proposal_38518f84e1b3",
@@ -187,21 +229,21 @@
       "event_id": "evt_0002_7a7a7a49",
       "previous_event_id": "evt_0001_d7791286",
       "phase": "T1",
-      "timestamp": "2026-05-16T23:24:41.937Z",
+      "timestamp": "2026-05-16T23:44:45.644Z",
       "event_type": "approval_snapshot_captured",
       "payload": {
-        "approval_id": "approval_a9e6d16f8a18",
-        "head": "e7f333a6b6b7968dc556ba9e636232b978232b75"
+        "approval_id": "approval_26960bea0c08",
+        "head": "616b5ca3c1fac02bcc427eab96de5b68c48100d0"
       }
     },
     {
       "event_id": "evt_0003_f210b903",
       "previous_event_id": "evt_0002_7a7a7a49",
       "phase": "T2",
-      "timestamp": "2026-05-16T23:24:41.937Z",
+      "timestamp": "2026-05-16T23:44:45.644Z",
       "event_type": "authority_grant_issued",
       "payload": {
-        "grant_id": "grant_945c2c0325bb",
+        "grant_id": "grant_c48520f85624",
         "single_use": true
       }
     },
@@ -209,25 +251,31 @@
       "event_id": "evt_0004_e30cac37",
       "previous_event_id": "evt_0003_f210b903",
       "phase": "PRE_EXECUTION",
-      "timestamp": "2026-05-16T23:24:41.990Z",
+      "timestamp": "2026-05-16T23:44:45.708Z",
       "event_type": "runtime_witness_captured",
       "payload": {
-        "head": "e7f333a6b6b7968dc556ba9e636232b978232b75",
+        "head": "616b5ca3c1fac02bcc427eab96de5b68c48100d0",
         "target_file": "service_config.env",
         "target_hash": "8f175d7fd3af6dacc35aedd2e9e87a713e5c938d2adf24082285ae294eaca762",
         "dependency_hash": "b68c30132ed93fa9947e0a7b629a59be1ac854acecf82c897dc7078fde1dd48a",
         "queue_hash": "ebc4b4671209b9362b5923c6049872d3f73af3567dd0f7b31f481f232868d15d",
         "runtime_epoch": 1,
         "queue_state": "stable",
+        "queue_witness_hash": "24981c834a5f4b2075cc6db85454eba186d28f3e666533ebf8c51be3a3e69288",
         "concurrent_mutation_detected": false,
-        "runtime_timestamp": "2026-05-16T23:24:41.990Z"
+        "queue_depth": 0,
+        "retry_count": 0,
+        "execution_priority": "normal",
+        "execution_latency_ms": 0,
+        "queued_mutations": [],
+        "runtime_timestamp": "2026-05-16T23:44:45.708Z"
       }
     },
     {
       "event_id": "evt_0005_887b262e",
       "previous_event_id": "evt_0004_e30cac37",
       "phase": "PRE_EXECUTION",
-      "timestamp": "2026-05-16T23:24:41.990Z",
+      "timestamp": "2026-05-16T23:44:45.709Z",
       "event_type": "legitimacy_revalidated",
       "payload": {
         "checkpoint": "PRE_EXECUTION",
@@ -235,6 +283,10 @@
         "divergence_score": 0,
         "divergence_level": "LOW",
         "authority_continuity": "VALID",
+        "runtime_horizon_seconds": 0,
+        "runtime_horizon_state": "SHORT",
+        "retry_count": 0,
+        "queue_depth": 0,
         "elapsed_seconds": 0,
         "checks": {
           "head_continuity": true,
@@ -245,7 +297,10 @@
           "dependency_continuity": true,
           "runtime_epoch_continuity": true,
           "queue_continuity": true,
-          "concurrent_mutation_detection": false
+          "concurrent_mutation_detection": false,
+          "retry_continuity": true,
+          "authority_aging": true,
+          "queue_witness_continuity": true
         },
         "reason": "authority continuity preserved"
       }
@@ -254,7 +309,7 @@
       "event_id": "evt_0006_afd6833f",
       "previous_event_id": "evt_0005_887b262e",
       "phase": "T3",
-      "timestamp": "2026-05-16T23:24:41.990Z",
+      "timestamp": "2026-05-16T23:44:45.709Z",
       "event_type": "execution_started",
       "payload": {
         "execution_state": "EXECUTING"
@@ -264,7 +319,7 @@
       "event_id": "evt_0007_388b48e1",
       "previous_event_id": "evt_0006_afd6833f",
       "phase": "T3B",
-      "timestamp": "2026-05-16T23:24:41.992Z",
+      "timestamp": "2026-05-16T23:44:45.712Z",
       "event_type": "mutation_staged",
       "payload": {
         "before_hash": "8f175d7fd3af6dacc35aedd2e9e87a713e5c938d2adf24082285ae294eaca762",
@@ -275,25 +330,31 @@
       "event_id": "evt_0008_458d67f0",
       "previous_event_id": "evt_0007_388b48e1",
       "phase": "MID_EXECUTION",
-      "timestamp": "2026-05-16T23:24:42.047Z",
+      "timestamp": "2026-05-16T23:44:45.767Z",
       "event_type": "runtime_witness_captured",
       "payload": {
-        "head": "e7f333a6b6b7968dc556ba9e636232b978232b75",
+        "head": "616b5ca3c1fac02bcc427eab96de5b68c48100d0",
         "target_file": "service_config.env",
         "target_hash": "b55ab635417d899b20d32f0e9d99dd6ba4397a5dd65049628d2c7ad843e2d3d4",
         "dependency_hash": "b68c30132ed93fa9947e0a7b629a59be1ac854acecf82c897dc7078fde1dd48a",
         "queue_hash": "ebc4b4671209b9362b5923c6049872d3f73af3567dd0f7b31f481f232868d15d",
         "runtime_epoch": 1,
         "queue_state": "stable",
+        "queue_witness_hash": "24981c834a5f4b2075cc6db85454eba186d28f3e666533ebf8c51be3a3e69288",
         "concurrent_mutation_detected": false,
-        "runtime_timestamp": "2026-05-16T23:24:42.047Z"
+        "queue_depth": 0,
+        "retry_count": 0,
+        "execution_priority": "normal",
+        "execution_latency_ms": 0,
+        "queued_mutations": [],
+        "runtime_timestamp": "2026-05-16T23:44:45.767Z"
       }
     },
     {
       "event_id": "evt_0009_8babde48",
       "previous_event_id": "evt_0008_458d67f0",
       "phase": "MID_EXECUTION",
-      "timestamp": "2026-05-16T23:24:42.047Z",
+      "timestamp": "2026-05-16T23:44:45.767Z",
       "event_type": "legitimacy_revalidated",
       "payload": {
         "checkpoint": "MID_EXECUTION",
@@ -301,6 +362,10 @@
         "divergence_score": 2,
         "divergence_level": "LOW",
         "authority_continuity": "VALID",
+        "runtime_horizon_seconds": 0,
+        "runtime_horizon_state": "SHORT",
+        "retry_count": 0,
+        "queue_depth": 0,
         "elapsed_seconds": 0,
         "checks": {
           "head_continuity": true,
@@ -311,7 +376,10 @@
           "dependency_continuity": true,
           "runtime_epoch_continuity": true,
           "queue_continuity": true,
-          "concurrent_mutation_detection": false
+          "concurrent_mutation_detection": false,
+          "retry_continuity": true,
+          "authority_aging": true,
+          "queue_witness_continuity": true
         },
         "reason": "authority continuity preserved"
       }
@@ -320,25 +388,31 @@
       "event_id": "evt_0010_e09b5516",
       "previous_event_id": "evt_0009_8babde48",
       "phase": "PRE_COMMIT",
-      "timestamp": "2026-05-16T23:24:42.094Z",
+      "timestamp": "2026-05-16T23:44:45.823Z",
       "event_type": "runtime_witness_captured",
       "payload": {
-        "head": "e7f333a6b6b7968dc556ba9e636232b978232b75",
+        "head": "616b5ca3c1fac02bcc427eab96de5b68c48100d0",
         "target_file": "service_config.env",
         "target_hash": "b55ab635417d899b20d32f0e9d99dd6ba4397a5dd65049628d2c7ad843e2d3d4",
         "dependency_hash": "b68c30132ed93fa9947e0a7b629a59be1ac854acecf82c897dc7078fde1dd48a",
         "queue_hash": "ebc4b4671209b9362b5923c6049872d3f73af3567dd0f7b31f481f232868d15d",
         "runtime_epoch": 1,
         "queue_state": "stable",
+        "queue_witness_hash": "24981c834a5f4b2075cc6db85454eba186d28f3e666533ebf8c51be3a3e69288",
         "concurrent_mutation_detected": false,
-        "runtime_timestamp": "2026-05-16T23:24:42.094Z"
+        "queue_depth": 0,
+        "retry_count": 0,
+        "execution_priority": "normal",
+        "execution_latency_ms": 0,
+        "queued_mutations": [],
+        "runtime_timestamp": "2026-05-16T23:44:45.823Z"
       }
     },
     {
       "event_id": "evt_0011_ffddae45",
       "previous_event_id": "evt_0010_e09b5516",
       "phase": "PRE_COMMIT",
-      "timestamp": "2026-05-16T23:24:42.094Z",
+      "timestamp": "2026-05-16T23:44:45.823Z",
       "event_type": "legitimacy_revalidated",
       "payload": {
         "checkpoint": "PRE_COMMIT",
@@ -346,6 +420,10 @@
         "divergence_score": 3,
         "divergence_level": "LOW",
         "authority_continuity": "VALID",
+        "runtime_horizon_seconds": 0,
+        "runtime_horizon_state": "SHORT",
+        "retry_count": 0,
+        "queue_depth": 0,
         "elapsed_seconds": 0,
         "checks": {
           "head_continuity": true,
@@ -356,7 +434,10 @@
           "dependency_continuity": true,
           "runtime_epoch_continuity": true,
           "queue_continuity": true,
-          "concurrent_mutation_detection": false
+          "concurrent_mutation_detection": false,
+          "retry_continuity": true,
+          "authority_aging": true,
+          "queue_witness_continuity": true
         },
         "reason": "authority continuity preserved"
       }
@@ -365,25 +446,31 @@
       "event_id": "evt_0012_b50a78cd",
       "previous_event_id": "evt_0011_ffddae45",
       "phase": "FINALIZATION",
-      "timestamp": "2026-05-16T23:24:42.140Z",
+      "timestamp": "2026-05-16T23:44:45.877Z",
       "event_type": "runtime_witness_captured",
       "payload": {
-        "head": "e7f333a6b6b7968dc556ba9e636232b978232b75",
+        "head": "616b5ca3c1fac02bcc427eab96de5b68c48100d0",
         "target_file": "service_config.env",
         "target_hash": "b55ab635417d899b20d32f0e9d99dd6ba4397a5dd65049628d2c7ad843e2d3d4",
         "dependency_hash": "b68c30132ed93fa9947e0a7b629a59be1ac854acecf82c897dc7078fde1dd48a",
         "queue_hash": "ebc4b4671209b9362b5923c6049872d3f73af3567dd0f7b31f481f232868d15d",
         "runtime_epoch": 1,
         "queue_state": "stable",
+        "queue_witness_hash": "24981c834a5f4b2075cc6db85454eba186d28f3e666533ebf8c51be3a3e69288",
         "concurrent_mutation_detected": false,
-        "runtime_timestamp": "2026-05-16T23:24:42.140Z"
+        "queue_depth": 0,
+        "retry_count": 0,
+        "execution_priority": "normal",
+        "execution_latency_ms": 0,
+        "queued_mutations": [],
+        "runtime_timestamp": "2026-05-16T23:44:45.877Z"
       }
     },
     {
       "event_id": "evt_0013_f68fc504",
       "previous_event_id": "evt_0012_b50a78cd",
       "phase": "FINALIZATION",
-      "timestamp": "2026-05-16T23:24:42.141Z",
+      "timestamp": "2026-05-16T23:44:45.877Z",
       "event_type": "legitimacy_revalidated",
       "payload": {
         "checkpoint": "FINALIZATION",
@@ -391,6 +478,10 @@
         "divergence_score": 4,
         "divergence_level": "LOW",
         "authority_continuity": "VALID",
+        "runtime_horizon_seconds": 0,
+        "runtime_horizon_state": "SHORT",
+        "retry_count": 0,
+        "queue_depth": 0,
         "elapsed_seconds": 0,
         "checks": {
           "head_continuity": true,
@@ -401,7 +492,10 @@
           "dependency_continuity": true,
           "runtime_epoch_continuity": true,
           "queue_continuity": true,
-          "concurrent_mutation_detection": false
+          "concurrent_mutation_detection": false,
+          "retry_continuity": true,
+          "authority_aging": true,
+          "queue_witness_continuity": true
         },
         "reason": "authority continuity preserved"
       }
@@ -410,38 +504,44 @@
       "event_id": "evt_0014_fe8805fd",
       "previous_event_id": "evt_0013_f68fc504",
       "phase": "T9",
-      "timestamp": "2026-05-16T23:24:42.382Z",
+      "timestamp": "2026-05-16T23:44:46.173Z",
       "event_type": "execution_allowed",
       "payload": {
         "execution_status": "EXECUTION_ALLOWED",
         "reason": "authority continuity preserved through continuous runtime revalidation",
-        "head_before_commit": "e7f333a6b6b7968dc556ba9e636232b978232b75",
-        "head_after_commit": "d76ebbf7e046158211d557fab60b9b8c4e8d3ba1"
+        "head_before_commit": "616b5ca3c1fac02bcc427eab96de5b68c48100d0",
+        "head_after_commit": "2c477a71f5a81d3195982bc2bc6cb81ca478e97d"
       }
     },
     {
       "event_id": "evt_0015_ab55cad1",
       "previous_event_id": "evt_0014_fe8805fd",
       "phase": "REPLAY_CHECK",
-      "timestamp": "2026-05-16T23:24:42.431Z",
+      "timestamp": "2026-05-16T23:44:46.237Z",
       "event_type": "runtime_witness_captured",
       "payload": {
-        "head": "d76ebbf7e046158211d557fab60b9b8c4e8d3ba1",
+        "head": "2c477a71f5a81d3195982bc2bc6cb81ca478e97d",
         "target_file": "service_config.env",
         "target_hash": "b55ab635417d899b20d32f0e9d99dd6ba4397a5dd65049628d2c7ad843e2d3d4",
         "dependency_hash": "b68c30132ed93fa9947e0a7b629a59be1ac854acecf82c897dc7078fde1dd48a",
         "queue_hash": "ebc4b4671209b9362b5923c6049872d3f73af3567dd0f7b31f481f232868d15d",
         "runtime_epoch": 2,
         "queue_state": "replay_attempt",
+        "queue_witness_hash": "9aa2632772aa566f4e1d8c2d1302026e2695bc07043b84bcc5423263577000b1",
         "concurrent_mutation_detected": false,
-        "runtime_timestamp": "2026-05-16T23:24:42.430Z"
+        "queue_depth": 0,
+        "retry_count": 0,
+        "execution_priority": "normal",
+        "execution_latency_ms": 0,
+        "queued_mutations": [],
+        "runtime_timestamp": "2026-05-16T23:44:46.237Z"
       }
     },
     {
       "event_id": "evt_0016_8ffaba87",
       "previous_event_id": "evt_0015_ab55cad1",
       "phase": "REPLAY_CHECK",
-      "timestamp": "2026-05-16T23:24:42.431Z",
+      "timestamp": "2026-05-16T23:44:46.237Z",
       "event_type": "legitimacy_revalidated",
       "payload": {
         "checkpoint": "REPLAY_CHECK",
@@ -449,6 +549,10 @@
         "divergence_score": 94,
         "divergence_level": "CRITICAL",
         "authority_continuity": "INVALID",
+        "runtime_horizon_seconds": 0,
+        "runtime_horizon_state": "SHORT",
+        "retry_count": 0,
+        "queue_depth": 0,
         "elapsed_seconds": 0,
         "checks": {
           "head_continuity": false,
@@ -459,7 +563,10 @@
           "dependency_continuity": true,
           "runtime_epoch_continuity": false,
           "queue_continuity": true,
-          "concurrent_mutation_detection": false
+          "concurrent_mutation_detection": false,
+          "retry_continuity": true,
+          "authority_aging": true,
+          "queue_witness_continuity": true
         },
         "reason": "repository HEAD diverged; target file hash diverged; runtime epoch changed; single-use authority grant replay detected"
       }
@@ -468,7 +575,7 @@
       "event_id": "evt_0017_f52fb73e",
       "previous_event_id": "evt_0016_8ffaba87",
       "phase": "REPLAY_CHECK",
-      "timestamp": "2026-05-16T23:24:42.431Z",
+      "timestamp": "2026-05-16T23:44:46.237Z",
       "event_type": "execution_denied",
       "payload": {
         "replay_attempt": true,
@@ -479,7 +586,7 @@
       "event_id": "evt_0018_d3b131d5",
       "previous_event_id": "evt_0017_f52fb73e",
       "phase": "T10",
-      "timestamp": "2026-05-16T23:24:42.431Z",
+      "timestamp": "2026-05-16T23:44:46.237Z",
       "event_type": "lineage_finalized",
       "payload": {
         "final_status": "EXECUTION_ALLOWED",

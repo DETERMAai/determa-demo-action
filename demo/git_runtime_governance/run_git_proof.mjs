@@ -112,6 +112,33 @@ function appendEvent(chain, prevRef, eventType, phase, payload) {
   prevRef.value = eventId;
 }
 
+function isoWithOffset(baseIso, secondsOffset) {
+  const baseMs = new Date(baseIso).getTime();
+  return new Date(baseMs + secondsOffset * 1000).toISOString();
+}
+
+function makeQueueState({
+  phase,
+  depth,
+  latencyMs,
+  retryCount,
+  priority,
+  queuedMutations
+}) {
+  const state = {
+    phase,
+    queue_depth: depth,
+    execution_latency_ms: latencyMs,
+    retry_count: retryCount,
+    execution_priority: priority,
+    queued_mutations: queuedMutations
+  };
+  return {
+    ...state,
+    queue_witness_hash: hashText(JSON.stringify(state))
+  };
+}
+
 async function setupSandboxRepo() {
   await fs.rm(SANDBOX_REPO_DIR, { recursive: true, force: true });
   await fs.mkdir(SANDBOX_REPO_DIR, { recursive: true });
@@ -244,11 +271,22 @@ function issueAuthorityGrant(proposal, approvalSnapshot) {
   };
 }
 
-async function captureRuntimeWitness(runtimeEpoch, queueState, concurrentMutationDetected = false) {
+async function captureRuntimeWitness(runtimeEpoch, queueState, concurrentMutationDetected = false, options = {}) {
   const head = runGit(["rev-parse", "HEAD"], SANDBOX_REPO_DIR);
   const targetHash = await hashFile(path.join(SANDBOX_REPO_DIR, TARGET_FILE));
   const dependencyHash = await hashFile(path.join(SANDBOX_REPO_DIR, DEPENDENCY_FILE));
   const queueHash = await hashFile(path.join(SANDBOX_REPO_DIR, QUEUE_FILE));
+  const normalizedQueueState =
+    typeof queueState === "string"
+      ? makeQueueState({
+          phase: queueState,
+          depth: options.queue_depth ?? 0,
+          latencyMs: options.execution_latency_ms ?? 0,
+          retryCount: options.retry_count ?? 0,
+          priority: options.execution_priority ?? "normal",
+          queuedMutations: options.queued_mutations ?? []
+        })
+      : queueState;
 
   return {
     head,
@@ -257,9 +295,15 @@ async function captureRuntimeWitness(runtimeEpoch, queueState, concurrentMutatio
     dependency_hash: dependencyHash,
     queue_hash: queueHash,
     runtime_epoch: runtimeEpoch,
-    queue_state: queueState,
+    queue_state: normalizedQueueState.phase,
+    queue_witness_hash: normalizedQueueState.queue_witness_hash,
     concurrent_mutation_detected: concurrentMutationDetected,
-    runtime_timestamp: nowIso()
+    queue_depth: normalizedQueueState.queue_depth,
+    retry_count: normalizedQueueState.retry_count,
+    execution_priority: normalizedQueueState.execution_priority,
+    execution_latency_ms: normalizedQueueState.execution_latency_ms,
+    queued_mutations: normalizedQueueState.queued_mutations,
+    runtime_timestamp: options.runtime_timestamp ?? nowIso()
   };
 }
 
@@ -276,7 +320,20 @@ function evaluateLegitimacy({
   const approvalMs = new Date(approvalSnapshot.approval_timestamp).getTime();
   const runtimeMs = new Date(runtimeWitness.runtime_timestamp).getTime();
   const elapsedSeconds = Math.max(0, Math.floor((runtimeMs - approvalMs) / 1000));
-  const replayDetected = authorityGrant.consumed || attemptIndex > 1;
+  const runtimeHorizonSeconds = divergenceInputs.runtime_horizon_seconds ?? elapsedSeconds;
+  const retryCount = divergenceInputs.retry_count ?? runtimeWitness.retry_count ?? 0;
+  const queueDepth = divergenceInputs.queue_depth ?? runtimeWitness.queue_depth ?? 0;
+  const retryAttempt = divergenceInputs.retry_attempt === true;
+  const queueWitnessContinuity = divergenceInputs.queue_witness_hash
+    ? runtimeWitness.queue_witness_hash === divergenceInputs.queue_witness_hash
+    : true;
+  const retryContinuity = retryAttempt
+    ? runtimeWitness.head === approvalSnapshot.head &&
+      runtimeWitness.dependency_hash === approvalSnapshot.dependency_hash &&
+      runtimeWitness.runtime_epoch === approvalSnapshot.runtime_epoch &&
+      queueWitnessContinuity
+    : true;
+  const replayDetected = authorityGrant.consumed || divergenceInputs.replay_attempt === true;
 
   const expectedTargetHash =
     executionState.status === "STAGED" ||
@@ -296,8 +353,16 @@ function evaluateLegitimacy({
     dependency_continuity: runtimeWitness.dependency_hash === approvalSnapshot.dependency_hash,
     runtime_epoch_continuity: runtimeWitness.runtime_epoch === approvalSnapshot.runtime_epoch,
     queue_continuity: runtimeWitness.queue_hash === approvalSnapshot.queue_hash,
-    concurrent_mutation_detection: runtimeWitness.concurrent_mutation_detected === true
+    concurrent_mutation_detection: runtimeWitness.concurrent_mutation_detected === true,
+    retry_continuity: retryContinuity,
+    authority_aging: runtimeHorizonSeconds <= authorityGrant.freshness_window_seconds,
+    queue_witness_continuity: queueWitnessContinuity
   };
+
+  let runtimeHorizonState = "SHORT";
+  if (runtimeHorizonSeconds > authorityGrant.freshness_window_seconds) runtimeHorizonState = "EXCEEDED";
+  else if (runtimeHorizonSeconds > 0.65 * authorityGrant.freshness_window_seconds) runtimeHorizonState = "LONG";
+  else if (runtimeHorizonSeconds > 0.35 * authorityGrant.freshness_window_seconds) runtimeHorizonState = "EXTENDED";
 
   const penalties = {
     head_continuity: checks.head_continuity ? 0 : 22,
@@ -309,9 +374,18 @@ function evaluateLegitimacy({
     runtime_epoch_continuity: checks.runtime_epoch_continuity ? 0 : 12,
     queue_continuity: checks.queue_continuity ? 0 : 8,
     concurrent_mutation_detection: checks.concurrent_mutation_detection ? 28 : 0,
+    retry_continuity: checks.retry_continuity ? 0 : 22,
+    authority_aging: checks.authority_aging ? 0 : 18,
+    waiting_duration: Math.min(Math.floor(runtimeHorizonSeconds / 40), 16),
+    retry_delay: Math.min(retryCount * 6, 18),
+    queue_depth_pressure: Math.min(queueDepth * 2, 12),
+    queue_witness_drift: checks.queue_witness_continuity ? 0 : 14,
     execution_delay_amplification: divergenceInputs.execution_delay_amplification || 0,
     queue_contention: divergenceInputs.queue_contention || 0,
-    partial_execution_duration: divergenceInputs.partial_execution_duration || 0
+    partial_execution_duration: divergenceInputs.partial_execution_duration || 0,
+    dependency_aging: divergenceInputs.dependency_aging || 0,
+    branch_advancement: divergenceInputs.branch_advancement || 0,
+    deferred_execution_drift: divergenceInputs.deferred_execution_drift || 0
   };
 
   const divergenceScoreRaw = Object.values(penalties).reduce((sum, p) => sum + p, 0);
@@ -324,7 +398,12 @@ function evaluateLegitimacy({
   );
 
   let admissibility = "ADMISSIBLE";
-  if (!checks.scope_continuity || checks.replay_status || checks.concurrent_mutation_detection) {
+  if (
+    !checks.scope_continuity ||
+    checks.replay_status ||
+    checks.concurrent_mutation_detection ||
+    !checks.retry_continuity
+  ) {
     admissibility = "DENIED";
   } else if (
     !checks.head_continuity ||
@@ -347,6 +426,9 @@ function evaluateLegitimacy({
   if (!checks.scope_continuity) reasons.push("proposal scope mismatch");
   if (checks.replay_status) reasons.push("single-use authority grant replay detected");
   if (checks.concurrent_mutation_detection) reasons.push("concurrent mutation conflict detected");
+  if (!checks.retry_continuity) reasons.push("retry continuity invalid under evolved runtime");
+  if (!checks.authority_aging) reasons.push("runtime horizon exceeded authority aging bounds");
+  if (!checks.queue_witness_continuity) reasons.push("queue witness continuity drifted");
   if (!reasons.length) reasons.push("authority continuity preserved");
 
   return {
@@ -355,6 +437,10 @@ function evaluateLegitimacy({
     divergence_score: divergenceScore,
     divergence_level: divergence,
     authority_continuity: authorityContinuity,
+    runtime_horizon_seconds: runtimeHorizonSeconds,
+    runtime_horizon_state: runtimeHorizonState,
+    retry_count: retryCount,
+    queue_depth: queueDepth,
     elapsed_seconds: elapsedSeconds,
     checks,
     reason: reasons.join("; ")
@@ -436,6 +522,59 @@ async function introduceConcurrentMutationCommit() {
   runGit(["commit", "-m", "concurrent mutation actor commit"], SANDBOX_REPO_DIR);
 }
 
+async function applyQueueUpdate({ mutationId, queueEpochIncrement = 1, status = "queued", priority = "normal" }) {
+  const queuePath = path.join(SANDBOX_REPO_DIR, QUEUE_FILE);
+  const queue = JSON.parse(await fs.readFile(queuePath, "utf8"));
+  queue.pending_mutations.push({
+    id: mutationId,
+    status,
+    priority
+  });
+  queue.queue_epoch = (queue.queue_epoch || 1) + queueEpochIncrement;
+  await fs.writeFile(queuePath, JSON.stringify(queue, null, 2) + "\n", "utf8");
+}
+
+async function mutateForAsyncDelay() {
+  const depsPath = path.join(SANDBOX_REPO_DIR, DEPENDENCY_FILE);
+  const targetPath = path.join(SANDBOX_REPO_DIR, TARGET_FILE);
+
+  const deps = JSON.parse(await fs.readFile(depsPath, "utf8"));
+  deps["queue-adapter"] = "1.1.0";
+  deps["runtime-core"] = "2.5.1";
+  await fs.writeFile(depsPath, JSON.stringify(deps, null, 2) + "\n", "utf8");
+
+  await applyQueueUpdate({
+    mutationId: "async_contention_patch_01",
+    queueEpochIncrement: 1,
+    status: "waiting",
+    priority: "high"
+  });
+
+  const targetContent = await fs.readFile(targetPath, "utf8");
+  const driftedTarget = targetContent.replace("TIMEOUT_SECONDS=45", "TIMEOUT_SECONDS=50");
+  await fs.writeFile(targetPath, driftedTarget, "utf8");
+
+  runGit(["add", DEPENDENCY_FILE, QUEUE_FILE, TARGET_FILE], SANDBOX_REPO_DIR);
+  runGit(["commit", "-m", "async queue drift during delayed execution"], SANDBOX_REPO_DIR);
+}
+
+async function mutateForRetryDrift() {
+  const depsPath = path.join(SANDBOX_REPO_DIR, DEPENDENCY_FILE);
+  const deps = JSON.parse(await fs.readFile(depsPath, "utf8"));
+  deps["mutation-engine"] = "1.8.0";
+  await fs.writeFile(depsPath, JSON.stringify(deps, null, 2) + "\n", "utf8");
+
+  await applyQueueUpdate({
+    mutationId: "retry_conflict_hotfix",
+    queueEpochIncrement: 1,
+    status: "retry-contention",
+    priority: "high"
+  });
+
+  runGit(["add", DEPENDENCY_FILE, QUEUE_FILE], SANDBOX_REPO_DIR);
+  runGit(["commit", "-m", "runtime drift during retry waiting window"], SANDBOX_REPO_DIR);
+}
+
 async function commitPatchFinalization(commitMessage) {
   runGit(["add", TARGET_FILE], SANDBOX_REPO_DIR);
   runGit(["commit", "-m", commitMessage], SANDBOX_REPO_DIR);
@@ -455,7 +594,8 @@ async function writeEvidenceFormats(pathDir, evidence) {
     `FINAL_STATUS: ${evidence.execution_outcome.execution_status}`,
     `FINAL_REASON: ${evidence.execution_outcome.reason}`,
     `FINAL_DIVERGENCE: ${evidence.final_revalidation.divergence_level} (${evidence.final_revalidation.divergence_score})`,
-    `FINAL_AUTHORITY_CONTINUITY: ${evidence.final_revalidation.authority_continuity}`
+    `FINAL_AUTHORITY_CONTINUITY: ${evidence.final_revalidation.authority_continuity}`,
+    `RUNTIME_HORIZON: ${evidence.final_revalidation.runtime_horizon_state} (${evidence.final_revalidation.runtime_horizon_seconds}s)`
   ].join("\n");
   await fs.writeFile(path.join(pathDir, "evidence.txt"), txt, "utf8");
 
@@ -476,7 +616,13 @@ async function writeEvidenceFormats(pathDir, evidence) {
     checkpointRows,
     "",
     "## Execution State Progression",
-    "PROPOSED -> STAGED -> EXECUTING -> HALTED/FINALIZED",
+    evidence.execution_phase_timeline || "PROPOSED -> STAGED -> EXECUTING -> HALTED/FINALIZED",
+    "",
+    "## Queue Timeline",
+    "QUEUED -> WAITING -> RETRY_PENDING -> EXECUTING -> REVALIDATING -> HALTED",
+    "",
+    "## Runtime Horizon",
+    `state: ${evidence.final_revalidation.runtime_horizon_state} (${evidence.final_revalidation.runtime_horizon_seconds}s)`,
     "",
     "## Divergence Pressure",
     "LOW -> MEDIUM -> HIGH -> CRITICAL",
@@ -936,34 +1082,365 @@ async function runPathConcurrentConflict({ runDir, proposal, approvalSnapshot, g
   return evidence;
 }
 
+async function runPathDelayedExecutionDecay({ runDir, proposal, approvalSnapshot, grantTemplate, baselineHead }) {
+  runGit(["checkout", "-B", "path_e_delayed_execution_decay", baselineHead], SANDBOX_REPO_DIR);
+  await restoreRuntimeBaseline(approvalSnapshot);
+  const chain = [];
+  const prev = { value: null };
+  const checkpointResults = [];
+  const grant = clone(grantTemplate);
+  let runtimeEpoch = APPROVAL_RUNTIME_EPOCH;
+  const executionState = { status: "PROPOSED", staged_target_hash: null };
+  const approvalTime = approvalSnapshot.approval_timestamp;
+
+  appendEvent(chain, prev, "proposal_created", "T0", { proposal_id: proposal.proposal_id });
+  appendEvent(chain, prev, "approval_snapshot_captured", "T1", { approval_id: approvalSnapshot.approval_id });
+  appendEvent(chain, prev, "authority_grant_issued", "T2", { grant_id: grant.grant_id });
+
+  executionState.status = "APPROVED";
+  const approvedQueue = makeQueueState({
+    phase: "APPROVED",
+    depth: 1,
+    latencyMs: 2000,
+    retryCount: 0,
+    priority: "normal",
+    queuedMutations: [proposal.proposal_id]
+  });
+  const preWitness = await captureRuntimeWitness(runtimeEpoch, approvedQueue, false, {
+    runtime_timestamp: isoWithOffset(approvalTime, 4)
+  });
+  appendEvent(chain, prev, "runtime_witness_captured", CHECKPOINTS.PRE_EXECUTION, preWitness);
+  const preEval = evaluateLegitimacy({
+    checkpoint: CHECKPOINTS.PRE_EXECUTION,
+    proposal,
+    authorityGrant: grant,
+    approvalSnapshot,
+    runtimeWitness: preWitness,
+    executionState,
+    attemptIndex: 1,
+    divergenceInputs: {
+      queue_depth: approvedQueue.queue_depth,
+      runtime_horizon_seconds: 4
+    }
+  });
+  checkpointResults.push(preEval);
+  appendEvent(chain, prev, "legitimacy_revalidated", CHECKPOINTS.PRE_EXECUTION, preEval);
+
+  executionState.status = "QUEUED";
+  appendEvent(chain, prev, "execution_queued", "T3", {
+    execution_state: executionState.status,
+    queue_depth: approvedQueue.queue_depth
+  });
+
+  await applyQueueUpdate({
+    mutationId: proposal.proposal_id,
+    queueEpochIncrement: 1,
+    status: "queued",
+    priority: "normal"
+  });
+
+  executionState.status = "WAITING";
+  const waitingQueue = makeQueueState({
+    phase: "WAITING",
+    depth: 3,
+    latencyMs: 190000,
+    retryCount: 0,
+    priority: "normal",
+    queuedMutations: [proposal.proposal_id, "queued_infra_patch", "queued_policy_sync"]
+  });
+  appendEvent(chain, prev, "queue_state_updated", "T4", waitingQueue);
+  appendEvent(chain, prev, "execution_delayed", "T4B", {
+    execution_state: executionState.status,
+    queue_latency_ms: waitingQueue.execution_latency_ms
+  });
+
+  const waitingWitness = await captureRuntimeWitness(runtimeEpoch, waitingQueue, false, {
+    runtime_timestamp: isoWithOffset(approvalTime, 420)
+  });
+  appendEvent(chain, prev, "runtime_witness_captured", CHECKPOINTS.MID_EXECUTION, waitingWitness);
+  const waitingEval = evaluateLegitimacy({
+    checkpoint: CHECKPOINTS.MID_EXECUTION,
+    proposal,
+    authorityGrant: grant,
+    approvalSnapshot,
+    runtimeWitness: waitingWitness,
+    executionState,
+    attemptIndex: 1,
+    divergenceInputs: {
+      queue_depth: waitingQueue.queue_depth,
+      runtime_horizon_seconds: 420,
+      queue_contention: 8,
+      execution_delay_amplification: 9,
+      deferred_execution_drift: 6
+    }
+  });
+  checkpointResults.push(waitingEval);
+  appendEvent(chain, prev, "legitimacy_revalidated", CHECKPOINTS.MID_EXECUTION, waitingEval);
+
+  await mutateForAsyncDelay();
+  runtimeEpoch += 2;
+  executionState.status = "EXECUTING";
+
+  const resumedQueue = makeQueueState({
+    phase: "EXECUTING",
+    depth: 4,
+    latencyMs: 340000,
+    retryCount: 0,
+    priority: "normal",
+    queuedMutations: [proposal.proposal_id, "queued_infra_patch", "queued_policy_sync", "async_contention_patch_01"]
+  });
+  appendEvent(chain, prev, "queue_state_updated", "T5", resumedQueue);
+
+  executionState.status = "REVALIDATING";
+  const revalidationWitness = await captureRuntimeWitness(runtimeEpoch, resumedQueue, false, {
+    runtime_timestamp: isoWithOffset(approvalTime, 1180)
+  });
+  appendEvent(chain, prev, "runtime_witness_captured", CHECKPOINTS.PRE_COMMIT, revalidationWitness);
+  const finalEval = evaluateLegitimacy({
+    checkpoint: CHECKPOINTS.PRE_COMMIT,
+    proposal,
+    authorityGrant: grant,
+    approvalSnapshot,
+    runtimeWitness: revalidationWitness,
+    executionState,
+    attemptIndex: 1,
+    divergenceInputs: {
+      queue_depth: resumedQueue.queue_depth,
+      runtime_horizon_seconds: 1180,
+      queue_contention: 12,
+      execution_delay_amplification: 14,
+      dependency_aging: 12,
+      branch_advancement: 14,
+      deferred_execution_drift: 12
+    }
+  });
+  checkpointResults.push(finalEval);
+  appendEvent(chain, prev, "legitimacy_revalidated", CHECKPOINTS.PRE_COMMIT, finalEval);
+  appendEvent(chain, prev, "authority_decay_detected", "T7", {
+    authority_continuity: finalEval.authority_continuity,
+    divergence_level: finalEval.divergence_level
+  });
+  if (!finalEval.checks.authority_aging) {
+    appendEvent(chain, prev, "runtime_horizon_exceeded", "T8", {
+      runtime_horizon_seconds: finalEval.runtime_horizon_seconds,
+      freshness_window_seconds: grant.freshness_window_seconds
+    });
+  }
+
+  executionState.status = "HALTED";
+  appendEvent(chain, prev, "execution_halted", "T9", {
+    reason: "authority continuity collapsed during deferred execution horizon"
+  });
+  appendEvent(chain, prev, "finalization_prevented", "T9B", {
+    execution_state: executionState.status,
+    reason: "delayed execution denied before finalization"
+  });
+  appendEvent(chain, prev, "lineage_finalized", "T10", {
+    final_status: "EXECUTION_DENIED",
+    final_reason: "runtime continuity decayed during async execution delay"
+  });
+
+  const evidence = {
+    path_id: "path_e_delayed_execution_decay",
+    proposal,
+    approval_snapshot: approvalSnapshot,
+    authority_grant: grant,
+    checkpoint_results: checkpointResults,
+    final_revalidation: finalEval,
+    execution_outcome: {
+      execution_status: "EXECUTION_DENIED",
+      reason: "runtime continuity decayed during async execution delay"
+    },
+    execution_phase_timeline:
+      "PROPOSED -> APPROVED -> QUEUED -> WAITING -> EXECUTING -> REVALIDATING -> HALTED -> DENIED",
+    evidence_chain: chain
+  };
+
+  const outDir = path.join(runDir, "path_e_delayed_execution_decay");
+  await fs.mkdir(outDir, { recursive: true });
+  await writeEvidenceFormats(outDir, evidence);
+  await fs.writeFile(path.join(outDir, "target_before_attempt.txt"), approvalSnapshot.target_content, "utf8");
+  await fs.writeFile(path.join(outDir, "target_after_attempt.txt"), await fs.readFile(path.join(SANDBOX_REPO_DIR, TARGET_FILE), "utf8"), "utf8");
+  return evidence;
+}
+
+async function runPathRetryUnderDivergedRuntime({ runDir, proposal, approvalSnapshot, grantTemplate, baselineHead }) {
+  runGit(["checkout", "-B", "path_f_retry_under_diverged_runtime", baselineHead], SANDBOX_REPO_DIR);
+  await restoreRuntimeBaseline(approvalSnapshot);
+  const chain = [];
+  const prev = { value: null };
+  const checkpointResults = [];
+  const grant = clone(grantTemplate);
+  let runtimeEpoch = APPROVAL_RUNTIME_EPOCH;
+  const executionState = { status: "PROPOSED", staged_target_hash: null };
+  const approvalTime = approvalSnapshot.approval_timestamp;
+
+  appendEvent(chain, prev, "proposal_created", "T0", { proposal_id: proposal.proposal_id });
+  appendEvent(chain, prev, "approval_snapshot_captured", "T1", { approval_id: approvalSnapshot.approval_id });
+  appendEvent(chain, prev, "authority_grant_issued", "T2", { grant_id: grant.grant_id });
+
+  executionState.status = "QUEUED";
+  const queuedState = makeQueueState({
+    phase: "QUEUED",
+    depth: 2,
+    latencyMs: 60000,
+    retryCount: 0,
+    priority: "high",
+    queuedMutations: [proposal.proposal_id, "queue_ahead_hotfix"]
+  });
+  appendEvent(chain, prev, "execution_queued", "T2B", queuedState);
+
+  const firstWitness = await captureRuntimeWitness(runtimeEpoch, queuedState, false, {
+    runtime_timestamp: isoWithOffset(approvalTime, 20)
+  });
+  appendEvent(chain, prev, "runtime_witness_captured", CHECKPOINTS.PRE_EXECUTION, firstWitness);
+  const firstEval = evaluateLegitimacy({
+    checkpoint: CHECKPOINTS.PRE_EXECUTION,
+    proposal,
+    authorityGrant: grant,
+    approvalSnapshot,
+    runtimeWitness: firstWitness,
+    executionState,
+    attemptIndex: 1,
+    divergenceInputs: {
+      queue_depth: queuedState.queue_depth,
+      runtime_horizon_seconds: 20
+    }
+  });
+  checkpointResults.push(firstEval);
+  appendEvent(chain, prev, "legitimacy_revalidated", CHECKPOINTS.PRE_EXECUTION, firstEval);
+
+  executionState.status = "EXECUTING";
+  appendEvent(chain, prev, "execution_started", "T3", { execution_state: executionState.status });
+  appendEvent(chain, prev, "execution_delayed", "T3B", {
+    reason: "transient execution fault; retry required"
+  });
+
+  executionState.status = "RETRY_PENDING";
+  const retryPendingState = makeQueueState({
+    phase: "RETRY_PENDING",
+    depth: 3,
+    latencyMs: 240000,
+    retryCount: 1,
+    priority: "high",
+    queuedMutations: [proposal.proposal_id, "queue_ahead_hotfix", "retry_slot_1"]
+  });
+  appendEvent(chain, prev, "retry_scheduled", "T4", retryPendingState);
+  appendEvent(chain, prev, "queue_state_updated", "T4B", retryPendingState);
+
+  await mutateForRetryDrift();
+  runtimeEpoch += 1;
+
+  executionState.status = "REVALIDATING";
+  appendEvent(chain, prev, "retry_revalidation_started", "T5", {
+    execution_state: executionState.status,
+    retry_count: retryPendingState.retry_count
+  });
+
+  const retryWitness = await captureRuntimeWitness(runtimeEpoch, retryPendingState, false, {
+    runtime_timestamp: isoWithOffset(approvalTime, 980)
+  });
+  appendEvent(chain, prev, "runtime_witness_captured", CHECKPOINTS.MID_EXECUTION, retryWitness);
+  const retryEval = evaluateLegitimacy({
+    checkpoint: CHECKPOINTS.MID_EXECUTION,
+    proposal,
+    authorityGrant: grant,
+    approvalSnapshot,
+    runtimeWitness: retryWitness,
+    executionState,
+    attemptIndex: 2,
+    divergenceInputs: {
+      retry_attempt: true,
+      retry_count: retryPendingState.retry_count,
+      queue_depth: retryPendingState.queue_depth,
+      runtime_horizon_seconds: 980,
+      queue_witness_hash: queuedState.queue_witness_hash,
+      queue_contention: 9,
+      retry_delay: 10,
+      dependency_aging: 10,
+      branch_advancement: 10,
+      deferred_execution_drift: 10
+    }
+  });
+  checkpointResults.push(retryEval);
+  appendEvent(chain, prev, "legitimacy_revalidated", CHECKPOINTS.MID_EXECUTION, retryEval);
+  appendEvent(chain, prev, "authority_decay_detected", "T6", {
+    authority_continuity: retryEval.authority_continuity,
+    runtime_horizon_state: retryEval.runtime_horizon_state
+  });
+
+  executionState.status = "HALTED";
+  appendEvent(chain, prev, "retry_denied", "T7", {
+    reason: "retry execution denied under diverged runtime continuity"
+  });
+  appendEvent(chain, prev, "finalization_prevented", "T7B", {
+    reason: "retry finalization blocked after revalidation failure"
+  });
+  appendEvent(chain, prev, "lineage_finalized", "T8", {
+    final_status: "EXECUTION_DENIED",
+    final_reason: "retry denied after runtime continuity drift"
+  });
+
+  const evidence = {
+    path_id: "path_f_retry_under_diverged_runtime",
+    proposal,
+    approval_snapshot: approvalSnapshot,
+    authority_grant: grant,
+    checkpoint_results: checkpointResults,
+    final_revalidation: retryEval,
+    execution_outcome: {
+      execution_status: "EXECUTION_DENIED",
+      reason: "retry denied after runtime continuity drift"
+    },
+    execution_phase_timeline:
+      "PROPOSED -> APPROVED -> QUEUED -> WAITING -> RETRY_PENDING -> EXECUTING -> REVALIDATING -> HALTED -> DENIED",
+    evidence_chain: chain
+  };
+
+  const outDir = path.join(runDir, "path_f_retry_under_diverged_runtime");
+  await fs.mkdir(outDir, { recursive: true });
+  await writeEvidenceFormats(outDir, evidence);
+  await fs.writeFile(path.join(outDir, "target_before_attempt.txt"), approvalSnapshot.target_content, "utf8");
+  await fs.writeFile(path.join(outDir, "target_after_attempt.txt"), await fs.readFile(path.join(SANDBOX_REPO_DIR, TARGET_FILE), "utf8"), "utf8");
+  return evidence;
+}
+
 async function writeSummaryArtifacts(runDir, summary) {
   await fs.writeFile(path.join(runDir, "proof_summary.json"), JSON.stringify(summary, null, 2), "utf8");
 
   const txt = [
-    "GOVERNED REPOSITORY MUTATION PROOF — CONTINUOUS REVALIDATION",
+    "GOVERNED REPOSITORY MUTATION PROOF — CONTINUOUS REVALIDATION + ASYNC PRESSURE",
     "",
     `run_id: ${summary.run_id}`,
     `path_a: ${summary.path_a.execution_status} (${summary.path_a.reason})`,
     `path_b: ${summary.path_b.execution_status} (${summary.path_b.reason})`,
     `path_c: ${summary.path_c.execution_status} (${summary.path_c.reason})`,
     `path_d: ${summary.path_d.execution_status} (${summary.path_d.reason})`,
+    `path_e: ${summary.path_e.execution_status} (${summary.path_e.reason})`,
+    `path_f: ${summary.path_f.execution_status} (${summary.path_f.reason})`,
     `replay_status: ${summary.path_a.replay_status}`
   ].join("\n");
   await fs.writeFile(path.join(runDir, "proof_summary.txt"), txt, "utf8");
 
   const md = [
-    "# Governed Repository Mutation Proof — Continuous Runtime Revalidation",
+    "# Governed Repository Mutation Proof — Continuous Runtime Revalidation + Async Runtime Pressure",
     "",
-    "Execution legitimacy is continuously revalidated throughout mutation execution.",
+    "Execution legitimacy is continuously revalidated throughout mutation execution, including delayed queues and retry windows.",
     "",
     "## Continuous Legitimacy Timeline",
     "PRE_EXECUTION -> MID_EXECUTION -> PRE_COMMIT -> FINALIZATION",
+    "",
+    "## Queue Timeline",
+    "QUEUED -> WAITING -> RETRY_PENDING -> EXECUTING -> REVALIDATING -> HALTED",
+    "",
+    "## Runtime Horizon",
+    "SHORT -> EXTENDED -> LONG -> EXCEEDED",
     "",
     "## Authority Continuity State",
     "VALID -> WEAKENING -> STALE -> INVALID",
     "",
     "## Execution State",
-    "PROPOSED -> STAGED -> EXECUTING -> HALTED -> ROLLED_BACK / FINALIZED",
+    "PROPOSED -> APPROVED -> QUEUED -> WAITING -> RETRY_PENDING -> EXECUTING -> REVALIDATING -> HALTED -> DENIED / FINALIZED",
     "",
     "## Divergence Pressure",
     "LOW -> MEDIUM -> HIGH -> CRITICAL",
@@ -973,9 +1450,11 @@ async function writeSummaryArtifacts(runDir, summary) {
     `- path_b_denied_pre_execution: ${summary.path_b.execution_status} (${summary.path_b.reason})`,
     `- path_c_mid_execution_halt: ${summary.path_c.execution_status} (${summary.path_c.reason})`,
     `- path_d_concurrent_conflict: ${summary.path_d.execution_status} (${summary.path_d.reason})`,
+    `- path_e_delayed_execution_decay: ${summary.path_e.execution_status} (${summary.path_e.reason})`,
+    `- path_f_retry_under_diverged_runtime: ${summary.path_f.execution_status} (${summary.path_f.reason})`,
     "",
     "## Core Observation",
-    "Approval alone was not enough. Legitimacy had to survive runtime execution itself.",
+    "Approval alone was not enough. Legitimacy had to survive runtime execution itself and asynchronous delay horizons.",
     ""
   ].join("\n");
   await fs.writeFile(path.join(runDir, "proof_summary.md"), md, "utf8");
@@ -1030,6 +1509,22 @@ async function main() {
     baselineHead: baseline.baseline_head
   });
 
+  const pathE = await runPathDelayedExecutionDecay({
+    runDir,
+    proposal,
+    approvalSnapshot,
+    grantTemplate,
+    baselineHead: baseline.baseline_head
+  });
+
+  const pathF = await runPathRetryUnderDivergedRuntime({
+    runDir,
+    proposal,
+    approvalSnapshot,
+    grantTemplate,
+    baselineHead: baseline.baseline_head
+  });
+
   const summary = {
     run_id: runId,
     generated_at: nowIso(),
@@ -1057,6 +1552,16 @@ async function main() {
       reason: pathD.execution_outcome.reason,
       final_divergence: `${pathD.final_revalidation.divergence_level} (${pathD.final_revalidation.divergence_score})`
     },
+    path_e: {
+      execution_status: pathE.execution_outcome.execution_status,
+      reason: pathE.execution_outcome.reason,
+      final_divergence: `${pathE.final_revalidation.divergence_level} (${pathE.final_revalidation.divergence_score})`
+    },
+    path_f: {
+      execution_status: pathF.execution_outcome.execution_status,
+      reason: pathF.execution_outcome.reason,
+      final_divergence: `${pathF.final_revalidation.divergence_level} (${pathF.final_revalidation.divergence_score})`
+    },
     output_paths: {
       run_directory: runDir,
       latest_directory: LATEST_DIR
@@ -1073,6 +1578,8 @@ async function main() {
   console.log(`Path B: ${summary.path_b.execution_status} (${summary.path_b.reason})`);
   console.log(`Path C: ${summary.path_c.execution_status} (${summary.path_c.reason})`);
   console.log(`Path D: ${summary.path_d.execution_status} (${summary.path_d.reason})`);
+  console.log(`Path E: ${summary.path_e.execution_status} (${summary.path_e.reason})`);
+  console.log(`Path F: ${summary.path_f.execution_status} (${summary.path_f.reason})`);
   console.log(`Replay check: ${summary.path_a.replay_status}`);
 }
 

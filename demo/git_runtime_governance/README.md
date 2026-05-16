@@ -62,6 +62,24 @@ The proof includes a replay attempt using a consumed single-use grant.
 
 Replay is denied with authority continuity invalidation.
 
+## Async Runtime Pressure Scenarios
+
+### Path E — Delayed Execution Legitimacy Decay
+
+- mutation enters queue and waits
+- runtime horizon extends while state drifts
+- revalidation runs before finalization
+- authority continuity collapses
+- execution is denied
+
+### Path F — Retry Under Diverged Runtime
+
+- first attempt is deferred
+- retry is scheduled under queue pressure
+- runtime evolves during retry wait
+- retry revalidation fails continuity checks
+- retry is denied
+
 ## State Model
 
 Authority Continuity:
@@ -74,11 +92,15 @@ Mutation Admissibility:
 
 Execution State:
 
-`PROPOSED -> STAGED -> EXECUTING -> HALTED -> ROLLED_BACK / FINALIZED`
+`PROPOSED -> APPROVED -> QUEUED -> WAITING -> RETRY_PENDING -> EXECUTING -> REVALIDATING -> HALTED -> DENIED / FINALIZED`
 
 Runtime Divergence:
 
 `LOW -> MEDIUM -> HIGH -> CRITICAL`
+
+Runtime Horizon:
+
+`SHORT -> EXTENDED -> LONG -> EXCEEDED`
 
 ## Outputs
 
@@ -96,5 +118,7 @@ Key artifacts:
 - `path_b_denied_pre_execution/evidence.json|md|txt`
 - `path_c_mid_execution_halt/evidence.json|md|txt`
 - `path_d_concurrent_conflict/evidence.json|md|txt`
+- `path_e_delayed_execution_decay/evidence.json|md|txt`
+- `path_f_retry_under_diverged_runtime/evidence.json|md|txt`
 - `path_*/target_before_attempt.txt`
 - `path_*/target_after_attempt.txt`

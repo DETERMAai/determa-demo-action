@@ -103,6 +103,7 @@ Public DATP references:
 This proof demonstrates that the same approved mutation can be allowed or denied depending on runtime state continuity.
 This repository proof demonstrates that identical repository mutations may be allowed or denied depending on runtime continuity and repository state legitimacy.
 Runtime legitimacy is continuously revalidated throughout mutation execution, including mid-execution and pre-finalization checkpoints.
+Runtime legitimacy may also decay during asynchronous queue delays and retry windows before finalization.
 
 ## Architecture
 

@@ -3,6 +3,7 @@
 This proof extends DETERMA public demonstrations from conceptual simulation into deterministic repository mutation governance with continuous runtime revalidation.
 
 It runs against a real local sandbox git repository and evaluates runtime legitimacy at execution checkpoints, not only before execution starts.
+Deferred execution requires continuous legitimacy continuity, not historical approval persistence.
 
 ## Core Claim
 
@@ -21,6 +22,7 @@ Runtime legitimacy is continuously revalidated throughout mutation execution:
 - FINALIZATION
 
 Execution authority may collapse during execution if runtime continuity diverges.
+Execution authority may also decay during asynchronous queue delay before execution finalization.
 
 ## Execution Paths
 
@@ -95,6 +97,39 @@ Reason:
 
 `concurrent mutation conflict`
 
+### Path E — Delayed Execution Legitimacy Decay
+
+1. Mutation is approved and queued.
+2. Execution is delayed under queue pressure.
+3. Runtime state drifts while waiting.
+4. Revalidation runs on resume.
+5. Authority continuity decays past admissible bounds.
+6. Finalization is prevented.
+
+Outcome:
+
+`EXECUTION_DENIED`
+
+Reason:
+
+`runtime continuity decayed during async execution delay`
+
+### Path F — Retry Under Diverged Runtime
+
+1. Initial attempt enters queue and is deferred.
+2. Retry is scheduled.
+3. Runtime evolves during retry wait.
+4. Retry revalidation detects stale continuity.
+5. Retry execution is denied.
+
+Outcome:
+
+`EXECUTION_DENIED`
+
+Reason:
+
+`retry denied after runtime continuity drift`
+
 ## Admissibility Checks
 
 Deterministic evaluator checks:
@@ -107,6 +142,9 @@ Deterministic evaluator checks:
 - dependency continuity
 - runtime epoch continuity
 - queue continuity
+- queue witness continuity
+- retry continuity
+- authority aging across runtime horizon
 
 Outcomes:
 
@@ -139,7 +177,11 @@ Mutation admissibility transitions:
 
 Execution state transitions:
 
-`PROPOSED -> STAGED -> EXECUTING -> HALTED -> ROLLED_BACK / FINALIZED`
+`PROPOSED -> APPROVED -> QUEUED -> WAITING -> RETRY_PENDING -> EXECUTING -> REVALIDATING -> HALTED -> DENIED / FINALIZED`
+
+Runtime horizon transitions:
+
+`SHORT -> EXTENDED -> LONG -> EXCEEDED`
 
 ## Evidence
 
@@ -157,6 +199,14 @@ Append-only lineage events include:
 - `rollback_completed` or `finalization_prevented`
 - `execution_allowed` or `execution_denied`
 - `lineage_finalized`
+- `execution_queued`
+- `queue_state_updated`
+- `execution_delayed`
+- `retry_scheduled`
+- `authority_decay_detected`
+- `runtime_horizon_exceeded`
+- `retry_revalidation_started`
+- `retry_denied`
 
 Evidence is exported as:
 

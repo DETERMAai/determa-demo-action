@@ -1,0 +1,6 @@
+PATH: path_f_retry_under_diverged_runtime
+FINAL_STATUS: EXECUTION_DENIED
+FINAL_REASON: retry denied after runtime continuity drift
+FINAL_DIVERGENCE: CRITICAL (100)
+FINAL_AUTHORITY_CONTINUITY: INVALID
+RUNTIME_HORIZON: EXCEEDED (980s)

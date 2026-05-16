@@ -1,0 +1,6 @@
+PATH: path_e_delayed_execution_decay
+FINAL_STATUS: EXECUTION_DENIED
+FINAL_REASON: runtime continuity decayed during async execution delay
+FINAL_DIVERGENCE: CRITICAL (100)
+FINAL_AUTHORITY_CONTINUITY: INVALID
+RUNTIME_HORIZON: EXCEEDED (1180s)

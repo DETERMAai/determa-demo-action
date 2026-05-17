@@ -2,6 +2,12 @@
 
 This demo executes a deterministic runtime legitimacy proof against a real local sandbox git repository with continuous runtime revalidation.
 
+## Scope Classification
+
+- deterministic sandboxed runtime legitimacy proof
+- operationally believable governed mutation runtime
+- not a production infrastructure control plane
+
 It demonstrates:
 
 - same patch proposal

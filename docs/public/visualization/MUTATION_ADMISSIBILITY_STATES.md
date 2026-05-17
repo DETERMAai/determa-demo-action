@@ -1,22 +1,35 @@
 # Mutation Admissibility States
 
 ```text
-APPROVAL_PRESENT
+PROPOSED
     ↓
-RUNTIME_MATCH_CHECK
+APPROVED
     ↓
-AUTHORITY_CONTINUITY_VALID ? ---- no ----> FAIL_CLOSED_EXECUTION
-          |
-         yes
-          ↓
-MUTATION_ADMISSIBLE
+QUEUED
     ↓
-SCOPED_EXECUTION
+EXECUTING
     ↓
-LINEAGE_RECORDED
+REVALIDATING
+    ↓
+ADMISSIBLE ? ------ no ------> HALTED (FAIL_CLOSED)
+     |
+    yes
+     ↓
+FINALIZED
+```
+
+## Authority Continuity Progression
+
+```text
+VALID
+→ WEAKENING
+→ STALE
+→ INVALID
+→ TRANSITIVELY_INVALIDATED
 ```
 
 ## Operational Reading
 
 - Historical approval is not final authority.
-- Admissibility depends on present Runtime Legitimacy.
+- Mutation Admissibility is recomputed at the Execution Boundary.
+- Downstream admissibility may be transitively invalidated by upstream collapse.

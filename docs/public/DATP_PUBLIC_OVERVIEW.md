@@ -47,6 +47,7 @@ Operational scenarios are documented in:
 - [Public Runtime Legitimacy Simulator](RUNTIME_LEGITIMACY_SIMULATOR.html)
 - [Controlled Real Mutation Proof](CONTROLLED_REAL_MUTATION_PROOF.md)
 - [Governed Repository Mutation Proof](GOVERNED_REPOSITORY_MUTATION_PROOF.md)
+- [Runtime Legitimacy Proof Map](RUNTIME_LEGITIMACY_PROOF_MAP.md)
 
 ## Scope Boundary
 

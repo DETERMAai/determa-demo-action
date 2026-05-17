@@ -5,6 +5,12 @@ This proof extends DETERMA public demonstrations from conceptual simulation into
 It runs against a real local sandbox git repository and evaluates runtime legitimacy at execution checkpoints, not only before execution starts.
 Deferred execution requires continuous legitimacy continuity, not historical approval persistence.
 
+## Proof Type
+
+- Category: deterministic sandboxed runtime legitimacy proof
+- Scope: governed repository mutation admissibility and halt semantics
+- Not included: production control plane infrastructure
+
 ## Core Claim
 
 Same patch.

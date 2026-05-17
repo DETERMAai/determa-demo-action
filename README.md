@@ -18,10 +18,10 @@ Public runtime integrity is continuously verified against deployed Pages state.
 
 ## Recent Public Runtime Updates
 
-- deployment timestamp: 2026-05-15T00:00:00Z
 - runtime session engine: persistent lineage + evidence archive enabled
 - evidence export layer: copy + txt/md export verified in demo surface
-- latest deployment verification: deployment legitimacy pass completed
+- governed proof surface: async, cross-environment, and transitive graph scenarios active
+- latest verification: deployment legitimacy and proof consistency pass completed
 
 ## Executive Entry
 
@@ -36,7 +36,7 @@ The runtime changed.
 Execution legitimacy diverged.
 ```
 
-## 30-Second Understanding
+## The Contradiction
 
 ```text
 Traditional systems ask:
@@ -47,6 +47,38 @@ DETERMA asks:
 
 "Is this execution still legitimate under the current runtime reality?"
 ```
+
+Historical approval persistence is not equivalent to Runtime Legitimacy continuity at the Execution Boundary.
+
+## What DETERMA Demonstrates
+
+DETERMA is a deterministic runtime legitimacy and mutation governance substrate for autonomous execution systems.
+
+It continuously computes Mutation Admissibility against evolving Runtime Witness continuity, including:
+
+- continuous Runtime Legitimacy revalidation during execution
+- Runtime Divergence accumulation under async delay and retry
+- cross-environment promotion and delegated continuity checks
+- graph-structured transitive invalidation across dependent mutations
+- Append-Only Lineage evidence for every execution decision
+
+## What Has Been Proven
+
+- same mutation + different runtime continuity -> different execution outcome
+- legitimacy collapse during execution before commit finalization
+- async authority decay under queue delay and retry windows
+- staging-to-production continuity failure under environment divergence
+- cascading transitive invalidation across dependency chains (`A -> B -> C`)
+
+## Governed Mutation Runtime
+
+DETERMA operates as a governed execution substrate for autonomous mutation systems.
+
+It is not:
+- a generic governance framework
+- a policy engine
+- an observability layer
+- a static approval system
 
 ## Why Existing Systems Fail
 
@@ -107,6 +139,24 @@ Runtime legitimacy may also decay during asynchronous queue delays and retry win
 Runtime legitimacy must survive environment transition before mutation promotion may finalize.
 Approval continuity across environments requires runtime witness continuity, not historical authorization persistence.
 Runtime legitimacy propagates through dependent mutation chains, and downstream admissibility inherits upstream runtime continuity assumptions.
+
+## Public Proof Navigation
+
+Use this progression to move from intuition to full operational proof:
+
+1. [Runtime Legitimacy Simulator](docs/public/RUNTIME_LEGITIMACY_SIMULATOR.html)
+2. [Controlled Real Mutation Proof](docs/public/CONTROLLED_REAL_MUTATION_PROOF.md)
+3. [Governed Repository Mutation Proof](docs/public/GOVERNED_REPOSITORY_MUTATION_PROOF.md)
+4. Continuous Runtime Revalidation (Path C in governed proof)
+5. Async Runtime Governance (Paths E/F in governed proof)
+6. Cross-Environment Governance (Paths G/H in governed proof)
+7. Cascading Legitimacy Propagation (Path I in governed proof)
+8. [Runtime Legitimacy Proof Map](docs/public/RUNTIME_LEGITIMACY_PROOF_MAP.md)
+
+## Public Honesty Boundary
+
+The repository demonstrates deterministic sandboxed runtime legitimacy proofs.
+It does not expose production infrastructure control, distributed consensus internals, or sensitive protocol implementation details.
 
 ## Architecture
 

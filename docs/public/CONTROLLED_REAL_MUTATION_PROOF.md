@@ -2,6 +2,12 @@
 
 This public proof demonstrates Runtime Legitimacy enforcement using real local sandbox state, not pre-scripted outcomes.
 
+## Proof Type
+
+- Category: deterministic sandboxed runtime legitimacy proof
+- Scope: operational mutation admissibility demonstration
+- Not included: production control plane infrastructure
+
 ## What It Demonstrates
 
 The same mutation proposal and same approval structure can produce different outcomes:

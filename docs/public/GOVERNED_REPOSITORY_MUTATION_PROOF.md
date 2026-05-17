@@ -24,6 +24,7 @@ Runtime legitimacy is continuously revalidated throughout mutation execution:
 Execution authority may collapse during execution if runtime continuity diverges.
 Execution authority may also decay during asynchronous queue delay before execution finalization.
 Runtime legitimacy must also survive environment transition before promotion finalization.
+Runtime legitimacy also propagates through dependent mutation chains.
 
 ## Execution Paths
 
@@ -164,6 +165,24 @@ Reason:
 
 `delegated runtime continuity mismatch`
 
+### Path I — Cascading Legitimacy Collapse
+
+1. Mutation graph is initialized: `A -> B -> C`.
+2. B is conditionally approved on A continuity.
+3. C is conditionally approved on B continuity.
+4. Runtime divergence invalidates A.
+5. Dependency graph revalidation propagates collapse.
+6. B and C become `TRANSITIVELY_INVALIDATED`.
+7. Chain execution halts before dependent finalization.
+
+Outcome:
+
+`EXECUTION_DENIED`
+
+Reason:
+
+`downstream legitimacy collapsed transitively from upstream mutation A`
+
 ## Admissibility Checks
 
 Deterministic evaluator checks:
@@ -182,6 +201,8 @@ Deterministic evaluator checks:
 - configuration continuity across environments
 - branch continuity across environments
 - delegated authority continuity
+- upstream continuity inheritance
+- dependency continuity inheritance
 
 Outcomes:
 
@@ -224,6 +245,10 @@ Cross-environment legitimacy transitions:
 
 `CONTINUOUS -> WEAKENING -> STALE -> INVALID`
 
+Transitive dependency legitimacy transitions:
+
+`VALID -> WEAKENING -> INVALID -> TRANSITIVELY_INVALIDATED`
+
 ## Evidence
 
 Append-only lineage events include:
@@ -256,6 +281,14 @@ Append-only lineage events include:
 - `delegated_continuity_failed`
 - `promotion_denied`
 - `cross_environment_lineage_finalized`
+- `dependency_graph_initialized`
+- `dependency_chain_approved`
+- `upstream_divergence_detected`
+- `graph_revalidation_started`
+- `transitive_invalidation_triggered`
+- `downstream_authority_invalidated`
+- `chain_execution_halted`
+- `cascading_lineage_finalized`
 
 Evidence is exported as:
 

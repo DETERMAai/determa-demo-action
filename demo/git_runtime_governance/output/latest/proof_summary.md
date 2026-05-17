@@ -17,6 +17,12 @@ STAGING -> PROMOTION -> PRODUCTION
 ## Delegated Authority State
 LOCAL -> TRANSFERRED -> REVALIDATING -> INVALIDATED
 
+## Legitimacy Dependency Graph
+A -> B -> C
+
+## Authority Propagation State
+VALID -> WEAKENING -> INVALID -> TRANSITIVELY_INVALIDATED
+
 ## Authority Continuity State
 VALID -> WEAKENING -> STALE -> INVALID
 
@@ -35,6 +41,7 @@ LOW -> MEDIUM -> HIGH -> CRITICAL
 - path_f_retry_under_diverged_runtime: EXECUTION_DENIED (retry denied after runtime continuity drift)
 - path_g_staging_to_production_divergence: EXECUTION_DENIED (runtime continuity diverged across environment transition)
 - path_h_delegated_environment_transfer: EXECUTION_DENIED (delegated runtime continuity mismatch)
+- path_i_cascading_legitimacy_collapse: EXECUTION_DENIED (downstream legitimacy collapsed transitively from upstream mutation A)
 
 ## Core Observation
 Approval alone was not enough. Legitimacy had to survive runtime execution itself, asynchronous delay horizons, and environment transitions.

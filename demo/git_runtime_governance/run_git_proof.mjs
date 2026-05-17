@@ -413,6 +413,98 @@ function crossEnvironmentContinuityState(score) {
   return "CONTINUOUS";
 }
 
+function initializeMutationDependencyGraph() {
+  return [
+    {
+      mutation_id: "A",
+      depends_on: [],
+      authority_state: "VALID",
+      admissibility: "ADMISSIBLE"
+    },
+    {
+      mutation_id: "B",
+      depends_on: ["A"],
+      authority_state: "VALID",
+      admissibility: "ADMISSIBLE"
+    },
+    {
+      mutation_id: "C",
+      depends_on: ["B"],
+      authority_state: "VALID",
+      admissibility: "ADMISSIBLE"
+    }
+  ];
+}
+
+function revalidateDependencyGraph(mutationGraph, runtimeWitness, authorityStates = {}) {
+  const results = [];
+  const byId = new Map();
+  const graphIds = new Set(mutationGraph.map((m) => m.mutation_id));
+  const graphCoherent = mutationGraph.every((m) => m.depends_on.every((d) => graphIds.has(d)));
+
+  for (const mutation of mutationGraph) {
+    const explicitState = authorityStates[mutation.mutation_id] || {};
+    const parentStates = mutation.depends_on.map((depId) => byId.get(depId)).filter(Boolean);
+    const invalidParent = parentStates.find(
+      (p) => p.admissibility !== "ADMISSIBLE" && p.admissibility !== "REQUIRES_REVALIDATION"
+    );
+
+    let admissibility = "ADMISSIBLE";
+    let authorityState = "VALID";
+    let reason = "upstream continuity preserved";
+    let transitiveSource = null;
+    let divergenceScore = explicitState.divergence_score ?? 0;
+    let divergenceLevelValue = explicitState.divergence_level ?? divergenceLevel(divergenceScore);
+
+    if (!graphCoherent) {
+      admissibility = "DENIED";
+      authorityState = "INVALID";
+      reason = "dependency graph coherence failure";
+      divergenceScore = Math.max(divergenceScore, 90);
+      divergenceLevelValue = divergenceLevel(divergenceScore);
+    } else if (invalidParent) {
+      admissibility = "TRANSITIVELY_INVALIDATED";
+      authorityState = "TRANSITIVELY_INVALIDATED";
+      transitiveSource = invalidParent.transitive_source || invalidParent.mutation_id;
+      reason = `upstream legitimacy collapsed at ${transitiveSource}`;
+      divergenceScore = Math.min(100, (invalidParent.divergence_score || 80) + 8);
+      divergenceLevelValue = divergenceLevel(divergenceScore);
+    } else if (explicitState.admissibility === "DENIED") {
+      admissibility = "DENIED";
+      authorityState = "INVALID";
+      reason = explicitState.reason || "local runtime continuity collapse";
+      divergenceScore = explicitState.divergence_score ?? 85;
+      divergenceLevelValue = explicitState.divergence_level ?? divergenceLevel(divergenceScore);
+      transitiveSource = mutation.mutation_id;
+    } else if (explicitState.admissibility === "REQUIRES_REVALIDATION") {
+      admissibility = "REQUIRES_REVALIDATION";
+      authorityState = "WEAKENING";
+      reason = explicitState.reason || "runtime continuity requires revalidation";
+      divergenceScore = explicitState.divergence_score ?? 50;
+      divergenceLevelValue = explicitState.divergence_level ?? divergenceLevel(divergenceScore);
+    }
+
+    const nodeResult = {
+      mutation_id: mutation.mutation_id,
+      dependency_chain: mutation.depends_on,
+      authority_state: authorityState,
+      admissibility,
+      divergence_score: divergenceScore,
+      divergence_level: divergenceLevelValue,
+      transitive_source: transitiveSource,
+      runtime_witness_hash: runtimeWitness.queue_witness_hash,
+      decision_reason: reason
+    };
+    byId.set(mutation.mutation_id, nodeResult);
+    results.push(nodeResult);
+  }
+
+  return {
+    graph_coherent: graphCoherent,
+    nodes: results
+  };
+}
+
 function revalidateLegitimacyAcrossEnvironments({
   proposal,
   authorityGrant,
@@ -866,8 +958,15 @@ async function writeEvidenceFormats(pathDir, evidence) {
 
   const checkpointRows = evidence.checkpoint_results
     .map(
-      (cp) =>
-        `- ${cp.checkpoint}: admissibility=${cp.admissibility}, continuity=${cp.authority_continuity}, divergence=${cp.divergence_level}(${cp.divergence_score})`
+      (cp) => {
+        const label = cp.checkpoint || `GRAPH_${cp.mutation_id || "NODE"}`;
+        const continuity =
+          cp.authority_continuity ||
+          cp.authority_state ||
+          cp.cross_environment_legitimacy ||
+          "N/A";
+        return `- ${label}: admissibility=${cp.admissibility}, continuity=${continuity}, divergence=${cp.divergence_level}(${cp.divergence_score})`;
+      }
     )
     .join("\n");
 
@@ -1963,6 +2062,208 @@ async function runPathDelegatedEnvironmentTransfer({
   return evidence;
 }
 
+async function runPathCascadingLegitimacyCollapse({
+  runDir,
+  proposal,
+  approvalSnapshot,
+  grantTemplate,
+  baselineHead
+}) {
+  runGit(["checkout", "-B", "path_i_cascading_legitimacy_collapse", baselineHead], SANDBOX_REPO_DIR);
+  await restoreRuntimeBaseline(approvalSnapshot);
+  const chain = [];
+  const prev = { value: null };
+  const checkpointResults = [];
+  const grant = clone(grantTemplate);
+  let runtimeEpoch = APPROVAL_RUNTIME_EPOCH;
+  const approvalTime = approvalSnapshot.approval_timestamp;
+  const queueState = makeQueueState({
+    phase: "EXECUTING_CHAIN",
+    depth: 3,
+    latencyMs: 120000,
+    retryCount: 0,
+    priority: "high",
+    queuedMutations: ["A", "B", "C"]
+  });
+  const executionState = { status: "EXECUTING", staged_target_hash: null };
+  const mutationGraph = initializeMutationDependencyGraph();
+
+  appendEvent(chain, prev, "dependency_graph_initialized", "T0", {
+    mutation_id: "A",
+    dependency_chain: [],
+    authority_continuity_state: "VALID",
+    admissibility_state: "ADMISSIBLE",
+    divergence_level: "LOW",
+    transitive_source: null,
+    decision_reason: "graph initialized"
+  });
+  appendEvent(chain, prev, "dependency_chain_approved", "T1", {
+    mutation_id: "B",
+    dependency_chain: ["A"],
+    authority_continuity_state: "VALID",
+    admissibility_state: "ADMISSIBLE",
+    divergence_level: "LOW",
+    transitive_source: "A",
+    decision_reason: "conditional approval on upstream continuity"
+  });
+  appendEvent(chain, prev, "dependency_chain_approved", "T2", {
+    mutation_id: "C",
+    dependency_chain: ["B"],
+    authority_continuity_state: "VALID",
+    admissibility_state: "ADMISSIBLE",
+    divergence_level: "LOW",
+    transitive_source: "B",
+    decision_reason: "conditional approval on upstream continuity"
+  });
+
+  appendEvent(chain, prev, "execution_started", "T3", {
+    mutation_id: "A",
+    dependency_chain: ["A", "B", "C"],
+    authority_continuity_state: "VALID",
+    admissibility_state: "ADMISSIBLE",
+    divergence_level: "LOW",
+    transitive_source: null,
+    decision_reason: "execution chain initiated"
+  });
+
+  await mutateRepositoryAfterApproval();
+  runtimeEpoch += 1;
+
+  const divergedWitness = await captureRuntimeWitness(runtimeEpoch, queueState, true, {
+    runtime_timestamp: isoWithOffset(approvalTime, 980),
+    queue_depth: queueState.queue_depth,
+    execution_priority: queueState.execution_priority,
+    queued_mutations: queueState.queued_mutations
+  });
+  appendEvent(chain, prev, "upstream_divergence_detected", "T4", {
+    mutation_id: "A",
+    dependency_chain: [],
+    authority_continuity_state: "WEAKENING",
+    admissibility_state: "REVALIDATING",
+    divergence_level: "HIGH",
+    transitive_source: null,
+    decision_reason: "runtime divergence detected on upstream mutation"
+  });
+
+  appendEvent(chain, prev, "graph_revalidation_started", "T5", {
+    mutation_id: "A",
+    dependency_chain: ["A", "B", "C"],
+    authority_continuity_state: "WEAKENING",
+    admissibility_state: "REVALIDATING",
+    divergence_level: "HIGH",
+    transitive_source: null,
+    decision_reason: "dependency graph revalidation triggered"
+  });
+
+  const upstreamEval = evaluateLegitimacy({
+    checkpoint: "GRAPH_UPSTREAM_A",
+    proposal,
+    authorityGrant: grant,
+    approvalSnapshot,
+    runtimeWitness: divergedWitness,
+    executionState,
+    attemptIndex: 1,
+    divergenceInputs: {
+      queue_depth: queueState.queue_depth,
+      runtime_horizon_seconds: 980,
+      queue_contention: 10,
+      execution_delay_amplification: 10,
+      dependency_aging: 12,
+      deferred_execution_drift: 8
+    }
+  });
+
+  const graphEval = revalidateDependencyGraph(mutationGraph, divergedWitness, {
+    A: {
+      admissibility: upstreamEval.admissibility === "DENIED" ? "DENIED" : "REQUIRES_REVALIDATION",
+      divergence_score: upstreamEval.divergence_score,
+      divergence_level: upstreamEval.divergence_level,
+      reason: upstreamEval.reason
+    }
+  });
+
+  for (const node of graphEval.nodes) {
+    checkpointResults.push(node);
+    if (node.mutation_id === "A" && node.admissibility === "DENIED") {
+      appendEvent(chain, prev, "transitive_invalidation_triggered", "T6", {
+        mutation_id: "A",
+        dependency_chain: [],
+        authority_continuity_state: "INVALID",
+        admissibility_state: "DENIED",
+        divergence_level: node.divergence_level,
+        transitive_source: "A",
+        decision_reason: node.decision_reason
+      });
+    }
+    if (node.mutation_id !== "A" && node.admissibility === "TRANSITIVELY_INVALIDATED") {
+      appendEvent(chain, prev, "downstream_authority_invalidated", "T7", {
+        mutation_id: node.mutation_id,
+        dependency_chain: node.dependency_chain,
+        authority_continuity_state: node.authority_state,
+        admissibility_state: node.admissibility,
+        divergence_level: node.divergence_level,
+        transitive_source: node.transitive_source,
+        decision_reason: node.decision_reason
+      });
+    }
+  }
+
+  appendEvent(chain, prev, "chain_execution_halted", "T8", {
+    mutation_id: "C",
+    dependency_chain: ["A", "B", "C"],
+    authority_continuity_state: "TRANSITIVELY_INVALIDATED",
+    admissibility_state: "HALTED",
+    divergence_level: "CRITICAL",
+    transitive_source: "A",
+    decision_reason: "dependent execution chain halted due to upstream collapse"
+  });
+
+  appendEvent(chain, prev, "cascading_lineage_finalized", "T9", {
+    mutation_id: "C",
+    dependency_chain: ["A", "B", "C"],
+    authority_continuity_state: "TRANSITIVELY_INVALIDATED",
+    admissibility_state: "DENIED",
+    divergence_level: "CRITICAL",
+    transitive_source: "A",
+    decision_reason: "cascading transitive legitimacy collapse recorded"
+  });
+
+  const downstreamInvalidated = graphEval.nodes.filter((n) => n.admissibility === "TRANSITIVELY_INVALIDATED").length;
+  const finalNode = graphEval.nodes[graphEval.nodes.length - 1];
+  const evidence = {
+    path_id: "path_i_cascading_legitimacy_collapse",
+    proposal,
+    approval_snapshot: approvalSnapshot,
+    authority_grant: grant,
+    mutation_graph: mutationGraph,
+    checkpoint_results: checkpointResults,
+    final_revalidation: {
+      admissibility: finalNode.admissibility,
+      divergence_score: finalNode.divergence_score,
+      divergence_level: finalNode.divergence_level,
+      authority_continuity: finalNode.authority_state,
+      reason: finalNode.decision_reason,
+      runtime_horizon_state: upstreamEval.runtime_horizon_state,
+      runtime_horizon_seconds: upstreamEval.runtime_horizon_seconds
+    },
+    execution_outcome: {
+      execution_status: "EXECUTION_DENIED",
+      reason: "downstream legitimacy collapsed transitively from upstream mutation A",
+      downstream_transitively_invalidated: downstreamInvalidated
+    },
+    execution_phase_timeline:
+      "PROPOSED -> APPROVED -> EXECUTING -> UPSTREAM_INVALIDATED -> TRANSITIVELY_INVALIDATED -> HALTED",
+    evidence_chain: chain
+  };
+
+  const outDir = path.join(runDir, "path_i_cascading_legitimacy_collapse");
+  await fs.mkdir(outDir, { recursive: true });
+  await writeEvidenceFormats(outDir, evidence);
+  await fs.writeFile(path.join(outDir, "target_before_attempt.txt"), approvalSnapshot.target_content, "utf8");
+  await fs.writeFile(path.join(outDir, "target_after_attempt.txt"), await fs.readFile(path.join(SANDBOX_REPO_DIR, TARGET_FILE), "utf8"), "utf8");
+  return evidence;
+}
+
 async function writeSummaryArtifacts(runDir, summary) {
   await fs.writeFile(path.join(runDir, "proof_summary.json"), JSON.stringify(summary, null, 2), "utf8");
 
@@ -1978,6 +2279,7 @@ async function writeSummaryArtifacts(runDir, summary) {
     `path_f: ${summary.path_f.execution_status} (${summary.path_f.reason})`,
     `path_g: ${summary.path_g.execution_status} (${summary.path_g.reason})`,
     `path_h: ${summary.path_h.execution_status} (${summary.path_h.reason})`,
+    `path_i: ${summary.path_i.execution_status} (${summary.path_i.reason})`,
     `replay_status: ${summary.path_a.replay_status}`
   ].join("\n");
   await fs.writeFile(path.join(runDir, "proof_summary.txt"), txt, "utf8");
@@ -2002,6 +2304,12 @@ async function writeSummaryArtifacts(runDir, summary) {
     "## Delegated Authority State",
     "LOCAL -> TRANSFERRED -> REVALIDATING -> INVALIDATED",
     "",
+    "## Legitimacy Dependency Graph",
+    "A -> B -> C",
+    "",
+    "## Authority Propagation State",
+    "VALID -> WEAKENING -> INVALID -> TRANSITIVELY_INVALIDATED",
+    "",
     "## Authority Continuity State",
     "VALID -> WEAKENING -> STALE -> INVALID",
     "",
@@ -2020,6 +2328,7 @@ async function writeSummaryArtifacts(runDir, summary) {
     `- path_f_retry_under_diverged_runtime: ${summary.path_f.execution_status} (${summary.path_f.reason})`,
     `- path_g_staging_to_production_divergence: ${summary.path_g.execution_status} (${summary.path_g.reason})`,
     `- path_h_delegated_environment_transfer: ${summary.path_h.execution_status} (${summary.path_h.reason})`,
+    `- path_i_cascading_legitimacy_collapse: ${summary.path_i.execution_status} (${summary.path_i.reason})`,
     "",
     "## Core Observation",
     "Approval alone was not enough. Legitimacy had to survive runtime execution itself, asynchronous delay horizons, and environment transitions.",
@@ -2107,6 +2416,14 @@ async function main() {
     baselineHead: baseline.baseline_head
   });
 
+  const pathI = await runPathCascadingLegitimacyCollapse({
+    runDir,
+    proposal,
+    approvalSnapshot,
+    grantTemplate,
+    baselineHead: baseline.baseline_head
+  });
+
   const summary = {
     run_id: runId,
     generated_at: nowIso(),
@@ -2154,6 +2471,11 @@ async function main() {
       reason: pathH.execution_outcome.reason,
       final_divergence: `${pathH.final_revalidation.divergence_level} (${pathH.final_revalidation.divergence_score})`
     },
+    path_i: {
+      execution_status: pathI.execution_outcome.execution_status,
+      reason: pathI.execution_outcome.reason,
+      final_divergence: `${pathI.final_revalidation.divergence_level} (${pathI.final_revalidation.divergence_score})`
+    },
     output_paths: {
       run_directory: runDir,
       latest_directory: LATEST_DIR
@@ -2174,6 +2496,7 @@ async function main() {
   console.log(`Path F: ${summary.path_f.execution_status} (${summary.path_f.reason})`);
   console.log(`Path G: ${summary.path_g.execution_status} (${summary.path_g.reason})`);
   console.log(`Path H: ${summary.path_h.execution_status} (${summary.path_h.reason})`);
+  console.log(`Path I: ${summary.path_i.execution_status} (${summary.path_i.reason})`);
   console.log(`Replay check: ${summary.path_a.replay_status}`);
 }
 

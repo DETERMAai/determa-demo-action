@@ -106,6 +106,7 @@ Runtime legitimacy is continuously revalidated throughout mutation execution, in
 Runtime legitimacy may also decay during asynchronous queue delays and retry windows before finalization.
 Runtime legitimacy must survive environment transition before mutation promotion may finalize.
 Approval continuity across environments requires runtime witness continuity, not historical authorization persistence.
+Runtime legitimacy propagates through dependent mutation chains, and downstream admissibility inherits upstream runtime continuity assumptions.
 
 ## Architecture
 

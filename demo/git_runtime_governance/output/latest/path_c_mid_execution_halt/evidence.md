@@ -14,7 +14,7 @@ PROPOSED -> STAGED -> EXECUTING -> HALTED/FINALIZED
 QUEUED -> WAITING -> RETRY_PENDING -> EXECUTING -> REVALIDATING -> HALTED
 
 ## Runtime Horizon
-state: SHORT (1s)
+state: SHORT (0s)
 
 ## Divergence Pressure
 LOW -> MEDIUM -> HIGH -> CRITICAL

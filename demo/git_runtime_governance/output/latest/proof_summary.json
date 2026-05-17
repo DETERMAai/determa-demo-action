@@ -1,6 +1,6 @@
 {
-  "run_id": "git_proof_20260516_235702",
-  "generated_at": "2026-05-16T23:57:07.079Z",
+  "run_id": "git_proof_20260517_000741",
+  "generated_at": "2026-05-17T00:07:45.353Z",
   "proof_claim": "runtime legitimacy remains continuously required from pre-execution through finalization",
   "path_a": {
     "execution_status": "EXECUTION_ALLOWED",
@@ -44,8 +44,13 @@
     "reason": "delegated runtime continuity mismatch",
     "final_divergence": "CRITICAL (100)"
   },
+  "path_i": {
+    "execution_status": "EXECUTION_DENIED",
+    "reason": "downstream legitimacy collapsed transitively from upstream mutation A",
+    "final_divergence": "CRITICAL (100)"
+  },
   "output_paths": {
-    "run_directory": "C:\\dev\\determa-demo-action\\demo\\git_runtime_governance\\output\\git_proof_20260516_235702",
+    "run_directory": "C:\\dev\\determa-demo-action\\demo\\git_runtime_governance\\output\\git_proof_20260517_000741",
     "latest_directory": "C:\\dev\\determa-demo-action\\demo\\git_runtime_governance\\output\\latest"
   }
 }

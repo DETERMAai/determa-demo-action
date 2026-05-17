@@ -4,10 +4,10 @@
     "proposal_id": "proposal_38518f84e1b3",
     "target_file": "service_config.env",
     "patch_hash": "38518f84e1b3e6642d4542deb8672e40fe24a22d82d767efc4a83adbf5293ee1",
-    "patch_file": "C:\\dev\\determa-demo-action\\demo\\git_runtime_governance\\output\\git_proof_20260516_235702\\proposal\\mutation.patch",
-    "approval_head": "099c2a5f7a27f0621be2cc5d4ec61a004e4b6a80",
+    "patch_file": "C:\\dev\\determa-demo-action\\demo\\git_runtime_governance\\output\\git_proof_20260517_000741\\proposal\\mutation.patch",
+    "approval_head": "cad3070bffe3fa5e72193b63d679347b63ecb44d",
     "runtime_epoch": 1,
-    "created_at": "2026-05-16T23:57:03.551Z",
+    "created_at": "2026-05-17T00:07:42.427Z",
     "mutation_scope": "runtime.config.worker",
     "patch": {
       "operation": "line_replace",
@@ -17,8 +17,8 @@
     "patch_preview": "MAX_RETRIES=3 -> MAX_RETRIES=5"
   },
   "approval_snapshot": {
-    "approval_id": "approval_132fc2c6aea2",
-    "head": "099c2a5f7a27f0621be2cc5d4ec61a004e4b6a80",
+    "approval_id": "approval_7a205cc8b71d",
+    "head": "cad3070bffe3fa5e72193b63d679347b63ecb44d",
     "target_file": "service_config.env",
     "target_hash": "8f175d7fd3af6dacc35aedd2e9e87a713e5c938d2adf24082285ae294eaca762",
     "target_content": "SERVICE=worker\nMAX_RETRIES=3\nTIMEOUT_SECONDS=45\nRUNTIME_GUARD=true\n",
@@ -29,7 +29,7 @@
     "queue_hash": "ebc4b4671209b9362b5923c6049872d3f73af3567dd0f7b31f481f232868d15d",
     "environment_profile_hash": "b2ca3a130498099b5458e05a06efa79a37c16bf5a16b744aafdc081641d3232c",
     "runtime_epoch": 1,
-    "approval_timestamp": "2026-05-16T23:57:03.565Z",
+    "approval_timestamp": "2026-05-17T00:07:42.435Z",
     "expected_staged_target_hash": "b55ab635417d899b20d32f0e9d99dd6ba4397a5dd65049628d2c7ad843e2d3d4"
   },
   "source_environment": {
@@ -38,12 +38,12 @@
     "dependency_hash": "b68c30132ed93fa9947e0a7b629a59be1ac854acecf82c897dc7078fde1dd48a",
     "config_hash": "30454f38d41128b1bb000d89ce4a56056fa4348a68d173afd4ae1264ee6a2dee",
     "queue_hash": "ebc4b4671209b9362b5923c6049872d3f73af3567dd0f7b31f481f232868d15d",
-    "branch_hash": "099c2a5f7a27f0621be2cc5d4ec61a004e4b6a80",
+    "branch_hash": "cad3070bffe3fa5e72193b63d679347b63ecb44d",
     "queue_witness_hash": "b846729635b63683bab2e45d9eac6f746ab2c20878f55f85ece523c339f87f6e",
     "target_hash": "8f175d7fd3af6dacc35aedd2e9e87a713e5c938d2adf24082285ae294eaca762",
     "delegated_from": null,
-    "runtime_timestamp": "2026-05-16T23:57:11.565Z",
-    "environment_witness_hash": "d7eadc983b9339fddbee69b29c571b89fc1009c3fe35deda9b8cc7313bc00cb1"
+    "runtime_timestamp": "2026-05-17T00:07:50.435Z",
+    "environment_witness_hash": "a4077c262f2904e498be334937520e2e55bf793d4e3b687702df1bbaa0df51b9"
   },
   "target_environment": {
     "environment_id": "production",
@@ -51,16 +51,16 @@
     "dependency_hash": "bf7ce8aecc34b183ad1973fe53effba5c21fa8a027c839642b174e4ae0aa87b5",
     "config_hash": "5eb93b7bb1071f3955f88e99b3501c8cc1ce457a6c39c6b73f152a2f4ea58d58",
     "queue_hash": "2573e9634703dfc698d1474dbaa01826e7dd2c556e807577ca0c3bc587c696c6",
-    "branch_hash": "e917e40ac4ccba84204abec7892373d7f5fab104",
+    "branch_hash": "22c53b81950dfdaf8e4e230edeca6f1d723eeddc",
     "queue_witness_hash": "4dd916a94143b8402ae5b72498eed0d002e20b5586f05d8219833078321769a1",
     "target_hash": "8f175d7fd3af6dacc35aedd2e9e87a713e5c938d2adf24082285ae294eaca762",
     "delegated_from": null,
-    "runtime_timestamp": "2026-05-17T00:13:23.565Z",
-    "environment_witness_hash": "bd72bd6c60c32bde81a20a4ab6fb8d3f40534815788b2352e8d2d320b0f3cfde"
+    "runtime_timestamp": "2026-05-17T00:24:02.435Z",
+    "environment_witness_hash": "18041fde750c9d37ad06caf8ca7f99a6829b3a6d40d7afd5f7b6d187e58d8e5f"
   },
   "authority_grant": {
     "grant_id": "xenv_grant_c7d6da3dc7c8",
-    "issued_at": "2026-05-16T23:57:06.433Z",
+    "issued_at": "2026-05-17T00:07:44.578Z",
     "freshness_window_seconds": 900,
     "single_use": true,
     "consumed": false,
@@ -70,7 +70,7 @@
     "scope": {
       "target_file": "service_config.env",
       "patch_hash": "38518f84e1b3e6642d4542deb8672e40fe24a22d82d767efc4a83adbf5293ee1",
-      "branch_hash": "099c2a5f7a27f0621be2cc5d4ec61a004e4b6a80",
+      "branch_hash": "cad3070bffe3fa5e72193b63d679347b63ecb44d",
       "dependency_hash": "b68c30132ed93fa9947e0a7b629a59be1ac854acecf82c897dc7078fde1dd48a"
     }
   },
@@ -124,7 +124,7 @@
       "event_id": "evt_0001_d7791286",
       "previous_event_id": null,
       "phase": "T0",
-      "timestamp": "2026-05-16T23:57:06.375Z",
+      "timestamp": "2026-05-17T00:07:44.533Z",
       "event_type": "proposal_created",
       "payload": {
         "proposal_id": "proposal_38518f84e1b3"
@@ -134,17 +134,17 @@
       "event_id": "evt_0002_7a7a7a49",
       "previous_event_id": "evt_0001_d7791286",
       "phase": "T1",
-      "timestamp": "2026-05-16T23:57:06.375Z",
+      "timestamp": "2026-05-17T00:07:44.533Z",
       "event_type": "approval_snapshot_captured",
       "payload": {
-        "approval_id": "approval_132fc2c6aea2"
+        "approval_id": "approval_7a205cc8b71d"
       }
     },
     {
       "event_id": "evt_0003_e8ded68b",
       "previous_event_id": "evt_0002_7a7a7a49",
       "phase": "T1B",
-      "timestamp": "2026-05-16T23:57:06.433Z",
+      "timestamp": "2026-05-17T00:07:44.578Z",
       "event_type": "environment_snapshot_captured",
       "payload": {
         "source_environment": "staging",
@@ -155,12 +155,12 @@
           "dependency_hash": "b68c30132ed93fa9947e0a7b629a59be1ac854acecf82c897dc7078fde1dd48a",
           "config_hash": "30454f38d41128b1bb000d89ce4a56056fa4348a68d173afd4ae1264ee6a2dee",
           "queue_hash": "ebc4b4671209b9362b5923c6049872d3f73af3567dd0f7b31f481f232868d15d",
-          "branch_hash": "099c2a5f7a27f0621be2cc5d4ec61a004e4b6a80",
+          "branch_hash": "cad3070bffe3fa5e72193b63d679347b63ecb44d",
           "queue_witness_hash": "b846729635b63683bab2e45d9eac6f746ab2c20878f55f85ece523c339f87f6e",
           "target_hash": "8f175d7fd3af6dacc35aedd2e9e87a713e5c938d2adf24082285ae294eaca762",
           "delegated_from": null,
-          "runtime_timestamp": "2026-05-16T23:57:11.565Z",
-          "environment_witness_hash": "d7eadc983b9339fddbee69b29c571b89fc1009c3fe35deda9b8cc7313bc00cb1"
+          "runtime_timestamp": "2026-05-17T00:07:50.435Z",
+          "environment_witness_hash": "a4077c262f2904e498be334937520e2e55bf793d4e3b687702df1bbaa0df51b9"
         }
       }
     },
@@ -168,7 +168,7 @@
       "event_id": "evt_0004_13405ff5",
       "previous_event_id": "evt_0003_e8ded68b",
       "phase": "T2",
-      "timestamp": "2026-05-16T23:57:06.433Z",
+      "timestamp": "2026-05-17T00:07:44.578Z",
       "event_type": "authority_grant_issued",
       "payload": {
         "source_environment": "staging",
@@ -180,7 +180,7 @@
       "event_id": "evt_0005_334d7de7",
       "previous_event_id": "evt_0004_13405ff5",
       "phase": "T3",
-      "timestamp": "2026-05-16T23:57:06.433Z",
+      "timestamp": "2026-05-17T00:07:44.578Z",
       "event_type": "promotion_queued",
       "payload": {
         "source_environment": "staging",
@@ -193,7 +193,7 @@
       "event_id": "evt_0006_dd9de2c9",
       "previous_event_id": "evt_0005_334d7de7",
       "phase": "T6",
-      "timestamp": "2026-05-16T23:57:06.679Z",
+      "timestamp": "2026-05-17T00:07:44.770Z",
       "event_type": "promotion_revalidation_started",
       "payload": {
         "source_environment": "staging",
@@ -204,12 +204,12 @@
           "dependency_hash": "bf7ce8aecc34b183ad1973fe53effba5c21fa8a027c839642b174e4ae0aa87b5",
           "config_hash": "5eb93b7bb1071f3955f88e99b3501c8cc1ce457a6c39c6b73f152a2f4ea58d58",
           "queue_hash": "2573e9634703dfc698d1474dbaa01826e7dd2c556e807577ca0c3bc587c696c6",
-          "branch_hash": "e917e40ac4ccba84204abec7892373d7f5fab104",
+          "branch_hash": "22c53b81950dfdaf8e4e230edeca6f1d723eeddc",
           "queue_witness_hash": "4dd916a94143b8402ae5b72498eed0d002e20b5586f05d8219833078321769a1",
           "target_hash": "8f175d7fd3af6dacc35aedd2e9e87a713e5c938d2adf24082285ae294eaca762",
           "delegated_from": null,
-          "runtime_timestamp": "2026-05-17T00:13:23.565Z",
-          "environment_witness_hash": "bd72bd6c60c32bde81a20a4ab6fb8d3f40534815788b2352e8d2d320b0f3cfde"
+          "runtime_timestamp": "2026-05-17T00:24:02.435Z",
+          "environment_witness_hash": "18041fde750c9d37ad06caf8ca7f99a6829b3a6d40d7afd5f7b6d187e58d8e5f"
         }
       }
     },
@@ -217,7 +217,7 @@
       "event_id": "evt_0007_ee724dea",
       "previous_event_id": "evt_0006_dd9de2c9",
       "phase": "T7",
-      "timestamp": "2026-05-16T23:57:06.680Z",
+      "timestamp": "2026-05-17T00:07:44.771Z",
       "event_type": "environment_divergence_detected",
       "payload": {
         "source_environment": "staging",
@@ -232,7 +232,7 @@
       "event_id": "evt_0008_df2fe585",
       "previous_event_id": "evt_0007_ee724dea",
       "phase": "T8",
-      "timestamp": "2026-05-16T23:57:06.680Z",
+      "timestamp": "2026-05-17T00:07:44.771Z",
       "event_type": "promotion_denied",
       "payload": {
         "source_environment": "staging",
@@ -245,7 +245,7 @@
       "event_id": "evt_0009_c6aa0e73",
       "previous_event_id": "evt_0008_df2fe585",
       "phase": "T9",
-      "timestamp": "2026-05-16T23:57:06.680Z",
+      "timestamp": "2026-05-17T00:07:44.771Z",
       "event_type": "cross_environment_lineage_finalized",
       "payload": {
         "source_environment": "staging",

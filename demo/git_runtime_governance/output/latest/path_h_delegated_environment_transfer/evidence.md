@@ -4,7 +4,7 @@
 - reason: delegated runtime continuity mismatch
 
 ## Continuous Revalidation Timeline
-- undefined: admissibility=DENIED, continuity=undefined, divergence=CRITICAL(100)
+- GRAPH_NODE: admissibility=DENIED, continuity=INVALID, divergence=CRITICAL(100)
 
 ## Execution State Progression
 LOCAL -> TRANSFERRED -> REVALIDATING -> INVALIDATED

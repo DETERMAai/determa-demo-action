@@ -1,6 +1,6 @@
 GOVERNED REPOSITORY MUTATION PROOF — CONTINUOUS REVALIDATION + ASYNC PRESSURE
 
-run_id: git_proof_20260516_235702
+run_id: git_proof_20260517_000741
 path_a: EXECUTION_ALLOWED (authority continuity preserved through continuous runtime revalidation)
 path_b: EXECUTION_DENIED (repository runtime state diverged after approval)
 path_c: EXECUTION_DENIED (execution halted before final commit due to runtime divergence)
@@ -9,4 +9,5 @@ path_e: EXECUTION_DENIED (runtime continuity decayed during async execution dela
 path_f: EXECUTION_DENIED (retry denied after runtime continuity drift)
 path_g: EXECUTION_DENIED (runtime continuity diverged across environment transition)
 path_h: EXECUTION_DENIED (delegated runtime continuity mismatch)
+path_i: EXECUTION_DENIED (downstream legitimacy collapsed transitively from upstream mutation A)
 replay_status: DENIED

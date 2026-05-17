@@ -4,10 +4,10 @@
     "proposal_id": "proposal_38518f84e1b3",
     "target_file": "service_config.env",
     "patch_hash": "38518f84e1b3e6642d4542deb8672e40fe24a22d82d767efc4a83adbf5293ee1",
-    "patch_file": "C:\\dev\\determa-demo-action\\demo\\git_runtime_governance\\output\\git_proof_20260516_235702\\proposal\\mutation.patch",
-    "approval_head": "099c2a5f7a27f0621be2cc5d4ec61a004e4b6a80",
+    "patch_file": "C:\\dev\\determa-demo-action\\demo\\git_runtime_governance\\output\\git_proof_20260517_000741\\proposal\\mutation.patch",
+    "approval_head": "cad3070bffe3fa5e72193b63d679347b63ecb44d",
     "runtime_epoch": 1,
-    "created_at": "2026-05-16T23:57:03.551Z",
+    "created_at": "2026-05-17T00:07:42.427Z",
     "mutation_scope": "runtime.config.worker",
     "patch": {
       "operation": "line_replace",
@@ -17,8 +17,8 @@
     "patch_preview": "MAX_RETRIES=3 -> MAX_RETRIES=5"
   },
   "approval_snapshot": {
-    "approval_id": "approval_132fc2c6aea2",
-    "head": "099c2a5f7a27f0621be2cc5d4ec61a004e4b6a80",
+    "approval_id": "approval_7a205cc8b71d",
+    "head": "cad3070bffe3fa5e72193b63d679347b63ecb44d",
     "target_file": "service_config.env",
     "target_hash": "8f175d7fd3af6dacc35aedd2e9e87a713e5c938d2adf24082285ae294eaca762",
     "target_content": "SERVICE=worker\nMAX_RETRIES=3\nTIMEOUT_SECONDS=45\nRUNTIME_GUARD=true\n",
@@ -29,12 +29,12 @@
     "queue_hash": "ebc4b4671209b9362b5923c6049872d3f73af3567dd0f7b31f481f232868d15d",
     "environment_profile_hash": "b2ca3a130498099b5458e05a06efa79a37c16bf5a16b744aafdc081641d3232c",
     "runtime_epoch": 1,
-    "approval_timestamp": "2026-05-16T23:57:03.565Z",
+    "approval_timestamp": "2026-05-17T00:07:42.435Z",
     "expected_staged_target_hash": "b55ab635417d899b20d32f0e9d99dd6ba4397a5dd65049628d2c7ad843e2d3d4"
   },
   "authority_grant": {
-    "grant_id": "grant_5259c747a70d",
-    "issued_at": "2026-05-16T23:57:03.565Z",
+    "grant_id": "grant_be1db477ef50",
+    "issued_at": "2026-05-17T00:07:42.436Z",
     "freshness_window_seconds": 900,
     "single_use": true,
     "consumed": false,
@@ -42,7 +42,7 @@
       "target_file": "service_config.env",
       "mutation_scope": "runtime.config.worker",
       "patch_hash": "38518f84e1b3e6642d4542deb8672e40fe24a22d82d767efc4a83adbf5293ee1",
-      "approval_head": "099c2a5f7a27f0621be2cc5d4ec61a004e4b6a80"
+      "approval_head": "cad3070bffe3fa5e72193b63d679347b63ecb44d"
     }
   },
   "checkpoint_results": [
@@ -52,11 +52,11 @@
       "divergence_score": 66,
       "divergence_level": "HIGH",
       "authority_continuity": "STALE",
-      "runtime_horizon_seconds": 1,
+      "runtime_horizon_seconds": 0,
       "runtime_horizon_state": "SHORT",
       "retry_count": 0,
       "queue_depth": 0,
-      "elapsed_seconds": 1,
+      "elapsed_seconds": 0,
       "checks": {
         "head_continuity": false,
         "target_hash_continuity": true,
@@ -80,11 +80,11 @@
     "divergence_score": 66,
     "divergence_level": "HIGH",
     "authority_continuity": "STALE",
-    "runtime_horizon_seconds": 1,
+    "runtime_horizon_seconds": 0,
     "runtime_horizon_state": "SHORT",
     "retry_count": 0,
     "queue_depth": 0,
-    "elapsed_seconds": 1,
+    "elapsed_seconds": 0,
     "checks": {
       "head_continuity": false,
       "target_hash_continuity": true,
@@ -113,7 +113,7 @@
       "event_id": "evt_0001_d7791286",
       "previous_event_id": null,
       "phase": "T0",
-      "timestamp": "2026-05-16T23:57:04.371Z",
+      "timestamp": "2026-05-17T00:07:43.005Z",
       "event_type": "proposal_created",
       "payload": {
         "proposal_id": "proposal_38518f84e1b3"
@@ -123,30 +123,30 @@
       "event_id": "evt_0002_7a7a7a49",
       "previous_event_id": "evt_0001_d7791286",
       "phase": "T1",
-      "timestamp": "2026-05-16T23:57:04.371Z",
+      "timestamp": "2026-05-17T00:07:43.006Z",
       "event_type": "approval_snapshot_captured",
       "payload": {
-        "approval_id": "approval_132fc2c6aea2"
+        "approval_id": "approval_7a205cc8b71d"
       }
     },
     {
       "event_id": "evt_0003_f210b903",
       "previous_event_id": "evt_0002_7a7a7a49",
       "phase": "T2",
-      "timestamp": "2026-05-16T23:57:04.371Z",
+      "timestamp": "2026-05-17T00:07:43.006Z",
       "event_type": "authority_grant_issued",
       "payload": {
-        "grant_id": "grant_5259c747a70d"
+        "grant_id": "grant_be1db477ef50"
       }
     },
     {
       "event_id": "evt_0004_e30cac37",
       "previous_event_id": "evt_0003_f210b903",
       "phase": "PRE_EXECUTION",
-      "timestamp": "2026-05-16T23:57:04.630Z",
+      "timestamp": "2026-05-17T00:07:43.203Z",
       "event_type": "runtime_witness_captured",
       "payload": {
-        "head": "426bca4f9c0eafa785270f4b479159a06e760e87",
+        "head": "41d711772dbb49add253f00b4261e28eaade438b",
         "target_file": "service_config.env",
         "target_hash": "8f175d7fd3af6dacc35aedd2e9e87a713e5c938d2adf24082285ae294eaca762",
         "dependency_hash": "c66e7ab6edd386904d12008a42cc224824928586e5e1d41ca3e02a1349e5796b",
@@ -160,14 +160,14 @@
         "execution_priority": "normal",
         "execution_latency_ms": 0,
         "queued_mutations": [],
-        "runtime_timestamp": "2026-05-16T23:57:04.630Z"
+        "runtime_timestamp": "2026-05-17T00:07:43.203Z"
       }
     },
     {
       "event_id": "evt_0005_887b262e",
       "previous_event_id": "evt_0004_e30cac37",
       "phase": "PRE_EXECUTION",
-      "timestamp": "2026-05-16T23:57:04.630Z",
+      "timestamp": "2026-05-17T00:07:43.203Z",
       "event_type": "legitimacy_revalidated",
       "payload": {
         "checkpoint": "PRE_EXECUTION",
@@ -175,11 +175,11 @@
         "divergence_score": 66,
         "divergence_level": "HIGH",
         "authority_continuity": "STALE",
-        "runtime_horizon_seconds": 1,
+        "runtime_horizon_seconds": 0,
         "runtime_horizon_state": "SHORT",
         "retry_count": 0,
         "queue_depth": 0,
-        "elapsed_seconds": 1,
+        "elapsed_seconds": 0,
         "checks": {
           "head_continuity": false,
           "target_hash_continuity": true,
@@ -201,7 +201,7 @@
       "event_id": "evt_0006_6b3ef569",
       "previous_event_id": "evt_0005_887b262e",
       "phase": "T3",
-      "timestamp": "2026-05-16T23:57:04.630Z",
+      "timestamp": "2026-05-17T00:07:43.203Z",
       "event_type": "execution_denied",
       "payload": {
         "execution_status": "EXECUTION_DENIED",
@@ -213,17 +213,17 @@
       "event_id": "evt_0007_3ce1f838",
       "previous_event_id": "evt_0006_6b3ef569",
       "phase": "T4",
-      "timestamp": "2026-05-16T23:57:04.684Z",
+      "timestamp": "2026-05-17T00:07:43.246Z",
       "event_type": "finalization_prevented",
       "payload": {
-        "head": "426bca4f9c0eafa785270f4b479159a06e760e87"
+        "head": "41d711772dbb49add253f00b4261e28eaade438b"
       }
     },
     {
       "event_id": "evt_0008_1b04d0ea",
       "previous_event_id": "evt_0007_3ce1f838",
       "phase": "T5",
-      "timestamp": "2026-05-16T23:57:04.684Z",
+      "timestamp": "2026-05-17T00:07:43.246Z",
       "event_type": "lineage_finalized",
       "payload": {
         "final_status": "EXECUTION_DENIED",

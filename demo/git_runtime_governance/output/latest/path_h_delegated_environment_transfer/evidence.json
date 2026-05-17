@@ -4,10 +4,10 @@
     "proposal_id": "proposal_38518f84e1b3",
     "target_file": "service_config.env",
     "patch_hash": "38518f84e1b3e6642d4542deb8672e40fe24a22d82d767efc4a83adbf5293ee1",
-    "patch_file": "C:\\dev\\determa-demo-action\\demo\\git_runtime_governance\\output\\git_proof_20260516_235702\\proposal\\mutation.patch",
-    "approval_head": "099c2a5f7a27f0621be2cc5d4ec61a004e4b6a80",
+    "patch_file": "C:\\dev\\determa-demo-action\\demo\\git_runtime_governance\\output\\git_proof_20260517_000741\\proposal\\mutation.patch",
+    "approval_head": "cad3070bffe3fa5e72193b63d679347b63ecb44d",
     "runtime_epoch": 1,
-    "created_at": "2026-05-16T23:57:03.551Z",
+    "created_at": "2026-05-17T00:07:42.427Z",
     "mutation_scope": "runtime.config.worker",
     "patch": {
       "operation": "line_replace",
@@ -17,8 +17,8 @@
     "patch_preview": "MAX_RETRIES=3 -> MAX_RETRIES=5"
   },
   "approval_snapshot": {
-    "approval_id": "approval_132fc2c6aea2",
-    "head": "099c2a5f7a27f0621be2cc5d4ec61a004e4b6a80",
+    "approval_id": "approval_7a205cc8b71d",
+    "head": "cad3070bffe3fa5e72193b63d679347b63ecb44d",
     "target_file": "service_config.env",
     "target_hash": "8f175d7fd3af6dacc35aedd2e9e87a713e5c938d2adf24082285ae294eaca762",
     "target_content": "SERVICE=worker\nMAX_RETRIES=3\nTIMEOUT_SECONDS=45\nRUNTIME_GUARD=true\n",
@@ -29,7 +29,7 @@
     "queue_hash": "ebc4b4671209b9362b5923c6049872d3f73af3567dd0f7b31f481f232868d15d",
     "environment_profile_hash": "b2ca3a130498099b5458e05a06efa79a37c16bf5a16b744aafdc081641d3232c",
     "runtime_epoch": 1,
-    "approval_timestamp": "2026-05-16T23:57:03.565Z",
+    "approval_timestamp": "2026-05-17T00:07:42.435Z",
     "expected_staged_target_hash": "b55ab635417d899b20d32f0e9d99dd6ba4397a5dd65049628d2c7ad843e2d3d4"
   },
   "source_environment": {
@@ -38,12 +38,12 @@
     "dependency_hash": "b68c30132ed93fa9947e0a7b629a59be1ac854acecf82c897dc7078fde1dd48a",
     "config_hash": "30454f38d41128b1bb000d89ce4a56056fa4348a68d173afd4ae1264ee6a2dee",
     "queue_hash": "ebc4b4671209b9362b5923c6049872d3f73af3567dd0f7b31f481f232868d15d",
-    "branch_hash": "099c2a5f7a27f0621be2cc5d4ec61a004e4b6a80",
+    "branch_hash": "cad3070bffe3fa5e72193b63d679347b63ecb44d",
     "queue_witness_hash": "1d616e178e69f095ae20ee10cb14f8a5b1c268d719d1169b3da906695aa4ebaa",
     "target_hash": "8f175d7fd3af6dacc35aedd2e9e87a713e5c938d2adf24082285ae294eaca762",
     "delegated_from": null,
-    "runtime_timestamp": "2026-05-16T23:57:09.565Z",
-    "environment_witness_hash": "189ba9511013e36411889614dbf855cacedc61b4d67ab47051654749b8faa21f"
+    "runtime_timestamp": "2026-05-17T00:07:48.435Z",
+    "environment_witness_hash": "d5662daa55decf64ec39f711b1906af8c4b526d16e8c1e0fa36390e37d9975ae"
   },
   "target_environment": {
     "environment_id": "delegated_runtime",
@@ -51,16 +51,16 @@
     "dependency_hash": "b68c30132ed93fa9947e0a7b629a59be1ac854acecf82c897dc7078fde1dd48a",
     "config_hash": "9c29f2b7d9bbd6bb5f2b243bcc6b362c2a65af97ef4018d21a3e1fb1e2fb8f76",
     "queue_hash": "26b536c5bd930e7ecac0780eeebbc08038fc42d08b5d47bb537beba020c462a0",
-    "branch_hash": "aa8b54a5d63333b57a3f12d922beb9ffbaa059ab",
+    "branch_hash": "856dba74a7ff0d2c3fd01e94d56172a9e99b7a70",
     "queue_witness_hash": "d0bb91dc57d3cdfdac8fc0dc088d271021a5c3d977bcf5c9c0b9bf44a7980297",
     "target_hash": "24cca310989f0223cc4c9df8e50485fbeca41fcfb9b0d0e062451e09cd1d7cb6",
     "delegated_from": "queue_router",
-    "runtime_timestamp": "2026-05-17T00:11:23.565Z",
-    "environment_witness_hash": "c47d00894703ee77cdf19dc3c15e8e6da3bc98669729800c4a23a7e42206a95a"
+    "runtime_timestamp": "2026-05-17T00:22:02.435Z",
+    "environment_witness_hash": "e3cfc5661cf65212343c3c048b552a157c999544dcc85dbb75323498c41409eb"
   },
   "authority_grant": {
     "grant_id": "xenv_grant_3e206fd64765",
-    "issued_at": "2026-05-16T23:57:06.827Z",
+    "issued_at": "2026-05-17T00:07:44.887Z",
     "freshness_window_seconds": 900,
     "single_use": true,
     "consumed": false,
@@ -70,7 +70,7 @@
     "scope": {
       "target_file": "service_config.env",
       "patch_hash": "38518f84e1b3e6642d4542deb8672e40fe24a22d82d767efc4a83adbf5293ee1",
-      "branch_hash": "099c2a5f7a27f0621be2cc5d4ec61a004e4b6a80",
+      "branch_hash": "cad3070bffe3fa5e72193b63d679347b63ecb44d",
       "dependency_hash": "b68c30132ed93fa9947e0a7b629a59be1ac854acecf82c897dc7078fde1dd48a"
     }
   },
@@ -80,7 +80,7 @@
       "divergence_score": 100,
       "divergence_level": "CRITICAL",
       "cross_environment_legitimacy": "INVALID",
-      "elapsed_seconds": 856,
+      "elapsed_seconds": 857,
       "checks": {
         "runtime_epoch_continuity": false,
         "dependency_continuity": true,
@@ -100,7 +100,7 @@
     "divergence_score": 100,
     "divergence_level": "CRITICAL",
     "cross_environment_legitimacy": "INVALID",
-    "elapsed_seconds": 856,
+    "elapsed_seconds": 857,
     "checks": {
       "runtime_epoch_continuity": false,
       "dependency_continuity": true,
@@ -124,7 +124,7 @@
       "event_id": "evt_0001_d7791286",
       "previous_event_id": null,
       "phase": "T0",
-      "timestamp": "2026-05-16T23:57:06.770Z",
+      "timestamp": "2026-05-17T00:07:44.839Z",
       "event_type": "proposal_created",
       "payload": {
         "proposal_id": "proposal_38518f84e1b3"
@@ -134,17 +134,17 @@
       "event_id": "evt_0002_7a7a7a49",
       "previous_event_id": "evt_0001_d7791286",
       "phase": "T1",
-      "timestamp": "2026-05-16T23:57:06.770Z",
+      "timestamp": "2026-05-17T00:07:44.839Z",
       "event_type": "approval_snapshot_captured",
       "payload": {
-        "approval_id": "approval_132fc2c6aea2"
+        "approval_id": "approval_7a205cc8b71d"
       }
     },
     {
       "event_id": "evt_0003_e8ded68b",
       "previous_event_id": "evt_0002_7a7a7a49",
       "phase": "T1B",
-      "timestamp": "2026-05-16T23:57:06.827Z",
+      "timestamp": "2026-05-17T00:07:44.887Z",
       "event_type": "environment_snapshot_captured",
       "payload": {
         "source_environment": "staging",
@@ -155,12 +155,12 @@
           "dependency_hash": "b68c30132ed93fa9947e0a7b629a59be1ac854acecf82c897dc7078fde1dd48a",
           "config_hash": "30454f38d41128b1bb000d89ce4a56056fa4348a68d173afd4ae1264ee6a2dee",
           "queue_hash": "ebc4b4671209b9362b5923c6049872d3f73af3567dd0f7b31f481f232868d15d",
-          "branch_hash": "099c2a5f7a27f0621be2cc5d4ec61a004e4b6a80",
+          "branch_hash": "cad3070bffe3fa5e72193b63d679347b63ecb44d",
           "queue_witness_hash": "1d616e178e69f095ae20ee10cb14f8a5b1c268d719d1169b3da906695aa4ebaa",
           "target_hash": "8f175d7fd3af6dacc35aedd2e9e87a713e5c938d2adf24082285ae294eaca762",
           "delegated_from": null,
-          "runtime_timestamp": "2026-05-16T23:57:09.565Z",
-          "environment_witness_hash": "189ba9511013e36411889614dbf855cacedc61b4d67ab47051654749b8faa21f"
+          "runtime_timestamp": "2026-05-17T00:07:48.435Z",
+          "environment_witness_hash": "d5662daa55decf64ec39f711b1906af8c4b526d16e8c1e0fa36390e37d9975ae"
         }
       }
     },
@@ -168,7 +168,7 @@
       "event_id": "evt_0004_13405ff5",
       "previous_event_id": "evt_0003_e8ded68b",
       "phase": "T2",
-      "timestamp": "2026-05-16T23:57:06.827Z",
+      "timestamp": "2026-05-17T00:07:44.887Z",
       "event_type": "authority_grant_issued",
       "payload": {
         "source_environment": "staging",
@@ -180,7 +180,7 @@
       "event_id": "evt_0005_7f4a6cfe",
       "previous_event_id": "evt_0004_13405ff5",
       "phase": "T3",
-      "timestamp": "2026-05-16T23:57:06.827Z",
+      "timestamp": "2026-05-17T00:07:44.887Z",
       "event_type": "delegated_execution_started",
       "payload": {
         "source_environment": "staging",
@@ -192,7 +192,7 @@
       "event_id": "evt_0006_8390cf95",
       "previous_event_id": "evt_0005_7f4a6cfe",
       "phase": "T3B",
-      "timestamp": "2026-05-16T23:57:07.068Z",
+      "timestamp": "2026-05-17T00:07:45.087Z",
       "event_type": "environment_snapshot_captured",
       "payload": {
         "source_environment": "staging",
@@ -203,12 +203,12 @@
           "dependency_hash": "b68c30132ed93fa9947e0a7b629a59be1ac854acecf82c897dc7078fde1dd48a",
           "config_hash": "9c29f2b7d9bbd6bb5f2b243bcc6b362c2a65af97ef4018d21a3e1fb1e2fb8f76",
           "queue_hash": "26b536c5bd930e7ecac0780eeebbc08038fc42d08b5d47bb537beba020c462a0",
-          "branch_hash": "aa8b54a5d63333b57a3f12d922beb9ffbaa059ab",
+          "branch_hash": "856dba74a7ff0d2c3fd01e94d56172a9e99b7a70",
           "queue_witness_hash": "d0bb91dc57d3cdfdac8fc0dc088d271021a5c3d977bcf5c9c0b9bf44a7980297",
           "target_hash": "24cca310989f0223cc4c9df8e50485fbeca41fcfb9b0d0e062451e09cd1d7cb6",
           "delegated_from": "queue_router",
-          "runtime_timestamp": "2026-05-17T00:11:23.565Z",
-          "environment_witness_hash": "c47d00894703ee77cdf19dc3c15e8e6da3bc98669729800c4a23a7e42206a95a"
+          "runtime_timestamp": "2026-05-17T00:22:02.435Z",
+          "environment_witness_hash": "e3cfc5661cf65212343c3c048b552a157c999544dcc85dbb75323498c41409eb"
         }
       }
     },
@@ -216,7 +216,7 @@
       "event_id": "evt_0007_f03b3e86",
       "previous_event_id": "evt_0006_8390cf95",
       "phase": "T4",
-      "timestamp": "2026-05-16T23:57:07.068Z",
+      "timestamp": "2026-05-17T00:07:45.087Z",
       "event_type": "delegated_continuity_failed",
       "payload": {
         "source_environment": "staging",
@@ -231,7 +231,7 @@
       "event_id": "evt_0008_776b3590",
       "previous_event_id": "evt_0007_f03b3e86",
       "phase": "T5",
-      "timestamp": "2026-05-16T23:57:07.068Z",
+      "timestamp": "2026-05-17T00:07:45.087Z",
       "event_type": "execution_denied",
       "payload": {
         "source_environment": "staging",
@@ -244,7 +244,7 @@
       "event_id": "evt_0009_8f6b4910",
       "previous_event_id": "evt_0008_776b3590",
       "phase": "T6",
-      "timestamp": "2026-05-16T23:57:07.068Z",
+      "timestamp": "2026-05-17T00:07:45.087Z",
       "event_type": "cross_environment_lineage_finalized",
       "payload": {
         "source_environment": "staging",

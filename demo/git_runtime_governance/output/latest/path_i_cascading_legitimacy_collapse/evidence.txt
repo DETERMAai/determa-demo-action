@@ -1,0 +1,6 @@
+PATH: path_i_cascading_legitimacy_collapse
+FINAL_STATUS: EXECUTION_DENIED
+FINAL_REASON: downstream legitimacy collapsed transitively from upstream mutation A
+FINAL_DIVERGENCE: CRITICAL (100)
+FINAL_AUTHORITY_CONTINUITY: TRANSITIVELY_INVALIDATED
+RUNTIME_HORIZON: EXCEEDED (980s)

@@ -96,6 +96,14 @@ Replay is denied with authority continuity invalidation.
 - delegated continuity fails revalidation
 - execution is denied
 
+### Path I — Cascading Legitimacy Collapse
+
+- mutation graph is initialized as `A -> B -> C`
+- A diverges under runtime pressure
+- graph revalidation starts
+- B and C are transitively invalidated from upstream collapse
+- dependent chain finalization is halted
+
 ## State Model
 
 Authority Continuity:
@@ -122,6 +130,10 @@ Cross-Environment Legitimacy:
 
 `CONTINUOUS -> WEAKENING -> STALE -> INVALID`
 
+Transitive Graph Legitimacy:
+
+`VALID -> WEAKENING -> INVALID -> TRANSITIVELY_INVALIDATED`
+
 ## Outputs
 
 Generated under:
@@ -142,5 +154,6 @@ Key artifacts:
 - `path_f_retry_under_diverged_runtime/evidence.json|md|txt`
 - `path_g_staging_to_production_divergence/evidence.json|md|txt`
 - `path_h_delegated_environment_transfer/evidence.json|md|txt`
+- `path_i_cascading_legitimacy_collapse/evidence.json|md|txt`
 - `path_*/target_before_attempt.txt`
 - `path_*/target_after_attempt.txt`

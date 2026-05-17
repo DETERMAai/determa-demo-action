@@ -4,7 +4,7 @@
 - reason: runtime continuity diverged across environment transition
 
 ## Continuous Revalidation Timeline
-- undefined: admissibility=DENIED, continuity=undefined, divergence=CRITICAL(100)
+- GRAPH_NODE: admissibility=DENIED, continuity=INVALID, divergence=CRITICAL(100)
 
 ## Execution State Progression
 PROPOSED -> APPROVED_IN_STAGING -> QUEUED_FOR_PROMOTION -> REVALIDATING_IN_PRODUCTION -> PROMOTION_DENIED
